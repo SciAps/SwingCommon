@@ -1,0 +1,19 @@
+apply plugin: 'java'
+
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+
+archivesBaseName = 'swingcommon'
+group = 'com.sciaps'
+version = '0.0.1'
+description = 'Common classes for Swing related components'
+
+
+
+dependencies {
+  compile project(':Common')
+  compile 'org.slf4j:slf4j-api:1.7.+'
+  testCompile 'junit:junit:4.+'
+  testCompile 'org.slf4j:slf4j-simple:1.7.7'
+
+}
