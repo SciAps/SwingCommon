@@ -1,7 +1,7 @@
 package com.sciaps.common.swing.async;
 
-import com.sciaps.listener.DownloadListener;
-import com.sciaps.utils.DownloadUtils;
+import com.sciaps.common.swing.listener.DownloadListener;
+import com.sciaps.common.swing.utils.DownloadUtils;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;

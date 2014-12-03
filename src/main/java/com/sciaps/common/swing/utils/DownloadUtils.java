@@ -1,7 +1,7 @@
-package com.sciaps.utils;
+package com.sciaps.common.swing.utils;
 
 import com.sciaps.common.swing.libzunitapi.HttpLibzUnitApiHandler;
-import com.sciaps.listener.DownloadListener;
+import com.sciaps.common.swing.listener.DownloadListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;

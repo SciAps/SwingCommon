@@ -4,7 +4,7 @@ import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
-import com.sciaps.model.SpectraFile;
+import com.sciaps.common.swing.model.SpectraFile;
 import java.util.List;
 
 /**

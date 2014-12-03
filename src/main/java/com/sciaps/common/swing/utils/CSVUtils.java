@@ -1,6 +1,6 @@
-package com.sciaps.utils;
+package com.sciaps.common.swing.utils;
 
-import com.sciaps.model.CSV;
+import com.sciaps.common.swing.model.CSV;
 
 /**
  *
