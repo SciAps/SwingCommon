@@ -266,17 +266,20 @@ public final class RegionsPanel extends JPanel
 
     private void fillRegionsData()
     {
-        _data.clear();
-
-        for (Region region : LibzUnitManager.getInstance().getRegions())
+        if (LibzUnitManager.getInstance().getRegions() != null)
         {
-            Vector row = new Vector();
-            row.add(region.name.name);
-            row.add(region.name.element.symbol);
-            row.add(region.wavelengthRange.getMinimumDouble());
-            row.add(region.wavelengthRange.getMaximumDouble());
+            _data.clear();
 
-            _data.add(row);
+            for (Region region : LibzUnitManager.getInstance().getRegions())
+            {
+                Vector row = new Vector();
+                row.add(region.name.name);
+                row.add(region.name.element.symbol);
+                row.add(region.wavelengthRange.getMinimumDouble());
+                row.add(region.wavelengthRange.getMaximumDouble());
+
+                _data.add(row);
+            }
         }
     }
 

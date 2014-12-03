@@ -73,16 +73,19 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
     public void refresh()
     {
-        _listModel.clear();
-
         List<LIBZPixelSpectrum> libzPixelSpectra = LibzUnitManager.getInstance().getLIBZPixelSpectra();
-        for (int i = 0; i < libzPixelSpectra.size(); i++)
+        if (libzPixelSpectra != null)
         {
-            final int libzPixelSpectrumIndex = i;
-            _listModel.addElement("Shot Data " + libzPixelSpectrumIndex);
-        }
+            _listModel.clear();
+            
+            for (int i = 0; i < libzPixelSpectra.size(); i++)
+            {
+                final int libzPixelSpectrumIndex = i;
+                _listModel.addElement("Shot Data " + libzPixelSpectrumIndex);
+            }
 
-        _list.setModel(_listModel);
-        _list.invalidate();
+            _list.setModel(_listModel);
+            _list.invalidate();
+        }
     }
 }
