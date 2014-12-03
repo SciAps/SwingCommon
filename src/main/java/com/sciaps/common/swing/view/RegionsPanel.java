@@ -1,6 +1,7 @@
 package com.sciaps.common.swing.view;
 
 import com.sciaps.common.AtomicElement;
+import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.listener.TableCellListener;
@@ -10,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -206,18 +208,19 @@ public final class RegionsPanel extends JPanel
 
                 String regionName = (String) _regionsTable.getModel().getValueAt(selectedRowIndex, 0);
 
-                Region regionToRemove = null;
-                for (Region region : LibzUnitManager.getInstance().getRegions())
+                Object regionToRemoveId = null;
+                for (Map.Entry entry : LibzUnitManager.getInstance().getRegions().entrySet())
                 {
+                    Region region = (Region) entry.getValue();
                     if (region.name.name.equals(regionName))
                     {
-                        regionToRemove = region;
+                        regionToRemoveId = entry.getKey();
                     }
                 }
 
-                if (regionToRemove != null)
+                if (regionToRemoveId != null)
                 {
-                    LibzUnitManager.getInstance().getRegions().remove(regionToRemove);
+                    LibzUnitManager.getInstance().getRegions().remove(regionToRemoveId);
                     refresh();
                 }
 
@@ -270,8 +273,9 @@ public final class RegionsPanel extends JPanel
         {
             _data.clear();
 
-            for (Region region : LibzUnitManager.getInstance().getRegions())
+            for (Map.Entry entry : LibzUnitManager.getInstance().getRegions().entrySet())
             {
+                Region region = (Region) entry.getValue();
                 Vector row = new Vector();
                 row.add(region.name.name);
                 row.add(region.name.element.symbol);

@@ -6,6 +6,7 @@ import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.model.SpectraFile;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -20,11 +21,11 @@ public final class LibzUnitManager
 
     private String _ipAddress;
     private String _libzUnitUniqueIdentifier;
-    private List<Standard> _standards;
-    private List<SpectraFile> _spectraFiles;
+    private Map<String, Standard> _standards;
+    private Map<String, SpectraFile> _spectraFiles;
     private List<LIBZPixelSpectrum> _libzPixelSpectra;
-    private List<Region> _regions;
-    private List<IRRatio> _intensityRatios;
+    private Map<String, Region> _regions;
+    private Map<String, IRRatio> _intensityRatios;
 
     public static LibzUnitManager getInstance()
     {
@@ -64,22 +65,22 @@ public final class LibzUnitManager
         _libzUnitUniqueIdentifier = libzUnitUniqueIdentifier;
     }
 
-    public List<Standard> getStandards()
+    public Map<String, Standard> getStandards()
     {
         return _standards;
     }
 
-    public void setStandards(List<Standard> standards)
+    public void setStandards(Map<String, Standard> standards)
     {
         _standards = standards;
     }
 
-    public List<SpectraFile> getSpectraFiles()
+    public Map<String, SpectraFile> getSpectraFiles()
     {
         return _spectraFiles;
     }
 
-    public void setSpectraFiles(List<SpectraFile> spectraFiles)
+    public void setSpectraFiles(Map<String, SpectraFile> spectraFiles)
     {
         _spectraFiles = spectraFiles;
     }
@@ -94,22 +95,22 @@ public final class LibzUnitManager
         _libzPixelSpectra = libzPixelSpectra;
     }
 
-    public List<Region> getRegions()
+    public Map<String, Region> getRegions()
     {
         return _regions;
     }
 
-    public void setRegions(List<Region> regions)
+    public void setRegions(Map<String, Region> regions)
     {
         _regions = regions;
     }
 
-    public List<IRRatio> getIntensityRatios()
+    public Map<String, IRRatio> getIntensityRatios()
     {
         return _intensityRatios;
     }
 
-    public void setIntensityRatios(List<IRRatio> intensityRatios)
+    public void setIntensityRatios(Map<String, IRRatio> intensityRatios)
     {
         _intensityRatios = intensityRatios;
     }

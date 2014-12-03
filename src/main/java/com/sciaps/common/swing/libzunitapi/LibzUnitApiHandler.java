@@ -6,6 +6,7 @@ import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.model.SpectraFile;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -39,19 +40,19 @@ public interface LibzUnitApiHandler
      */
     boolean pushToLibzUnit();
 
-    List<Standard> getStandards(final String getStandardsUrlString);
+    Map<String, Standard> getStandards(final String getStandardsUrlString);
 
-    List<SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString);
+    Map<String, SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString);
 
     LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final String spectraId);
 
-    List<Region> getRegions(final String getRegionsUrlString);
+    Map<String, Region> getRegions(final String getRegionsUrlString);
 
-    List<IRRatio> getIntensityRatios(final String getIntensityRatiosUrlString);
+    Map<String, IRRatio> getIntensityRatios(final String getIntensityRatiosUrlString);
 
-    boolean putStandards(final String putStandardsUrlString, List<Standard> standards);
+    boolean putStandards(final String putStandardsUrlString, Map<String, Standard> standards);
 
-    boolean putRegions(final String putRegionsUrlString, List<Region> regions);
+    boolean putRegions(final String putRegionsUrlString, Map<String, Region> regions);
 
-    boolean putIntensityRatios(final String putIntensityRatiosUrlString, List<IRRatio> intensityRatios);
+    boolean putIntensityRatios(final String putIntensityRatiosUrlString, Map<String, IRRatio> intensityRatios);
 }
