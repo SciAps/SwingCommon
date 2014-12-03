@@ -1,4 +1,4 @@
-package com.sciaps.utils;
+package com.sciaps.common.swing.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

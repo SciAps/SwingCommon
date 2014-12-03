@@ -1,4 +1,4 @@
-package com.sciaps.model;
+package com.sciaps.common.swing.model;
 
 import java.util.List;
 

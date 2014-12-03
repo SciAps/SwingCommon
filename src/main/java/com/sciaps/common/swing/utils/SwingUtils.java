@@ -1,4 +1,4 @@
-package com.sciaps.utils;
+package com.sciaps.common.swing.utils;
 
 import java.awt.Component;
 import java.awt.Container;

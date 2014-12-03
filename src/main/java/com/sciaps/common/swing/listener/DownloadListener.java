@@ -1,4 +1,4 @@
-package com.sciaps.listener;
+package com.sciaps.common.swing.listener;
 
 /**
  *

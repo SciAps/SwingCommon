@@ -1,4 +1,4 @@
-package com.sciaps.utils;
+package com.sciaps.common.swing.utils;
 
 import java.awt.BorderLayout;
 import javax.swing.JDialog;
