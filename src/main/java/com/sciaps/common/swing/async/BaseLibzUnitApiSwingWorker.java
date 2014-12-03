@@ -22,10 +22,10 @@ public abstract class BaseLibzUnitApiSwingWorker extends SwingWorker<Boolean, Vo
     private final BaseLibzUnitApiSwingWorkerCallback _callback;
     protected final LibzUnitApiHandler _libzUnitApiHandler;
 
-    public BaseLibzUnitApiSwingWorker(BaseLibzUnitApiSwingWorkerCallback callback)
+    public BaseLibzUnitApiSwingWorker(BaseLibzUnitApiSwingWorkerCallback callback, Class<? extends LibzUnitApiHandler> clazz)
     {
         _callback = callback;
-        _libzUnitApiHandler = InstanceManager.getInstance().retrieveInstance(LibzUnitApiHandler.class);
+        _libzUnitApiHandler = InstanceManager.getInstance().retrieveInstance(clazz);
     }
 
     public final void start()

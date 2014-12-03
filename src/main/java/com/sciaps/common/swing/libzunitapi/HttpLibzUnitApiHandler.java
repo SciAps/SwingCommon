@@ -12,6 +12,7 @@ import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.model.IsAlive;
 import com.sciaps.model.SpectraFile;
+import com.sciaps.utils.DownloadUtils;
 import com.sciaps.utils.IOUtils;
 import com.sciaps.utils.JsonUtils;
 import java.io.BufferedInputStream;
@@ -35,9 +36,9 @@ import org.apache.commons.lang.math.DoubleRange;
 public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 {
     @Override
-    public boolean connectToLibzUnit(LibzUnitManager libzUnitManager)
+    public boolean connectToLibzUnit()
     {
-        final String urlBaseString = getLibzUnitApiBaseUrl(libzUnitManager.getIpAddress());
+        final String urlBaseString = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
         final String urlString = urlBaseString + "isAlive";
 
         BufferedReader bufferedReader = null;
@@ -64,9 +65,12 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 Gson gson = new GsonBuilder().create();
 
                 IsAlive isAlive = gson.fromJson(sb.toString(), IsAlive.class);
-                libzUnitManager.setLibzUnitUniqueIdentifier(isAlive.libzUnitUniqueIdentifier);
+                if (isAlive != null)
+                {
+                    LibzUnitManager.getInstance().setLibzUnitUniqueIdentifier(isAlive.libzUnitUniqueIdentifier);
 
-                return true;
+                    return true;
+                }
             }
         }
         catch (IOException e)
@@ -82,15 +86,15 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public boolean pullFromLibzUnit(LibzUnitManager libzUnitManager)
+    public boolean pullFromLibzUnit()
     {
-        final String urlBaseString = getLibzUnitApiBaseUrl(libzUnitManager.getIpAddress());
+        final String urlBaseString = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
 
         List<Standard> standards = getStandards(urlBaseString + "standards");
-        libzUnitManager.setStandards(standards);
+        LibzUnitManager.getInstance().setStandards(standards);
 
         List<SpectraFile> spectraFiles = getSpectraFiles(urlBaseString + "spectra");
-        libzUnitManager.setSpectraFiles(spectraFiles);
+        LibzUnitManager.getInstance().setSpectraFiles(spectraFiles);
 
         if (spectraFiles != null)
         {
@@ -107,27 +111,27 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 libzPixelSpectra.add(libzPixelSpectum);
             }
 
-            libzUnitManager.setLIBZPixelSpectra(libzPixelSpectra);
+            LibzUnitManager.getInstance().setLIBZPixelSpectra(libzPixelSpectra);
         }
 
         List<Region> regions = getRegions(urlBaseString + "regions");
-        libzUnitManager.setRegions(regions);
+        LibzUnitManager.getInstance().setRegions(regions);
 
         List<IRRatio> intensityRatios = getIntensityRatios(urlBaseString + "intensityratios");
-        libzUnitManager.setIntensityRatios(intensityRatios);
+        LibzUnitManager.getInstance().setIntensityRatios(intensityRatios);
 
-        return libzUnitManager.isValidAfterPull();
+        return LibzUnitManager.getInstance().isValidAfterPull();
     }
 
     @Override
-    public boolean pushToLibzUnit(LibzUnitManager libzUnitManager)
+    public boolean pushToLibzUnit()
     {
-        final String urlBaseString = getLibzUnitApiBaseUrl(libzUnitManager.getIpAddress());
-        if (putStandards(urlBaseString + "standards", libzUnitManager.getStandards()))
+        final String urlBaseString = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
+        if (putStandards(urlBaseString + "standards", LibzUnitManager.getInstance().getStandards()))
         {
-            if (putRegions(urlBaseString + "regions", libzUnitManager.getRegions()))
+            if (putRegions(urlBaseString + "regions", LibzUnitManager.getInstance().getRegions()))
             {
-                if (putIntensityRatios(urlBaseString + "intensityratios", libzUnitManager.getIntensityRatios()))
+                if (putIntensityRatios(urlBaseString + "intensityratios", LibzUnitManager.getInstance().getIntensityRatios()))
                 {
                     return true;
                 }
@@ -137,9 +141,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         return false;
     }
 
-    private static List<Standard> getStandards(final String getStandardsUrlString)
+    @Override
+    public List<Standard> getStandards(final String getStandardsUrlString)
     {
-        String jsonResponse = downloadJson(getStandardsUrlString);
+        String jsonResponse = DownloadUtils.downloadJson(getStandardsUrlString);
         List<Standard> standards = JsonUtils.deserializeJsonIntoListOfType(jsonResponse, Standard[].class);
 
         System.out.println("# of Standards pulled from LIBZ Unit: " + standards.size());
@@ -147,9 +152,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         return standards;
     }
 
-    private static List<SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString)
+    @Override
+    public List<SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString)
     {
-        String jsonResponse = downloadJson(getSpectraFilesUrlString);
+        String jsonResponse = DownloadUtils.downloadJson(getSpectraFilesUrlString);
         List<SpectraFile> spectraFiles = JsonUtils.deserializeJsonIntoListOfType(jsonResponse, SpectraFile[].class);
 
         System.out.println("# of Spectra Files pulled from LIBZ Unit: " + spectraFiles.size());
@@ -157,7 +163,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         return spectraFiles;
     }
 
-    private static LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final String spectraId)
+    @Override
+    public LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final String spectraId)
     {
         JsonReader jsonReader = null;
 
@@ -192,7 +199,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }
     }
 
-    private static List<Region> getRegions(final String getRegionsUrlString)
+    @Override
+    public List<Region> getRegions(final String getRegionsUrlString)
     {
         // *** BEGIN TEMPORARY UNTIL getRegions API call is implemented ***
         List<Region> regions = new ArrayList<Region>();
@@ -216,7 +224,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         // ***  END  TEMPORARY UNTIL getRegions API call is implemented ***
     }
 
-    private static List<IRRatio> getIntensityRatios(final String getIntensityRatiosUrlString)
+    @Override
+    public List<IRRatio> getIntensityRatios(final String getIntensityRatiosUrlString)
     {
         // *** BEGIN TEMPORARY UNTIL getIntensityRatios API call is implemented ***
         List<IRRatio> intensityRatios = new ArrayList<IRRatio>();
@@ -235,41 +244,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         // ***  END  TEMPORARY UNTIL getIntensityRatios API call is implemented ***
     }
 
-    private static String downloadJson(final String getJsonUrlString)
-    {
-        BufferedReader bufferedReader = null;
-
-        try
-        {
-            URL url = new URL(getJsonUrlString);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setConnectTimeout(20000);
-
-            bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-            StringBuilder sb = new StringBuilder();
-
-            String inputLine;
-            while ((inputLine = bufferedReader.readLine()) != null)
-            {
-                sb.append(inputLine);
-            }
-
-            return sb.toString();
-        }
-        catch (IOException e)
-        {
-            Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, e);
-
-            return null;
-        }
-        finally
-        {
-            IOUtils.safeClose(bufferedReader);
-        }
-    }
-
-    private static boolean putStandards(final String putStandardsUrlString, List<Standard> standards)
+    @Override
+    public boolean putStandards(final String putStandardsUrlString, List<Standard> standards)
     {
         try
         {
@@ -298,7 +274,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         return false;
     }
 
-    private static boolean putRegions(final String putRegionsUrlString, List<Region> regions)
+    @Override
+    public boolean putRegions(final String putRegionsUrlString, List<Region> regions)
     {
         // *** BEGIN TEMPORARY UNTIL getRegions API call is implemented ***
         sRegions.clear();
@@ -308,7 +285,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         // ***  END  TEMPORARY UNTIL getRegions API call is implemented ***
     }
 
-    private static boolean putIntensityRatios(final String putIntensityRatiosUrlString, List<IRRatio> intensityRatios)
+    @Override
+    public boolean putIntensityRatios(final String putIntensityRatiosUrlString, List<IRRatio> intensityRatios)
     {
         // *** BEGIN TEMPORARY UNTIL getIntensityRatios API call is implemented ***
         sIntensityRatios.clear();

@@ -1,6 +1,6 @@
 package com.sciaps.common.swing.async;
 
-import com.sciaps.common.swing.global.LibzUnitManager;
+import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 
 /**
  *
@@ -8,14 +8,14 @@ import com.sciaps.common.swing.global.LibzUnitManager;
  */
 public final class LibzUnitPullSwingWorker extends BaseLibzUnitApiSwingWorker
 {
-    public LibzUnitPullSwingWorker(BaseLibzUnitApiSwingWorker.BaseLibzUnitApiSwingWorkerCallback callback)
+    public LibzUnitPullSwingWorker(BaseLibzUnitApiSwingWorker.BaseLibzUnitApiSwingWorkerCallback callback, Class<? extends LibzUnitApiHandler> clazz)
     {
-        super(callback);
+        super(callback, clazz);
     }
 
     @Override
     protected Boolean doInBackground() throws Exception
     {
-        return Boolean.valueOf(_libzUnitApiHandler.pullFromLibzUnit(LibzUnitManager.getInstance()));
+        return Boolean.valueOf(_libzUnitApiHandler.pullFromLibzUnit());
     }
 }
