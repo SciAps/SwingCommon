@@ -14,6 +14,7 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.+'
     compile 'org.jfree:jfreechart:1.0.17'
     compile 'org.swinglabs.swingx:swingx-all:1.6.4'
+    compile 'org.apache.httpcomponents:httpclient:4.3.4'
     testCompile 'junit:junit:4.+'
     testCompile 'org.slf4j:slf4j-simple:1.7.7'
 }
