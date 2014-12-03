@@ -26,23 +26,23 @@ public interface LibzUnitApiHandler
 
     /**
      * This method is used to perform a mass pull, which essentially means it is
-     * going to call all of the Get methods on the unit
+     * going to call all of the GET methods on the unit
      *
-     * @return true if all the Get calls executed successfully
+     * @return true if all the GET calls executed successfully
      */
     boolean pullFromLibzUnit();
 
     /**
      * This method is used to perform a mass push, which essentially means it is
-     * going to call all of the Put methods on the unit
+     * going to call all of the POST methods on the unit
      *
-     * @return true if all the Put calls executed successfully
+     * @return true if all the POST calls executed successfully
      */
     boolean pushToLibzUnit();
 
     Map<String, Standard> getStandards(final String getStandardsUrlString);
 
-    Map<String, SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString);
+    List<SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString);
 
     LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final String spectraId);
 
@@ -50,9 +50,9 @@ public interface LibzUnitApiHandler
 
     Map<String, IRRatio> getIntensityRatios(final String getIntensityRatiosUrlString);
 
-    boolean putStandards(final String putStandardsUrlString, Map<String, Standard> standards);
+    boolean postStandards(final String putStandardsUrlString, Map<String, Standard> standards);
 
-    boolean putRegions(final String putRegionsUrlString, Map<String, Region> regions);
+    boolean postRegions(final String putRegionsUrlString, Map<String, Region> regions);
 
-    boolean putIntensityRatios(final String putIntensityRatiosUrlString, Map<String, IRRatio> intensityRatios);
+    boolean postIntensityRatios(final String putIntensityRatiosUrlString, Map<String, IRRatio> intensityRatios);
 }

@@ -22,7 +22,7 @@ public final class LibzUnitManager
     private String _ipAddress;
     private String _libzUnitUniqueIdentifier;
     private Map<String, Standard> _standards;
-    private Map<String, SpectraFile> _spectraFiles;
+    private List<SpectraFile> _spectraFiles;
     private List<LIBZPixelSpectrum> _libzPixelSpectra;
     private Map<String, Region> _regions;
     private Map<String, IRRatio> _intensityRatios;
@@ -75,12 +75,12 @@ public final class LibzUnitManager
         _standards = standards;
     }
 
-    public Map<String, SpectraFile> getSpectraFiles()
+    public List<SpectraFile> getSpectraFiles()
     {
         return _spectraFiles;
     }
 
-    public void setSpectraFiles(Map<String, SpectraFile> spectraFiles)
+    public void setSpectraFiles(List<SpectraFile> spectraFiles)
     {
         _spectraFiles = spectraFiles;
     }

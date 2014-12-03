@@ -43,7 +43,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     public boolean connectToLibzUnit()
     {
         final String urlBaseString = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
-        final String urlString = urlBaseString + "isAlive";
+        final String urlString = urlBaseString + "api/isAlive";
 
         BufferedReader bufferedReader = null;
 
@@ -94,20 +94,18 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     {
         final String urlBaseString = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
 
-        Map<String, Standard> standards = getStandards(urlBaseString + "standards");
+        Map<String, Standard> standards = getStandards(urlBaseString + "data/standards/all");
         LibzUnitManager.getInstance().setStandards(standards);
 
-        Map<String, SpectraFile> spectraFiles = getSpectraFiles(urlBaseString + "spectra");
+        List<SpectraFile> spectraFiles = getSpectraFiles(urlBaseString + "api/spectra");
         LibzUnitManager.getInstance().setSpectraFiles(spectraFiles);
 
         if (spectraFiles != null)
         {
             List<LIBZPixelSpectrum> libzPixelSpectra = new ArrayList<LIBZPixelSpectrum>();
-            for (Map.Entry entry : spectraFiles.entrySet())
+            for (SpectraFile sf : spectraFiles)
             {
-                SpectraFile sf = (SpectraFile) entry.getValue();
-
-                LIBZPixelSpectrum libzPixelSpectum = getLIBZPixelSpectrum(urlBaseString + "spectra", sf.id);
+                LIBZPixelSpectrum libzPixelSpectum = getLIBZPixelSpectrum(urlBaseString + "api/spectra", sf.id);
                 if (libzPixelSpectum == null)
                 {
                     Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.WARNING, "LIBZPixelSpectrum retrieved via id: {0} was NULL! Continuing to download the other LIBZPixelSpectrum objects...", sf.id);
@@ -119,10 +117,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             LibzUnitManager.getInstance().setLIBZPixelSpectra(libzPixelSpectra);
         }
 
-        Map<String, Region> regions = getRegions(urlBaseString + "regions");
+        Map<String, Region> regions = getRegions(urlBaseString + "data/regions");
         LibzUnitManager.getInstance().setRegions(regions);
 
-        Map<String, IRRatio> intensityRatios = getIntensityRatios(urlBaseString + "intensityratios");
+        Map<String, IRRatio> intensityRatios = getIntensityRatios(urlBaseString + "data/intensityratios");
         LibzUnitManager.getInstance().setIntensityRatios(intensityRatios);
 
         return LibzUnitManager.getInstance().isValidAfterPull();
@@ -132,11 +130,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     public boolean pushToLibzUnit()
     {
         final String urlBaseString = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
-        if (putStandards(urlBaseString + "standards", LibzUnitManager.getInstance().getStandards()))
+        if (postStandards(urlBaseString + "data/standards/all", LibzUnitManager.getInstance().getStandards()))
         {
-            if (putRegions(urlBaseString + "regions", LibzUnitManager.getInstance().getRegions()))
+            if (postRegions(urlBaseString + "data/regions", LibzUnitManager.getInstance().getRegions()))
             {
-                if (putIntensityRatios(urlBaseString + "intensityratios", LibzUnitManager.getInstance().getIntensityRatios()))
+                if (postIntensityRatios(urlBaseString + "data/intensityratios", LibzUnitManager.getInstance().getIntensityRatios()))
                 {
                     return true;
                 }
@@ -161,13 +159,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public Map<String, SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString)
+    public List<SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString)
     {
         String jsonResponse = DownloadUtils.downloadJson(getSpectraFilesUrlString);
-        Type type = new TypeToken<Map<String, SpectraFile>>()
+        Type type = new TypeToken<List<SpectraFile>>()
         {
         }.getType();
-        Map<String, SpectraFile> spectraFiles = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
+        List<SpectraFile> spectraFiles = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
 
         System.out.println("# of Spectra Files pulled from LIBZ Unit: " + spectraFiles.size());
 
@@ -264,14 +262,14 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public boolean putStandards(final String putStandardsUrlString, Map<String, Standard> standards)
+    public boolean postStandards(final String postStandardsUrlString, Map<String, Standard> standards)
     {
         try
         {
-            URL url = new URL(putStandardsUrlString);
+            URL url = new URL(postStandardsUrlString);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
-            con.setRequestMethod("PUT");
+            con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
 
@@ -296,7 +294,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public boolean putRegions(final String putRegionsUrlString, Map<String, Region> regions)
+    public boolean postRegions(final String postRegionsUrlString, Map<String, Region> regions)
     {
         // *** BEGIN TEMPORARY UNTIL getRegions API call is implemented ***
         sRegions.clear();
@@ -312,7 +310,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public boolean putIntensityRatios(final String putIntensityRatiosUrlString, Map<String, IRRatio> intensityRatios)
+    public boolean postIntensityRatios(final String postIntensityRatiosUrlString, Map<String, IRRatio> intensityRatios)
     {
         // *** BEGIN TEMPORARY UNTIL getIntensityRatios API call is implemented ***
         sIntensityRatios.clear();
