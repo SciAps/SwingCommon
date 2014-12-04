@@ -1,10 +1,10 @@
 package com.sciaps.common.swing.global;
 
+import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
-import com.sciaps.common.swing.model.SpectraFile;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public final class LibzUnitManager
     private String _ipAddress;
     private String _libzUnitUniqueIdentifier;
     private Map<String, Standard> _standards;
-    private List<SpectraFile> _spectraFiles;
+    private Map<String, CalibrationShot> _calibrationShots;
     private List<LIBZPixelSpectrum> _libzPixelSpectra;
     private Map<String, Region> _regions;
     private Map<String, IRRatio> _intensityRatios;
@@ -42,7 +42,7 @@ public final class LibzUnitManager
 
     public boolean isValidAfterPull()
     {
-        return _standards != null && _spectraFiles != null && _libzPixelSpectra != null && _regions != null && _intensityRatios != null;
+        return _standards != null && _calibrationShots != null && _libzPixelSpectra != null && _regions != null && _intensityRatios != null;
     }
 
     public String getIpAddress()
@@ -75,14 +75,14 @@ public final class LibzUnitManager
         _standards = standards;
     }
 
-    public List<SpectraFile> getSpectraFiles()
+    public Map<String, CalibrationShot> getCalibrationShots()
     {
-        return _spectraFiles;
+        return _calibrationShots;
     }
 
-    public void setSpectraFiles(List<SpectraFile> spectraFiles)
+    public void setCalibrationShots(Map<String, CalibrationShot> spectraFiles)
     {
-        _spectraFiles = spectraFiles;
+        _calibrationShots = spectraFiles;
     }
 
     public List<LIBZPixelSpectrum> getLIBZPixelSpectra()

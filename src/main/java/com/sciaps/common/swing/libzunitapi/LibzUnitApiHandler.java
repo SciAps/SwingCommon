@@ -1,5 +1,6 @@
 package com.sciaps.common.swing.libzunitapi;
 
+import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
@@ -42,9 +43,9 @@ public interface LibzUnitApiHandler
 
     Map<String, Standard> getStandards(final String getStandardsUrlString);
 
-    List<SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString);
+    Map<String, CalibrationShot> getCalibrationShots(final String getCalibrationShotsUrlString);
 
-    LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final String spectraId);
+    LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final Object shotId);
 
     Map<String, Region> getRegions(final String getRegionsUrlString);
 

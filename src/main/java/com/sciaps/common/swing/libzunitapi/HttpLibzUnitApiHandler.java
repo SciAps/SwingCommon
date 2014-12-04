@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.sciaps.common.AtomicElement;
+import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.EmissionLine;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
@@ -97,18 +98,18 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         Map<String, Standard> standards = getStandards(urlBaseString + "data/standards/all");
         LibzUnitManager.getInstance().setStandards(standards);
 
-        List<SpectraFile> spectraFiles = getSpectraFiles(urlBaseString + "api/spectra");
-        LibzUnitManager.getInstance().setSpectraFiles(spectraFiles);
+        Map<String, CalibrationShot> calibrationShots = getCalibrationShots(urlBaseString + "data/calibrationshot");
+        LibzUnitManager.getInstance().setCalibrationShots(calibrationShots);
 
-        if (spectraFiles != null)
+        if (calibrationShots != null)
         {
             List<LIBZPixelSpectrum> libzPixelSpectra = new ArrayList<LIBZPixelSpectrum>();
-            for (SpectraFile sf : spectraFiles)
+            for (Map.Entry entry : calibrationShots.entrySet())
             {
-                LIBZPixelSpectrum libzPixelSpectum = getLIBZPixelSpectrum(urlBaseString + "api/spectra", sf.id);
+                LIBZPixelSpectrum libzPixelSpectum = getLIBZPixelSpectrum(urlBaseString + "data/calibrationshot", entry.getKey());
                 if (libzPixelSpectum == null)
                 {
-                    Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.WARNING, "LIBZPixelSpectrum retrieved via id: {0} was NULL! Continuing to download the other LIBZPixelSpectrum objects...", sf.id);
+                    Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.WARNING, "LIBZPixelSpectrum retrieved via id: {0} was NULL! Continuing to download the other LIBZPixelSpectrum objects...", entry.getKey());
                 }
 
                 libzPixelSpectra.add(libzPixelSpectum);
@@ -117,10 +118,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             LibzUnitManager.getInstance().setLIBZPixelSpectra(libzPixelSpectra);
         }
 
-        Map<String, Region> regions = getRegions(urlBaseString + "data/regions");
+        Map<String, Region> regions = getRegions(urlBaseString + "data/regions/all");
         LibzUnitManager.getInstance().setRegions(regions);
 
-        Map<String, IRRatio> intensityRatios = getIntensityRatios(urlBaseString + "data/intensityratios");
+        Map<String, IRRatio> intensityRatios = getIntensityRatios(urlBaseString + "data/intensityratios/all");
         LibzUnitManager.getInstance().setIntensityRatios(intensityRatios);
 
         return LibzUnitManager.getInstance().isValidAfterPull();
@@ -159,27 +160,27 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public List<SpectraFile> getSpectraFiles(final String getSpectraFilesUrlString)
+    public Map<String, CalibrationShot> getCalibrationShots(final String getCalibrationShotsUrlString)
     {
-        String jsonResponse = DownloadUtils.downloadJson(getSpectraFilesUrlString);
-        Type type = new TypeToken<List<SpectraFile>>()
+        String jsonResponse = DownloadUtils.downloadJson(getCalibrationShotsUrlString);
+        Type type = new TypeToken<Map<String, CalibrationShot>>()
         {
         }.getType();
-        List<SpectraFile> spectraFiles = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
+        Map<String, CalibrationShot> calibrationShots = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
 
-        System.out.println("# of Spectra Files pulled from LIBZ Unit: " + spectraFiles.size());
+        System.out.println("# of Calibration Shots pulled from LIBZ Unit: " + calibrationShots.size());
 
-        return spectraFiles;
+        return calibrationShots;
     }
 
     @Override
-    public LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final String spectraId)
+    public LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final Object shotId)
     {
         JsonReader jsonReader = null;
 
         try
         {
-            URL url = new URL(getLIBZPixelSpectrumUrlString + "/" + spectraId);
+            URL url = new URL(getLIBZPixelSpectrumUrlString + "/" + shotId);
 
             BufferedInputStream bis = new BufferedInputStream(url.openStream());
             GZIPInputStream gzis = new GZIPInputStream(bis);

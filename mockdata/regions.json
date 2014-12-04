@@ -7,5 +7,23 @@
     "name": {
       "name": "C_193"
     }
+  },
+  "0454d7aa-1718-4262-be44-25bea7421d4f": {
+    "wavelengthRange": {
+      "min": 193.2,
+      "max": 193.6
+    },
+    "name": {
+      "name": "C_193"
+    }
+  },
+  "a3601d22-14fb-4566-becc-7e51d4e894a2": {
+    "wavelengthRange": {
+      "min": 193.2,
+      "max": 193.6
+    },
+    "name": {
+      "name": "C_193"
+    }
   }
 }
