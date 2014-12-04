@@ -128,9 +128,9 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         final String urlBaseString = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
         if (postStandards(urlBaseString + "data/standards/all", LibzUnitManager.getInstance().getStandards()))
         {
-            if (postRegions(urlBaseString + "data/regions", LibzUnitManager.getInstance().getRegions()))
+            if (postRegions(urlBaseString + "data/regions/all", LibzUnitManager.getInstance().getRegions()))
             {
-                if (postIntensityRatios(urlBaseString + "data/intensityratios", LibzUnitManager.getInstance().getIntensityRatios()))
+                if (postIntensityRatios(urlBaseString + "data/ir/all", LibzUnitManager.getInstance().getIntensityRatios()))
                 {
                     return true;
                 }
