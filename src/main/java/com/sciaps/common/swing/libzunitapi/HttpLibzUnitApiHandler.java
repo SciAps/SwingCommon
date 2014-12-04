@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.sciaps.common.data.CalibrationShot;
+import com.sciaps.common.data.EmissionLine;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
@@ -237,6 +238,18 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             {
             }.getType();
             Map<String, Region> regions = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
+            for (Map.Entry entry : regions.entrySet())
+            {
+                try
+                {
+                    Region region = (Region) entry.getValue();
+                    region.name = EmissionLine.parse(region.name.name);
+                }
+                catch (Exception ex)
+                {
+                    Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
 
             System.out.println("# of Regions pulled from LIBZ Unit: " + regions.size());
 
