@@ -1,29 +1,29 @@
 {
-  "1031f78c-fb7e-464f-89b0-5c822dd12b62": {
+  "b1a8bbb5-360c-49a5-a2d0-92504704717b": {
     "wavelengthRange": {
-      "min": 193.2,
-      "max": 193.6
+      "min": 476.0,
+      "max": 498.0
     },
     "name": {
-      "name": "C_193"
+      "name": "C_476-498"
     }
   },
-  "0454d7aa-1718-4262-be44-25bea7421d4f": {
+  "4ccc747e-4975-4869-be03-58fc0bcdb901": {
     "wavelengthRange": {
-      "min": 193.2,
-      "max": 193.6
+      "min": 651.0,
+      "max": 662.0
     },
     "name": {
-      "name": "C_193"
+      "name": "Al_651-662"
     }
   },
-  "a3601d22-14fb-4566-becc-7e51d4e894a2": {
+  "56ef0193-719c-417e-93ee-47c909f2dae0": {
     "wavelengthRange": {
-      "min": 193.2,
-      "max": 193.6
+      "min": 304.0,
+      "max": 314.0
     },
     "name": {
-      "name": "C_193"
+      "name": "Ti_304-314"
     }
   }
 }

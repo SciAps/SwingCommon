@@ -3,18 +3,18 @@
     "name": "Al_1050",
     "spec": [
       {
-        "element": "Copper",
-        "percent": 0.04,
+        "element": "Manganese",
+        "percent": 0.0,
         "error": 0.0
       },
       {
-        "element": "Silicon",
-        "percent": 0.174,
+        "element": "Zirconium",
+        "percent": 0.0019,
         "error": 0.0
       },
       {
-        "element": "Tin",
-        "percent": 0.0148,
+        "element": "Nickel",
+        "percent": 0.0227,
         "error": 0.0
       },
       {
@@ -28,18 +28,8 @@
         "error": 0.0
       },
       {
-        "element": "Titanium",
-        "percent": 0.0287,
-        "error": 0.0
-      },
-      {
-        "element": "Manganese",
-        "percent": 0.0,
-        "error": 0.0
-      },
-      {
-        "element": "Zirconium",
-        "percent": 0.0019,
+        "element": "Tin",
+        "percent": 0.0148,
         "error": 0.0
       },
       {
@@ -48,18 +38,28 @@
         "error": 0.0
       },
       {
-        "element": "Nickel",
-        "percent": 0.0227,
-        "error": 0.0
-      },
-      {
         "element": "Magnesium",
         "percent": 0.0276,
         "error": 0.0
       },
       {
+        "element": "Silicon",
+        "percent": 0.174,
+        "error": 0.0
+      },
+      {
+        "element": "Copper",
+        "percent": 0.04,
+        "error": 0.0
+      },
+      {
         "element": "Vanadium",
         "percent": 0.0168,
+        "error": 0.0
+      },
+      {
+        "element": "Titanium",
+        "percent": 0.0287,
         "error": 0.0
       }
     ]
