@@ -1,7 +1,7 @@
 package com.sciaps.common.swing.async;
 
 import com.sciaps.common.swing.listener.DownloadListener;
-import com.sciaps.common.swing.utils.DownloadUtils;
+import com.sciaps.common.swing.utils.HttpUtils;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -71,13 +71,13 @@ public final class DownloadFileSwingWorker extends SwingWorker<File, Void>
     @Override
     public File doInBackground()
     {
-        _downloadSize = DownloadUtils.getFileSize(_urlString);
+        _downloadSize = HttpUtils.getFileSize(_urlString);
         if (_downloadSize == -1)
         {
             return null;
         }
 
-        File downloadedFile = DownloadUtils.downloadFileFromUrl(_urlString, new DownloadListenerImpl());
+        File downloadedFile = HttpUtils.downloadFileFromUrl(_urlString, new DownloadListenerImpl());
 
         return downloadedFile;
     }

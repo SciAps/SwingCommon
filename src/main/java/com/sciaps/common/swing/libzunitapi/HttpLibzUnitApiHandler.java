@@ -4,24 +4,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import com.sciaps.common.AtomicElement;
 import com.sciaps.common.data.CalibrationShot;
-import com.sciaps.common.data.EmissionLine;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.model.IsAlive;
-import com.sciaps.common.swing.model.SpectraFile;
-import com.sciaps.common.swing.utils.DownloadUtils;
+import com.sciaps.common.swing.utils.HttpUtils;
 import com.sciaps.common.swing.utils.IOUtils;
 import com.sciaps.common.swing.utils.JsonUtils;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -32,7 +28,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.apache.commons.lang.math.DoubleRange;
 
 /**
  *
@@ -121,7 +116,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         Map<String, Region> regions = getRegions(urlBaseString + "data/regions/all");
         LibzUnitManager.getInstance().setRegions(regions);
 
-        Map<String, IRRatio> intensityRatios = getIntensityRatios(urlBaseString + "data/intensityratios/all");
+        Map<String, IRRatio> intensityRatios = getIntensityRatios(urlBaseString + "data/ir/all");
         LibzUnitManager.getInstance().setIntensityRatios(intensityRatios);
 
         return LibzUnitManager.getInstance().isValidAfterPull();
@@ -148,29 +143,45 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     @Override
     public Map<String, Standard> getStandards(final String getStandardsUrlString)
     {
-        String jsonResponse = DownloadUtils.downloadJson(getStandardsUrlString);
-        Type type = new TypeToken<Map<String, Standard>>()
+        String jsonResponse = HttpUtils.downloadJson(getStandardsUrlString);
+        if (jsonResponse == null)
         {
-        }.getType();
-        Map<String, Standard> standards = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
+            System.out.println("No Standards pulled from LIBZ Unit...");
+            return new HashMap<String, Standard>();
+        }
+        else
+        {
+            Type type = new TypeToken<Map<String, Standard>>()
+            {
+            }.getType();
+            Map<String, Standard> standards = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
 
-        System.out.println("# of Standards pulled from LIBZ Unit: " + standards.size());
+            System.out.println("# of Standards pulled from LIBZ Unit: " + standards.size());
 
-        return standards;
+            return standards;
+        }
     }
 
     @Override
     public Map<String, CalibrationShot> getCalibrationShots(final String getCalibrationShotsUrlString)
     {
-        String jsonResponse = DownloadUtils.downloadJson(getCalibrationShotsUrlString);
-        Type type = new TypeToken<Map<String, CalibrationShot>>()
+        String jsonResponse = HttpUtils.downloadJson(getCalibrationShotsUrlString);
+        if (jsonResponse == null)
         {
-        }.getType();
-        Map<String, CalibrationShot> calibrationShots = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
+            System.out.println("No Calibration Shots pulled from LIBZ Unit...");
+            return new HashMap<String, CalibrationShot>();
+        }
+        else
+        {
+            Type type = new TypeToken<Map<String, CalibrationShot>>()
+            {
+            }.getType();
+            Map<String, CalibrationShot> calibrationShots = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
 
-        System.out.println("# of Calibration Shots pulled from LIBZ Unit: " + calibrationShots.size());
+            System.out.println("# of Calibration Shots pulled from LIBZ Unit: " + calibrationShots.size());
 
-        return calibrationShots;
+            return calibrationShots;
+        }
     }
 
     @Override
@@ -212,118 +223,63 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     @Override
     public Map<String, Region> getRegions(final String getRegionsUrlString)
     {
-        // *** BEGIN TEMPORARY UNTIL getRegions API call is implemented ***
-        Map<String, Region> regions = new HashMap<String, Region>();
-
-        int id = 0;
-        for (Region r : sRegions)
+        String jsonResponse = HttpUtils.downloadJson(getRegionsUrlString);
+        if (jsonResponse == null)
         {
-            try
-            {
-                Region region = new Region();
-                region.wavelengthRange = new DoubleRange(r.wavelengthRange.getMinimumDouble(), r.wavelengthRange.getMaximumDouble());
-                region.name = EmissionLine.parse(r.name.name);
-
-                regions.put("" + id, region);
-
-                id++;
-            }
-            catch (Exception ex)
-            {
-                Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            System.out.println("No Regions pulled from LIBZ Unit...");
+            return new HashMap<String, Region>();
         }
+        else
+        {
+            Type type = new TypeToken<Map<String, Region>>()
+            {
+            }.getType();
+            Map<String, Region> regions = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
 
-        return regions;
-        // ***  END  TEMPORARY UNTIL getRegions API call is implemented ***
+            System.out.println("# of Regions pulled from LIBZ Unit: " + regions.size());
+
+            return regions;
+        }
     }
 
     @Override
     public Map<String, IRRatio> getIntensityRatios(final String getIntensityRatiosUrlString)
     {
-        // *** BEGIN TEMPORARY UNTIL getIntensityRatios API call is implemented ***
-        Map<String, IRRatio> intensityRatios = new HashMap<String, IRRatio>();
-
-        int id = 0;
-        for (IRRatio ir : sIntensityRatios)
+        String jsonResponse = HttpUtils.downloadJson(getIntensityRatiosUrlString);
+        if (jsonResponse == null)
         {
-            IRRatio intensityRatio = new IRRatio();
-            intensityRatio.name = ir.name;
-            intensityRatio.element = ir.element;
-            intensityRatio.numerator = ir.numerator;
-            intensityRatio.denominator = ir.denominator;
-
-            intensityRatios.put("" + id, intensityRatio);
-
-            id++;
+            System.out.println("No Intensity Ratio Formulas pulled from LIBZ Unit...");
+            return new HashMap<String, IRRatio>();
         }
+        else
+        {
+            Type type = new TypeToken<Map<String, IRRatio>>()
+            {
+            }.getType();
+            Map<String, IRRatio> intensityRatios = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
 
-        return intensityRatios;
-        // ***  END  TEMPORARY UNTIL getIntensityRatios API call is implemented ***
+            System.out.println("# of Intensity Ratio Formulas pulled from LIBZ Unit: " + intensityRatios.size());
+
+            return intensityRatios;
+        }
     }
 
     @Override
     public boolean postStandards(final String postStandardsUrlString, Map<String, Standard> standards)
     {
-        try
-        {
-            URL url = new URL(postStandardsUrlString);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setDoOutput(true);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json");
-            OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-
-            Type type = new TypeToken<Map<String, Standard>>()
-            {
-            }.getType();
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(standards, type, out);
-
-            IOUtils.safeClose(out);
-
-            con.connect();
-
-            return con.getResponseCode() == 200;
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return false;
+        return HttpUtils.postJson(postStandardsUrlString, standards);
     }
 
     @Override
     public boolean postRegions(final String postRegionsUrlString, Map<String, Region> regions)
     {
-        // *** BEGIN TEMPORARY UNTIL getRegions API call is implemented ***
-        sRegions.clear();
-
-        for (Map.Entry entry : regions.entrySet())
-        {
-            Region r = (Region) entry.getValue();
-            sRegions.add(r);
-        }
-
-        return true;
-        // ***  END  TEMPORARY UNTIL getRegions API call is implemented ***
+        return HttpUtils.postJson(postRegionsUrlString, regions);
     }
 
     @Override
     public boolean postIntensityRatios(final String postIntensityRatiosUrlString, Map<String, IRRatio> intensityRatios)
     {
-        // *** BEGIN TEMPORARY UNTIL getIntensityRatios API call is implemented ***
-        sIntensityRatios.clear();
-
-        for (Map.Entry entry : intensityRatios.entrySet())
-        {
-            IRRatio ir = (IRRatio) entry.getValue();
-            sIntensityRatios.add(ir);
-        }
-
-        return true;
-        // ***  END  TEMPORARY UNTIL getIntensityRatios API call is implemented ***
+        return HttpUtils.postJson(postIntensityRatiosUrlString, intensityRatios);
     }
 
     private static String getLibzUnitApiBaseUrl(String ipAddress)
@@ -332,47 +288,4 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 
         return urlBaseString;
     }
-
-    // *** BEGIN TEMPORARY UNTIL getRegions/getIntensityRatios API calls are implemented ***
-    private static final List<Region> sRegions = new ArrayList<Region>();
-    private static final List<IRRatio> sIntensityRatios = new ArrayList<IRRatio>();
-
-    static
-    {
-        try
-        {
-            Region region = new Region();
-            region.wavelengthRange = new DoubleRange(380, 400);
-            region.name = EmissionLine.parse("Cu_380-400");
-
-            sRegions.add(region);
-
-            IRRatio intensityRatio = new IRRatio();
-            intensityRatio.name = "Copper Finder 10/22/14";
-            intensityRatio.element = AtomicElement.Copper;
-            intensityRatio.numerator = new double[][]
-            {
-                {
-                    29, 380, 400, 29, 470, 472
-                },
-                {
-                }
-            };
-            intensityRatio.denominator = new double[][]
-            {
-                {
-                    13, 340, 351
-                },
-                {
-                }
-            };
-
-            sIntensityRatios.add(intensityRatio);
-        }
-        catch (Exception ex)
-        {
-            Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    // ***  END  TEMPORARY UNTIL getRegions/getIntensityRatios API calls are implemented ***
 }

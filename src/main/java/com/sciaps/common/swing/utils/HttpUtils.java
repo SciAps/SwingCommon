@@ -1,5 +1,9 @@
 package com.sciaps.common.swing.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.sciaps.common.data.Standard;
 import com.sciaps.common.swing.libzunitapi.HttpLibzUnitApiHandler;
 import com.sciaps.common.swing.listener.DownloadListener;
 import java.io.BufferedInputStream;
@@ -9,8 +13,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +25,7 @@ import java.util.logging.Logger;
  *
  * @author sgowen
  */
-public final class DownloadUtils
+public final class HttpUtils
 {
     private static final String EXTRACT_FILE_FROM_URL_REGEX = "^(https?|ftp|file)://[^/]+/(?:[^/]+/)*((?:[^/.]+\\.)+[^/.]+)$";
 
@@ -55,6 +62,37 @@ public final class DownloadUtils
             IOUtils.safeClose(bufferedReader);
         }
     }
+    
+    public static <T> boolean postJson(final String postJsonUrlString, Map<String, T> map)
+    {
+        try
+        {
+            URL url = new URL(postJsonUrlString);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setDoOutput(true);
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
+
+            Type type = new TypeToken<Map<String, T>>()
+            {
+            }.getType();
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(map, type, out);
+
+            IOUtils.safeClose(out);
+
+            con.connect();
+
+            return con.getResponseCode() == 200;
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
 
     public static File downloadFileFromUrl(String urlString, DownloadListener downloadListener)
     {
@@ -89,7 +127,7 @@ public final class DownloadUtils
         }
         catch (IOException e)
         {
-            Logger.getLogger(DownloadUtils.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(HttpUtils.class.getName()).log(Level.SEVERE, null, e);
         }
         finally
         {
@@ -118,7 +156,7 @@ public final class DownloadUtils
         }
         catch (IOException e)
         {
-            Logger.getLogger(DownloadUtils.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(HttpUtils.class.getName()).log(Level.SEVERE, null, e);
             return -1;
         }
         finally
