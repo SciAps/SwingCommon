@@ -2,6 +2,7 @@ package com.sciaps.common.swing.utils;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -147,6 +148,19 @@ public final class SwingUtils
                 table.setPreferredScrollableViewportSize(new Dimension(totalColumnWidth, table.getPreferredSize().height));
 
                 table.invalidate();
+            }
+        });
+    }
+
+    public static void hideDialog(final Dialog dialog)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                dialog.setVisible(false);
+                dialog.dispose();
             }
         });
     }
