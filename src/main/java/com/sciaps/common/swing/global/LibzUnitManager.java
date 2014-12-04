@@ -42,7 +42,7 @@ public final class LibzUnitManager
 
     public boolean isValidAfterPull()
     {
-        return _standards != null && _calibrationShots != null && _libzPixelSpectra != null && _regions != null && _intensityRatios != null;
+        return _standards != null && _calibrationShots != null && _libzPixelSpectra != null && _calibrationShots.size() == _libzPixelSpectra.size() && _regions != null && _intensityRatios != null;
     }
 
     public String getIpAddress()
@@ -117,6 +117,6 @@ public final class LibzUnitManager
 
     private LibzUnitManager()
     {
-        // Hide Constructor
+        // Hide Constructor for Singleton
     }
 }

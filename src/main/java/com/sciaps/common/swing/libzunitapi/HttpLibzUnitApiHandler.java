@@ -106,8 +106,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 {
                     Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.WARNING, "LIBZPixelSpectrum retrieved via id: {0} was NULL! Continuing to download the other LIBZPixelSpectrum objects...", entry.getKey());
                 }
-
-                libzPixelSpectra.add(libzPixelSpectum);
+                else
+                {
+                    libzPixelSpectra.add(libzPixelSpectum);
+                }
             }
 
             LibzUnitManager.getInstance().setLIBZPixelSpectra(libzPixelSpectra);
