@@ -1,7 +1,6 @@
 package com.sciaps.common.swing.view;
 
 import com.sciaps.common.AtomicElement;
-import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.listener.TableCellListener;
