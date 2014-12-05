@@ -1,0 +1,2997 @@
+{
+  "1": {
+    "name": "Al_1100", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.6
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.18
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.084
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.029
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.014
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.0178
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.031
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.018
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.0123
+      }
+    ]
+  }, 
+  "12": {
+    "name": "Al_2014", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.46
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 4.58
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.028
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.023
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.018
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.88
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.81
+      }, 
+      {
+        "element": "Gallium", 
+        "error": 0, 
+        "percent": 0.026
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.025
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.037
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.031
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.45
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.029
+      }, 
+      {
+        "element": "Cadmium", 
+        "error": 0, 
+        "percent": 0.0014
+      }
+    ]
+  }, 
+  "123": {
+    "name": "Al_2018", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.34
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 4.14
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 2.15
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.027
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.017
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.028
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.48
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.0025
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.015
+      }, 
+      {
+        "element": "Gallium", 
+        "error": 0, 
+        "percent": 0.02
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.021
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.015
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.016
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.62
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Cadmium", 
+        "error": 0, 
+        "percent": 0.0012
+      }
+    ]
+  }, 
+  "1234": {
+    "name": "Al_2024", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.25
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.25
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 4.55
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.66
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.031
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.032
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.073
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.028
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 1.57
+      }
+    ]
+  }, 
+  "12345": {
+    "name": "Al_206S", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.075
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.0546
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 4.56
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.346
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.01
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.202
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.019
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.012
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.028
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.011
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.27
+      }
+    ]
+  }, 
+  "123456": {
+    "name": "Al_319", 
+    "spec": [
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 3.91
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.206
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.159
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.0009
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.085
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 6.35
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.0001
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.523
+      }, 
+      {
+        "element": "Gallium", 
+        "error": 0, 
+        "percent": 0.0157
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.06
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.205
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.0212
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.104
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.362
+      }
+    ]
+  }, 
+  "1234567": {
+    "name": "Al_339", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.48
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 1.4
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 1.12
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.048
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.051
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.046
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 12.73
+      }, 
+      {
+        "element": "Gallium", 
+        "error": 0, 
+        "percent": 0.031
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.046
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.04
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.032
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 1.23
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.099
+      }
+    ]
+  }, 
+  "12345678": {
+    "name": "Al_356", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.346
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.119
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.121
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.0007
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.0004
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 7.17
+      }, 
+      {
+        "element": "Gallium", 
+        "error": 0, 
+        "percent": 0.0201
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.0002
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.0001
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.0119
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.351
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.1
+      }
+    ]
+  }, 
+  "123456788": {
+    "name": "Al_6061", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.34
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.7
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.31
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.2
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 1.09
+      }
+    ]
+  }, 
+  "1234567889": {
+    "name": "Al_6063", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.24
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.11
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.029
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.029
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.0084
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.015
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.47
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.0026
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.079
+      }, 
+      {
+        "element": "Gallium", 
+        "error": 0, 
+        "percent": 0.02
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.014
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.02
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.55
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.029
+      }, 
+      {
+        "element": "Cadmium", 
+        "error": 0, 
+        "percent": 0.0014
+      }
+    ]
+  }, 
+  "12345678891": {
+    "name": "Al_7050", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.158
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.08
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.124
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 2.37
+      }, 
+      {
+        "element": "Gallium", 
+        "error": 0, 
+        "percent": 0.0219
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.019
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.04
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 6.15
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.02
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 2.28
+      }
+    ]
+  }, 
+  "123456788912": {
+    "name": "Al_7075", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.17
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 1.75
+      }, 
+      {
+        "element": "Lithium", 
+        "error": 0, 
+        "percent": 0.0026
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.092
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.0073
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.22
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.19
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.0024
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.0026
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.031
+      }, 
+      {
+        "element": "Gallium", 
+        "error": 0, 
+        "percent": 0.019
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.014
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 2.66
+      }, 
+      {
+        "element": "Calcium", 
+        "error": 0, 
+        "percent": 0.0036
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 5.75
+      }, 
+      {
+        "element": "Cadmium", 
+        "error": 0, 
+        "percent": 0.0008
+      }
+    ]
+  }, 
+  "1234567889123": {
+    "name": "Al_AA4343", 
+    "spec": [
+      {
+        "element": "Copper", 
+        "percent": 0.06
+      }, 
+      {
+        "element": "Magnesium", 
+        "percent": 0
+      }, 
+      {
+        "element": "Silicon", 
+        "percent": 7.49
+      }, 
+      {
+        "element": "Iron", 
+        "percent": 0.5
+      }, 
+      {
+        "element": "Zinc", 
+        "percent": 0
+      }
+    ]
+  }, 
+  "12345678891234": {
+    "name": "Al_Li_371", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.071
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.071
+      }, 
+      {
+        "element": "Scandium", 
+        "error": 0, 
+        "percent": 0.24
+      }, 
+      {
+        "element": "Beryllium", 
+        "error": 0, 
+        "percent": 0.048
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.066
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.1
+      }, 
+      {
+        "element": "Lithium", 
+        "error": 0, 
+        "percent": 0.06
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.11
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 2.88
+      }
+    ]
+  }, 
+  "123456788912345": {
+    "name": "Al_Li_372", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.21
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.11
+      }, 
+      {
+        "element": "Beryllium", 
+        "error": 0, 
+        "percent": 0.022
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.2
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.4
+      }, 
+      {
+        "element": "Lithium", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.038
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 3.88
+      }
+    ]
+  }, 
+  "1234567889123456": {
+    "name": "Al_Li_373", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.033
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.039
+      }, 
+      {
+        "element": "Beryllium", 
+        "error": 0, 
+        "percent": 0.12
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.11
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.87
+      }, 
+      {
+        "element": "Lithium", 
+        "error": 0, 
+        "percent": 0.05
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.019
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.94
+      }
+    ]
+  }, 
+  "12345678891234567": {
+    "name": "Al_Li_374", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.13
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.082
+      }, 
+      {
+        "element": "Beryllium", 
+        "error": 0, 
+        "percent": 0.0077
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.11
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 1.35
+      }, 
+      {
+        "element": "Lithium", 
+        "error": 0, 
+        "percent": 0.04
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.08
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 2.15
+      }
+    ]
+  }, 
+  "123456788912345678": {
+    "name": "Al_Li_375", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.094
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.061
+      }, 
+      {
+        "element": "Beryllium", 
+        "error": 0, 
+        "percent": 0.17
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.094
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 2.95
+      }, 
+      {
+        "element": "Lithium", 
+        "error": 0, 
+        "percent": 0.1
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.062
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.29
+      }
+    ]
+  }, 
+  "1234567889123456789": {
+    "name": "Al_Li_376", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.023
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.029
+      }, 
+      {
+        "element": "Scandium", 
+        "error": 0, 
+        "percent": 0.32
+      }, 
+      {
+        "element": "Beryllium", 
+        "error": 0, 
+        "percent": 0.19
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.049
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 3.74
+      }, 
+      {
+        "element": "Lithium", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.15
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.13
+      }
+    ]
+  }, 
+  "12345678891234567891": {
+    "name": "Co_Alloy_188", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.08
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 1.92
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.07
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.096
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 19.4
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 21.2
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.34
+      }, 
+      {
+        "element": "Niobium", 
+        "error": 0, 
+        "percent": 0.022
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 42.5
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.76
+      }, 
+      {
+        "element": "Tungsten", 
+        "error": 0, 
+        "percent": 12.9
+      }, 
+      {
+        "element": "Tantalum", 
+        "error": 0, 
+        "percent": 0.019
+      }, 
+      {
+        "element": "Nitrogen", 
+        "error": 0, 
+        "percent": 0.014
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.012
+      }, 
+      {
+        "element": "Lanthanum", 
+        "error": 0, 
+        "percent": 0.005
+      }
+    ]
+  }, 
+  "123456788912345678912": {
+    "name": "Co_Alloy_25", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.08
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 2.93
+      }, 
+      {
+        "element": "Molybdenum", 
+        "error": 0, 
+        "percent": 1.88
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.08
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.132
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 10.36
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 19.95
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.31
+      }, 
+      {
+        "element": "Niobium", 
+        "error": 0, 
+        "percent": 0.047
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 47.1
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.009
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 1.91
+      }, 
+      {
+        "element": "Tungsten", 
+        "error": 0, 
+        "percent": 15.4
+      }, 
+      {
+        "element": "Tantalum", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Nitrogen", 
+        "error": 0, 
+        "percent": 0.031
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.012
+      }
+    ]
+  }, 
+  "1234567889123456789123": {
+    "name": "Co_F-75", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.04
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 1.17
+      }, 
+      {
+        "element": "Molybdenum", 
+        "error": 0, 
+        "percent": 6.63
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.1
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.42
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.029
+      }, 
+      {
+        "element": "Boron", 
+        "error": 0, 
+        "percent": 0.005
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 30
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.63
+      }, 
+      {
+        "element": "Niobium", 
+        "error": 0, 
+        "percent": 0.06
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 60
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.75
+      }, 
+      {
+        "element": "Tungsten", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Tantalum", 
+        "error": 0, 
+        "percent": 0.042
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.05
+      }
+    ]
+  }, 
+  "12345678891234567891234": {
+    "name": "Cu_32X_SEB3", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.0113
+      }, 
+      {
+        "element": "Arsenic", 
+        "error": 0, 
+        "percent": 0.0325
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 0.0491
+      }, 
+      {
+        "element": "Selenium", 
+        "error": 0, 
+        "percent": 1.3
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.108
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 86.47
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.0139
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 1.214
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 6.47
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 2.96
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.296
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.887
+      }
+    ]
+  }, 
+  "123456788912345678912345": {
+    "name": "Cu_36X_CBC2", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.0231
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.0208
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 96.96
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.0472
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.0044
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.0099
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.0205
+      }, 
+      {
+        "element": "Beryllium", 
+        "error": 0, 
+        "percent": 0.45
+      }, 
+      {
+        "element": "Silver", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 2.47
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.0015
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.009
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.0103
+      }
+    ]
+  }, 
+  "1234567889123456789123456": {
+    "name": "Cu_36X_CN1", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.006
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 2.15
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.089
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 0.154
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 84.9
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 1.8
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.0436
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 10.11
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.0578
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.0258
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.16
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.412
+      }
+    ]
+  }, 
+  "12345678891234567891234567": {
+    "name": "Cu_36X_CN3", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.996
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 76.6
+      }, 
+      {
+        "element": "Sulfur", 
+        "error": 0, 
+        "percent": 0.0153
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 19.55
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.223
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.0259
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.349
+      }, 
+      {
+        "element": "Niobium", 
+        "error": 0, 
+        "percent": 0.03
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 0.0701
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.726
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.049
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.19
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.075
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 1.014
+      }
+    ]
+  }, 
+  "123456788912345678912345678": {
+    "name": "Cu_36X_CN6", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.063
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.792
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 63.8
+      }, 
+      {
+        "element": "Sulfur", 
+        "error": 0, 
+        "percent": 0.0051
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 31.21
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.057
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.033
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 2.65
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.154
+      }, 
+      {
+        "element": "Silver", 
+        "error": 0, 
+        "percent": 0.0124
+      }, 
+      {
+        "element": "Niobium", 
+        "error": 0, 
+        "percent": 0.196
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 0.059
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.049
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.458
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.0104
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.0331
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.388
+      }
+    ]
+  }, 
+  "1234567889123456789123456789": {
+    "name": "Cu_BS_110B", 
+    "spec": [
+      {
+        "element": "Oxygen", 
+        "error": 0, 
+        "percent": 0.0363
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 99.94
+      }
+    ]
+  }, 
+  "12345678891234567891234567890": {
+    "name": "Cu_CDA_172", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.04
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.042
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 97.7
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.021
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.006
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.06
+      }, 
+      {
+        "element": "Beryllium", 
+        "error": 0, 
+        "percent": 1.84
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 0.21
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.001
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.005
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.005
+      }
+    ]
+  }, 
+  "123456788912345678912345678901": {
+    "name": "Cu_CDA_314", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.007
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 90.08
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.004
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.029
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 1.99
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 7.81
+      }
+    ]
+  }, 
+  "1234567889123456789123456789012": {
+    "name": "Cu_CDA_360", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.199
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 61.3
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.095
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.011
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.256
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 2.97
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 35.1
+      }
+    ]
+  }, 
+  "12345678891234567891234567890123": {
+    "name": "Cu_CDA_464", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.011
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 60.4
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.006
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.7
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.0017
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 38.9
+      }
+    ]
+  }, 
+  "123456788912345678912345678901234": {
+    "name": "Cu_CDA_482", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.06
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 60.63
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.02
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.59
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.63
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 38
+      }
+    ]
+  }, 
+  "1234567889123456789123456789012345": {
+    "name": "Cu_CDA_510", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.005
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 95.2
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.148
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 4.66
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.016
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.007
+      }
+    ]
+  }, 
+  "12345678891234567891234567890123456": {
+    "name": "Cu_CDA_655", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.08
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 3.22
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 95.3
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.004
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.011
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.017
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.011
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.38
+      }
+    ]
+  }, 
+  "123456788912345678912345678901234567": {
+    "name": "Cu_CDA_675", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.97
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 58.7
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.13
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.01
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.85
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.017
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 39.3
+      }
+    ]
+  }, 
+  "1234567889123456789123456789012345678": {
+    "name": "Cu_CDA_836", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.035
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Silver", 
+        "error": 0, 
+        "percent": 0.022
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.112
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 84.5
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.072
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.4
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.042
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 4.9
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 5.4
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 4.6
+      }
+    ]
+  }, 
+  "12345678891234567891234567890123456789": {
+    "name": "Cu_CDA_863", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 5.66
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 2.12
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.09
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 63.9
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 2.93
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.065
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.02
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.066
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 25.1
+      }
+    ]
+  }, 
+  "123456788912345678912345678901234567890": {
+    "name": "Cu_CDA_903", 
+    "spec": [
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 87.6
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.01
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.17
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 3.1
+      }
+    ]
+  }, 
+  "1234567889123456789123456789012345678901": {
+    "name": "Cu_CDA_937", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.01
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Silver", 
+        "error": 0, 
+        "percent": 0.05
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.076
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 80.4
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.08
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.17
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 0.01
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 9.7
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 9.5
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.15
+      }
+    ]
+  }, 
+  "12345678891234567891234567890123456789011": {
+    "name": "Cu_CDA_954", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 10.33
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 3.87
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.024
+      }, 
+      {
+        "element": "Silver", 
+        "error": 0, 
+        "percent": 0.004
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.012
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 85.4
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.088
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.009
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.012
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.17
+      }
+    ]
+  }, 
+  "123456788912345678912345678901234567890112": {
+    "name": "Cu_CDA_955", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 10.8
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 3.99
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 80.6
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 4.31
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.004
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.017
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.028
+      }, 
+      {
+        "element": "Silver", 
+        "error": 0, 
+        "percent": 0.017
+      }, 
+      {
+        "element": "Cobalt", 
+        "error": 0, 
+        "percent": 0.011
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.011
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.011
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.14
+      }
+    ]
+  }, 
+  "1234567889123456789123456789012345678901123": {
+    "name": "Cu_EnviroBrass_2-1", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.054
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Selenium", 
+        "error": 0, 
+        "percent": 0.93
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 86.7
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.002
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.003
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.54
+      }, 
+      {
+        "element": "Bismuth", 
+        "error": 0, 
+        "percent": 1.7
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 5.1
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.04
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 4.8
+      }
+    ]
+  }, 
+  "12345678891234567891234567890123456789011234": {
+    "name": "Cu_LH_1-1", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 7.99
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 4.48
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.205
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.081
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 5.18
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.0944
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.079
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.007
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.022
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 17.05
+      }
+    ]
+  }, 
+  "123456788912345678912345678901234567890112345": {
+    "name": "Cu_Narloy-Z", 
+    "spec": [
+      {
+        "element": "Silver", 
+        "error": 0, 
+        "percent": 3.03
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.4
+      }, 
+      {
+        "element": "Carbon", 
+        "error": 0, 
+        "percent": 0.003
+      }
+    ]
+  }, 
+  "1234567889123456789123456789012345678901123456": {
+    "name": "Cu_WB1", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.062
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.049
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 4.8
+      }, 
+      {
+        "element": "Arsenic", 
+        "error": 0, 
+        "percent": 0.013
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.025
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 78.41
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.69
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.032
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.00098
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.13
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.2
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 15.59
+      }
+    ]
+  }, 
+  "12345678891234567891234567890123456789011234567": {
+    "name": "Cu_WB2", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.072
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.13
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 3.86
+      }, 
+      {
+        "element": "Arsenic", 
+        "error": 0, 
+        "percent": 0.043
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.055
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 78.97
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.64
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.096
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.0084
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.0041
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.42
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 15.7
+      }
+    ]
+  }, 
+  "123456788912345678912345678901234567890112345678": {
+    "name": "Cu_WB3", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.035
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.28
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 3.55
+      }, 
+      {
+        "element": "Arsenic", 
+        "error": 0, 
+        "percent": 0.026
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.01
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 79.45
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.44
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.025
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.023
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.22
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.23
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 15.71
+      }
+    ]
+  }, 
+  "1234567889123456789123456789012345678901123456789": {
+    "name": "Cu_WB4", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.083
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.35
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 3.06
+      }, 
+      {
+        "element": "Arsenic", 
+        "error": 0, 
+        "percent": 0.02
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.031
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 80.48
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.14
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.051
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.06
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.018
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.099
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 15.61
+      }
+    ]
+  }, 
+  "123456788912345678912345678901234567890112345678913": {
+    "name": "Cu_WB5", 
+    "spec": [
+      {
+        "element": "Aluminum", 
+        "error": 0, 
+        "percent": 0.018
+      }, 
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.46
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 2.79
+      }, 
+      {
+        "element": "Arsenic", 
+        "error": 0, 
+        "percent": 0.0075
+      }, 
+      {
+        "element": "Antimony", 
+        "error": 0, 
+        "percent": 0.0038
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 80.88
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0.05
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.019
+      }, 
+      {
+        "element": "Phosphorus", 
+        "error": 0, 
+        "percent": 0.083
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.27
+      }, 
+      {
+        "element": "Lead", 
+        "error": 0, 
+        "percent": 0.012
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 15.41
+      }
+    ]
+  }, 
+  "123456789": {
+    "name": "Al_1050", 
+    "spec": [
+      {
+        "element": "Iron", 
+        "error": 0, 
+        "percent": 0.297
+      }, 
+      {
+        "element": "Silicon", 
+        "error": 0, 
+        "percent": 0.174
+      }, 
+      {
+        "element": "Zirconium", 
+        "error": 0, 
+        "percent": 0.0019
+      }, 
+      {
+        "element": "Copper", 
+        "error": 0, 
+        "percent": 0.04
+      }, 
+      {
+        "element": "Manganese", 
+        "error": 0, 
+        "percent": 0
+      }, 
+      {
+        "element": "Nickel", 
+        "error": 0, 
+        "percent": 0.0227
+      }, 
+      {
+        "element": "Titanium", 
+        "error": 0, 
+        "percent": 0.0287
+      }, 
+      {
+        "element": "Tin", 
+        "error": 0, 
+        "percent": 0.0148
+      }, 
+      {
+        "element": "Vanadium", 
+        "error": 0, 
+        "percent": 0.0168
+      }, 
+      {
+        "element": "Zinc", 
+        "error": 0, 
+        "percent": 0.0399
+      }, 
+      {
+        "element": "Chromium", 
+        "error": 0, 
+        "percent": 0.0172
+      }, 
+      {
+        "element": "Magnesium", 
+        "error": 0, 
+        "percent": 0.0276
+      }
+    ]
+  }
+}

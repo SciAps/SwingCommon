@@ -1,0 +1,23 @@
+{
+  "4ccc747e-4975-4869-be03-58fc0bcdb901": {
+    "name": "Al_651-662", 
+    "wavelengthRange": {
+      "max": 662.0, 
+      "min": 651.0
+    }
+  }, 
+  "56ef0193-719c-417e-93ee-47c909f2dae0": {
+    "name": "Ti_304-314", 
+    "wavelengthRange": {
+      "max": 314.0, 
+      "min": 304.0
+    }
+  }, 
+  "b1a8bbb5-360c-49a5-a2d0-92504704717b": {
+    "name": "C_476-498", 
+    "wavelengthRange": {
+      "max": 498.0, 
+      "min": 476.0
+    }
+  }
+}
