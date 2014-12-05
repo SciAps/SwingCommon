@@ -36,7 +36,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 {
     public interface ShotDataJXCollapsiblePaneCallback
     {
-        void shotDataSelected(int shotDataIndex);
+        void shotDataSelected(String calibrationShotId);
     }
 
     private final ShotDataJXCollapsiblePaneCallback _callback;
@@ -67,9 +67,11 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
             @Override
             public void valueChanged(ListSelectionEvent e)
             {
-                if (!e.getValueIsAdjusting() && _calibrationShotsTable.getModel().getRowCount() > 0 && _calibrationShotsTable.getSelectionModel().getMaxSelectionIndex() != -1)
+                if (!e.getValueIsAdjusting() && _calibrationShotsTable.getModel().getRowCount() > 0 && _calibrationShotsTable.getSelectedRow() != -1)
                 {
-                    _callback.shotDataSelected(_calibrationShotsTable.getSelectionModel().getMaxSelectionIndex());
+                    int row = _calibrationShotsTable.convertRowIndexToModel(_calibrationShotsTable.getSelectedRow());
+                    String _calibrationShotId = (String) _calibrationShotsTable.getModel().getValueAt(row, 0);
+                    _callback.shotDataSelected(_calibrationShotId);
                 }
             }
         });
