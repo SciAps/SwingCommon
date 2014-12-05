@@ -174,35 +174,14 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
     {
         try
         {
-            RowFilter<DefaultTableModel, Object> rowFilter = RowFilter.regexFilter("(?i)" + _filterTextField.getText(), 1);
+            final String regex = "(?i)" + _filterTextField.getText();
+            RowFilter<DefaultTableModel, Object> rowFilter = RowFilter.regexFilter(regex, 1, 2, 3);
             _sorter.setRowFilter(rowFilter);
         }
         catch (java.util.regex.PatternSyntaxException e)
         {
-            // If current expression doesn't parse, don't update.
+            // If none of the expressions parse, don't update.
             Logger.getLogger(ShotDataJXCollapsiblePane.class.getName()).log(Level.INFO, null, e);
-
-            try
-            {
-                RowFilter<DefaultTableModel, Object> rowFilter2 = RowFilter.regexFilter("(?i)" + _filterTextField.getText(), 2);
-                _sorter.setRowFilter(rowFilter2);
-
-                try
-                {
-                    RowFilter<DefaultTableModel, Object> rowFilter3 = RowFilter.regexFilter("(?i)" + _filterTextField.getText(), 3);
-                    _sorter.setRowFilter(rowFilter3);
-                }
-                catch (java.util.regex.PatternSyntaxException e3)
-                {
-                    // If current expression doesn't parse, don't update.
-                    Logger.getLogger(ShotDataJXCollapsiblePane.class.getName()).log(Level.INFO, null, e3);
-                }
-            }
-            catch (java.util.regex.PatternSyntaxException e2)
-            {
-                // If current expression doesn't parse, don't update.
-                Logger.getLogger(ShotDataJXCollapsiblePane.class.getName()).log(Level.INFO, null, e2);
-            }
         }
     }
 }
