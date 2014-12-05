@@ -5,7 +5,11 @@
  */
 package com.sciaps.common.swing.libzunitapi;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -31,7 +35,7 @@ public class LibzHttpClient {
 
     }
 
-    public HttpEntity executePost(String URL, String jsonString) {
+    public <T extends Object> T executePost(String URL, String jsonString, Class<T> classOfType) {
         logger_.info("Executing Post Request: " + URL);
 
         StringEntity stringEntity = getStringEntity(jsonString);
@@ -39,13 +43,13 @@ public class LibzHttpClient {
         if (getStringEntity(jsonString) != null) {
             HttpPost request = new HttpPost(URL);
             request.setEntity(stringEntity);
-            return execute(request);
+            return execute(request, classOfType);
         }
 
         return null;
     }
 
-    public HttpEntity executePut(String URL, String jsonString) {
+    public <T extends Object> T  executePut(String URL, String jsonString, Class<T> classOfType) {
         logger_.info("Executing Put Request: " + URL);
 
         StringEntity stringEntity = getStringEntity(jsonString);
@@ -53,17 +57,17 @@ public class LibzHttpClient {
         if (getStringEntity(jsonString) != null) {
             HttpPut request = new HttpPut(URL);
             request.setEntity(stringEntity);
-            return execute(request);
+            return execute(request, classOfType);
         }
 
         return null;
     }
 
-    public HttpEntity executeGet(String URL) {
+    public <T extends Object> T  executeGet(String URL, Class<T> classOfType) {
         logger_.info("Executing Get Request: " + URL);
 
         HttpGet request = new HttpGet(URL);
-        return execute(request);
+        return execute(request, classOfType);
     }
 
     private StringEntity getStringEntity(String jsonString) {
@@ -79,11 +83,13 @@ public class LibzHttpClient {
         return entity;
     }
 
-    private HttpEntity execute(HttpUriRequest request) {
+    private <T extends Object> T execute(HttpUriRequest request, Class<T> classTypeOfT) {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         HttpEntity responseEntity = null;
+        
+        T reponseObj = null;
 
         try {
 
@@ -91,7 +97,11 @@ public class LibzHttpClient {
 
             if (response.getStatusLine().getStatusCode() == 200) {
                 responseEntity = response.getEntity();
-
+                JsonReader reader = new JsonReader(new InputStreamReader(responseEntity.getContent()));
+                
+                Gson gson = new GsonBuilder().create();
+                reponseObj = gson.fromJson(reader, classTypeOfT);
+                
                 logger_.info("Request executed successfully.");
 
             } else {
@@ -118,6 +128,6 @@ public class LibzHttpClient {
             }
         }
 
-        return responseEntity;
+        return reponseObj;
     }
 }
