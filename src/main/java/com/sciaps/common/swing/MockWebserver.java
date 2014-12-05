@@ -1,12 +1,5 @@
 package com.sciaps.common.swing;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.sciaps.common.data.Standard;
-import com.sciaps.common.data.utils.StandardsLibrary;
 import com.sciaps.common.swing.model.IsAlive;
 import com.sciaps.common.webserver.*;
 import org.devsmart.miniweb.Server;
@@ -17,50 +10,13 @@ import org.devsmart.miniweb.handlers.controller.RequestMapping;
 import org.devsmart.miniweb.utils.RequestMethod;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class MockWebserver
 {
-    private static File baseDir;
-    private static StandardsLibrary standardsLibrary;
-
-    static class ConfigModule extends AbstractModule
-    {
-        @Override
-        protected void configure()
-        {
-            // Empty
-        }
-
-        @Provides
-        StandardsLibrary provideStandardsLib() throws IOException
-        {
-            if (standardsLibrary == null)
-            {
-                Gson gson = new GsonBuilder().create();
-
-                File jsonFile = new File(baseDir, "assays.json");
-                JsonReader reader = new JsonReader(new FileReader(jsonFile));
-                try
-                {
-                    Standard[] standardsArray = gson.fromJson(reader, Standard[].class);
-                    standardsLibrary = new StandardsLibrary(Arrays.asList(standardsArray));
-                }
-                finally
-                {
-                    reader.close();
-                }
-            }
-
-            return standardsLibrary;
-        }
-    }
-
     @Controller
     public static class LIBZMockController
     {
@@ -77,7 +33,7 @@ public final class MockWebserver
 
     public static Server init(final String baseDirPath, int portNumber) throws IOException
     {
-        baseDir = new File(baseDirPath);
+        File baseDir = new File(baseDirPath);
 
         FSStandardsController fsStandardsController = new FSStandardsController(new File(baseDir, "standards.json"));
         FSRegionController fsRegionController = new FSRegionController(new File(baseDir, "regions.json"));
