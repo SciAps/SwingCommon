@@ -3,6 +3,7 @@ package com.sciaps.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sciaps.common.AtomicElement;
+import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.EmissionLine;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
@@ -12,7 +13,9 @@ import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.libzunitapi.HttpLibzUnitApiHandler;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 import com.sciaps.global.InstanceManager;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang.math.DoubleRange;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -78,7 +81,7 @@ public final class LibzUnitApiHandlerTest
 
         Standard newStandard = new Standard();
         newStandard.name = "Al_2027";
-        LibzUnitManager.getInstance().getStandards().put(java.util.UUID.randomUUID().toString(), newStandard);
+        LibzUnitManager.getInstance().getStandards().put("123456789", newStandard);
 
         Region region = new Region();
         region.wavelengthRange = new DoubleRange(380, 410);

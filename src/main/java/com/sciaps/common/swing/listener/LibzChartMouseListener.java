@@ -31,7 +31,7 @@ public final class LibzChartMouseListener implements ChartMouseListener
 {
     public interface LibzChartMouseListenerCallback
     {
-        void addRegion(String regionName, int wavelengthMin, int wavelengthMax, Marker... associatedMarkers);
+        void addRegion(String regionName, double wavelengthMin, double wavelengthMax, Marker... associatedMarkers);
     }
 
     private final List<ValueMarker> _valueMarkersAddedToChart;
@@ -75,10 +75,10 @@ public final class LibzChartMouseListener implements ChartMouseListener
 
             if (element != null)
             {
-                int firstValue = (int) Math.min(marker.getValue(), _valueMarkersAddedToChart.get(0).getValue());
-                int secondValue = (int) Math.max(marker.getValue(), _valueMarkersAddedToChart.get(0).getValue());
+                double firstValue = Math.min(marker.getValue(), _valueMarkersAddedToChart.get(0).getValue());
+                double secondValue = Math.max(marker.getValue(), _valueMarkersAddedToChart.get(0).getValue());
 
-                String regionName = element + "_" + firstValue + "-" + secondValue;
+                String regionName = element + "_" + (int)firstValue + "-" + (int)secondValue;
 
                 final Color c = new Color(255, 60, 24, 63);
                 final Marker bst = new IntervalMarker(firstValue, secondValue, c, new BasicStroke(2.0f), null, null, 1.0f);

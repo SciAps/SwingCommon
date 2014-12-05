@@ -59,7 +59,7 @@ public final class RegionsJXCollapsiblePane extends JXCollapsiblePane
         _regionsPanel.refresh();
     }
 
-    public void addRegion(String regionName, int wavelengthMin, int wavelengthMax, Marker... associatedMarkers)
+    public void addRegion(String regionName, double wavelengthMin, double wavelengthMax, Marker... associatedMarkers)
     {
         try
         {
