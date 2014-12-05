@@ -135,7 +135,7 @@ public final class RegionsPanel extends JPanel
                 for (Map.Entry entry : LibzUnitManager.getInstance().getRegions().entrySet())
                 {
                     Region region = (Region) entry.getValue();
-                    if (region.name.name.equals(regionName))
+                    if (region.name.equals(regionName))
                     {
                         regionToRemoveId = entry.getKey();
                     }
@@ -185,8 +185,8 @@ public final class RegionsPanel extends JPanel
             {
                 Region region = (Region) entry.getValue();
                 Vector row = new Vector();
-                row.add(region.name.name);
-                row.add(region.name.element.symbol);
+                row.add(region.name);
+                row.add(region.getElement().symbol);
                 row.add(region.wavelengthRange.getMinimumDouble());
                 row.add(region.wavelengthRange.getMaximumDouble());
 

@@ -65,14 +65,14 @@ public final class RegionsJXCollapsiblePane extends JXCollapsiblePane
         {
             Region region = new Region();
             region.wavelengthRange = new DoubleRange(wavelengthMin, wavelengthMax);
-            region.name = EmissionLine.parse(regionName);
+            region.name = regionName;
 
             LibzUnitManager.getInstance().getRegions().put(java.util.UUID.randomUUID().toString(), region);
 
             Marker[] markers = new Marker[associatedMarkers.length];
             System.arraycopy(associatedMarkers, 0, markers, 0, associatedMarkers.length);
 
-            regionAndAssociatedMarkersMap.put(region.name.name, markers);
+            regionAndAssociatedMarkersMap.put(region.name, markers);
 
             refresh();
         }

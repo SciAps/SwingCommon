@@ -238,18 +238,6 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             {
             }.getType();
             Map<String, Region> regions = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
-            for (Map.Entry entry : regions.entrySet())
-            {
-                try
-                {
-                    Region region = (Region) entry.getValue();
-                    region.name = EmissionLine.parse(region.name.name);
-                }
-                catch (Exception ex)
-                {
-                    Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
 
             System.out.println("# of Regions pulled from LIBZ Unit: " + regions.size());
 

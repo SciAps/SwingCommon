@@ -120,7 +120,7 @@ public final class LibzUnitApiHandlerTest
         Gson gson = new GsonBuilder().create();
 
         Region region = new Region();
-        region.name = EmissionLine.parse("C_193");
+        region.name = "C_193";
         region.wavelengthRange = new DoubleRange(193.2, 193.6);
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
