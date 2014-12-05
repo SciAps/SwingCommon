@@ -3,8 +3,6 @@ package com.sciaps.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sciaps.common.AtomicElement;
-import com.sciaps.common.data.CalibrationShot;
-import com.sciaps.common.data.EmissionLine;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
@@ -13,9 +11,7 @@ import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.libzunitapi.HttpLibzUnitApiHandler;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 import com.sciaps.global.InstanceManager;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang.math.DoubleRange;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -61,7 +57,7 @@ public final class LibzUnitApiHandlerTest
     {
         LibzUnitApiHandler libzUnitApiHandler = InstanceManager.getInstance().retrieveInstance(LibzUnitApiHandler.class);
 
-        assert (libzUnitApiHandler.connectToLibzUnit());
+        assertTrue(libzUnitApiHandler.connectToLibzUnit());
     }
 
     @Test
@@ -69,7 +65,7 @@ public final class LibzUnitApiHandlerTest
     {
         LibzUnitApiHandler libzUnitApiHandler = InstanceManager.getInstance().retrieveInstance(LibzUnitApiHandler.class);
 
-        assert (libzUnitApiHandler.pullFromLibzUnit());
+        assertTrue(libzUnitApiHandler.pullFromLibzUnit());
     }
 
     @Test
@@ -85,7 +81,6 @@ public final class LibzUnitApiHandlerTest
 
         Region region = new Region();
         region.wavelengthRange = new DoubleRange(380, 410);
-        region.name = EmissionLine.parse("Al_380-410");
         LibzUnitManager.getInstance().getRegions().put(java.util.UUID.randomUUID().toString(), region);
 
         IRRatio intensityRatio = new IRRatio();
@@ -111,7 +106,7 @@ public final class LibzUnitApiHandlerTest
 
         LibzUnitApiHandler libzUnitApiHandler = InstanceManager.getInstance().retrieveInstance(LibzUnitApiHandler.class);
 
-        assert (libzUnitApiHandler.pushToLibzUnit());
+        assertTrue(libzUnitApiHandler.pushToLibzUnit());
     }
 
     @Test
