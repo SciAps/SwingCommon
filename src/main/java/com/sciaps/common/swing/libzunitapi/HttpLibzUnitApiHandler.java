@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.sciaps.common.data.CalibrationShot;
-import com.sciaps.common.data.EmissionLine;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
@@ -150,7 +149,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         if (jsonResponse == null)
         {
             System.out.println("No Standards pulled from LIBZ Unit...");
-            return new HashMap<String, Standard>();
+            return null;
         }
         else
         {
@@ -172,7 +171,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         if (jsonResponse == null)
         {
             System.out.println("No Calibration Shots pulled from LIBZ Unit...");
-            return new HashMap<String, CalibrationShot>();
+            return null;
         }
         else
         {
@@ -230,7 +229,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         if (jsonResponse == null)
         {
             System.out.println("No Regions pulled from LIBZ Unit...");
-            return new HashMap<String, Region>();
+            return null;
         }
         else
         {
@@ -252,7 +251,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         if (jsonResponse == null)
         {
             System.out.println("No Intensity Ratio Formulas pulled from LIBZ Unit...");
-            return new HashMap<String, IRRatio>();
+            return null;
         }
         else
         {

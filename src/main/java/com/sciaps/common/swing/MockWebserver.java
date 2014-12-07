@@ -6,18 +6,17 @@ import com.sciaps.common.webserver.FSIRatioController;
 import com.sciaps.common.webserver.FSModelController;
 import com.sciaps.common.webserver.FSRegionController;
 import com.sciaps.common.webserver.FSStandardsController;
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.devsmart.miniweb.Server;
 import org.devsmart.miniweb.ServerBuilder;
 import org.devsmart.miniweb.handlers.controller.Body;
 import org.devsmart.miniweb.handlers.controller.Controller;
 import org.devsmart.miniweb.handlers.controller.RequestMapping;
 import org.devsmart.miniweb.utils.RequestMethod;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class MockWebserver
 {
