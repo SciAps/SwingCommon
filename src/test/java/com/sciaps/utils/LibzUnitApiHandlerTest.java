@@ -1,7 +1,5 @@
 package com.sciaps.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sciaps.common.AtomicElement;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
@@ -11,19 +9,14 @@ import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.libzunitapi.HttpLibzUnitApiHandler;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 import com.sciaps.global.InstanceManager;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.apache.commons.lang.math.DoubleRange;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.devsmart.miniweb.Server;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -80,55 +73,27 @@ public final class LibzUnitApiHandlerTest
         LibzUnitManager.getInstance().getStandards().put("123456789", newStandard);
 
         Region region = new Region();
+        region.name = "Al_380-410";
         region.wavelengthRange = new DoubleRange(380, 410);
         LibzUnitManager.getInstance().getRegions().put(java.util.UUID.randomUUID().toString(), region);
 
+        Region region2 = new Region();
+        region2.name = "Cu_640-670";
+        region2.wavelengthRange = new DoubleRange(640, 670);
+        LibzUnitManager.getInstance().getRegions().put(java.util.UUID.randomUUID().toString(), region2);
+
         IRRatio intensityRatio = new IRRatio();
-        intensityRatio.name = "Copper Finder 10/22/14";
+        intensityRatio.name = "Aluminum Finder 12/10/14";
         intensityRatio.element = AtomicElement.Copper;
-        intensityRatio.numerator = new double[][]
-        {
-            {
-                29, 380, 400, 29, 470, 472
-            },
-            {
-            }
-        };
-        intensityRatio.denominator = new double[][]
-        {
-            {
-                13, 340, 351
-            },
-            {
-            }
-        };
+        intensityRatio.numerator = new ArrayList<Region>();
+        intensityRatio.numerator.add(region);
+        intensityRatio.denominator = new ArrayList<Region>();
+        intensityRatio.denominator.add(region2);
+
         LibzUnitManager.getInstance().getIntensityRatios().put(java.util.UUID.randomUUID().toString(), intensityRatio);
 
         LibzUnitApiHandler libzUnitApiHandler = InstanceManager.getInstance().retrieveInstance(LibzUnitApiHandler.class);
 
         assertTrue(libzUnitApiHandler.pushToLibzUnit());
-    }
-
-    @Test
-    public void testCreateRegion() throws Exception
-    {
-        Gson gson = new GsonBuilder().create();
-
-        Region region = new Region();
-        region.name = "C_193";
-        region.wavelengthRange = new DoubleRange(193.2, 193.6);
-
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-
-        HttpPost post = new HttpPost("http://localhost:9100/data/regions");
-
-        String jsonstr = gson.toJson(region);
-        StringEntity body = new StringEntity(jsonstr, "UTF8");
-        body.setContentType("application/json");
-        post.setEntity(body);
-
-        CloseableHttpResponse response = httpclient.execute(post);
-        assertNotNull(response);
-        assertTrue(response.getStatusLine().getStatusCode() == 200);
     }
 }

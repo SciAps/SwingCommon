@@ -161,7 +161,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
                 row.add(entry.getKey());
 
                 CalibrationShot calibrationShot = (CalibrationShot) entry.getValue();
-                Standard standardRepresentedByShotData = LibzUnitManager.getInstance().getStandards().get(calibrationShot.standard);
+                Standard standardRepresentedByShotData = calibrationShot.standard;
 
                 row.add(calibrationShot.displayName);
                 row.add(standardRepresentedByShotData.name);

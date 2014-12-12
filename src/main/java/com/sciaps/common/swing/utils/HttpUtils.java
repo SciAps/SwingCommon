@@ -3,7 +3,6 @@ package com.sciaps.common.swing.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.sciaps.common.data.Standard;
 import com.sciaps.common.swing.libzunitapi.HttpLibzUnitApiHandler;
 import com.sciaps.common.swing.listener.DownloadListener;
 import java.io.BufferedInputStream;
@@ -62,7 +61,7 @@ public final class HttpUtils
             IOUtils.safeClose(bufferedReader);
         }
     }
-    
+
     public static <T> boolean postJson(final String postJsonUrlString, Map<String, T> map)
     {
         try

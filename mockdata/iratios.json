@@ -1,25 +1,24 @@
 {
-  "50b2627d-3689-4a50-b7fc-02e7366af0aa": {
-    "name": "Copper Finder 10/22/14",
+  "95625afa-e2a6-41cb-bf6a-6078af309631": {
+    "name": "Aluminum Finder 12/10/14",
     "element": "Copper",
     "numerator": [
-      [
-        29.0,
-        380.0,
-        400.0,
-        29.0,
-        470.0,
-        472.0
-      ],
-      []
+      {
+        "wavelengthRange": {
+          "min": 380.0,
+          "max": 410.0
+        },
+        "name": "Al_380-410"
+      }
     ],
     "denominator": [
-      [
-        13.0,
-        340.0,
-        351.0
-      ],
-      []
+      {
+        "wavelengthRange": {
+          "min": 640.0,
+          "max": 670.0
+        },
+        "name": "Cu_640-670"
+      }
     ]
   }
 }
