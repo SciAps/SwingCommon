@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -169,23 +170,32 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     @Override
     public Map<String, CalibrationShot> getCalibrationShots(final String getCalibrationShotsUrlString)
     {
-        String jsonResponse = HttpUtils.downloadJson(getCalibrationShotsUrlString);
-        if (jsonResponse == null)
-        {
-            System.out.println("No Calibration Shots pulled from LIBZ Unit...");
-            return null;
-        }
-        else
-        {
-            Type type = new TypeToken<Map<String, CalibrationShot>>()
-            {
-            }.getType();
-            Map<String, CalibrationShot> calibrationShots = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
-
-            System.out.println("# of Calibration Shots pulled from LIBZ Unit: " + calibrationShots.size());
-
-            return calibrationShots;
-        }
+        // BEGIN TEMPORARY LOGIC
+        Map<String, CalibrationShot> calibrationShots = new HashMap<String, CalibrationShot>();
+        CalibrationShot cal1 = new CalibrationShot();
+        cal1.displayName = "Shot Data 1";
+        cal1.timeStamp = new Date();
+        cal1.standard = LibzUnitManager.getInstance().getStandards().get("123456789");
+        CalibrationShot cal2 = new CalibrationShot();
+        cal2.displayName = "Shot Data 2";
+        cal2.timeStamp = new Date();
+        cal2.standard = LibzUnitManager.getInstance().getStandards().get("1");
+        CalibrationShot cal3 = new CalibrationShot();
+        cal3.displayName = "Shot Data 3";
+        cal3.timeStamp = new Date();
+        cal3.standard = LibzUnitManager.getInstance().getStandards().get("12");
+        CalibrationShot cal4 = new CalibrationShot();
+        cal4.displayName = "Shot Data 4";
+        cal4.timeStamp = new Date();
+        cal4.standard = LibzUnitManager.getInstance().getStandards().get("123");
+        
+        calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e16", cal1);
+        calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e17", cal2);
+        calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e18", cal3);
+        calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e19", cal4);
+        // END TEMPORARY LOGIC
+        
+        return calibrationShots;
     }
 
     @Override
