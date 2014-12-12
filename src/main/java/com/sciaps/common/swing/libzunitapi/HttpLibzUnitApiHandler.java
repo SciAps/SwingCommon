@@ -188,13 +188,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         cal4.displayName = "Shot Data 4";
         cal4.timeStamp = new Date();
         cal4.standard = LibzUnitManager.getInstance().getStandards().get("123");
-        
+
         calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e16", cal1);
         calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e17", cal2);
         calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e18", cal3);
         calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e19", cal4);
         // END TEMPORARY LOGIC
-        
+
         return calibrationShots;
     }
 
@@ -261,23 +261,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     {
         // BEGIN TEMPORARY LOGIC
         Map<String, IRRatio> intensityRatios = new HashMap<String, IRRatio>();
-        Region region = new Region();
-        region.name = "Al_380-410";
-        region.wavelengthRange = new DoubleRange(380, 410);
-        LibzUnitManager.getInstance().getRegions().put(java.util.UUID.randomUUID().toString(), region);
-
-        Region region2 = new Region();
-        region2.name = "Cu_640-670";
-        region2.wavelengthRange = new DoubleRange(640, 670);
-        LibzUnitManager.getInstance().getRegions().put(java.util.UUID.randomUUID().toString(), region2);
-
         IRRatio intensityRatio = new IRRatio();
-        intensityRatio.name = "Aluminum Finder 12/10/14";
+        intensityRatio.name = "Copper Finder 12/10/14";
         intensityRatio.element = AtomicElement.Copper;
         intensityRatio.numerator = new ArrayList<Region>();
-        intensityRatio.numerator.add(region);
+        intensityRatio.numerator.add(LibzUnitManager.getInstance().getRegions().get("7af7ec16-b1ea-46a4-bf6b-1dfab8318d33"));
         intensityRatio.denominator = new ArrayList<Region>();
-        intensityRatio.denominator.add(region2);
+        intensityRatio.denominator.add(LibzUnitManager.getInstance().getRegions().get("24d7c7d1-3abc-48b9-b07a-292ea44f0738"));
 
         intensityRatios.put(java.util.UUID.randomUUID().toString(), intensityRatio);
         // END TEMPORARY LOGIC
