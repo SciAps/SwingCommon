@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.sciaps.common.AtomicElement;
 import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Region;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
+import org.apache.commons.lang.math.DoubleRange;
 
 /**
  *
@@ -247,23 +249,30 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     @Override
     public Map<String, IRRatio> getIntensityRatios(final String getIntensityRatiosUrlString)
     {
-        String jsonResponse = HttpUtils.downloadJson(getIntensityRatiosUrlString);
-        if (jsonResponse == null)
-        {
-            System.out.println("No Intensity Ratio Formulas pulled from LIBZ Unit...");
-            return null;
-        }
-        else
-        {
-            Type type = new TypeToken<Map<String, IRRatio>>()
-            {
-            }.getType();
-            Map<String, IRRatio> intensityRatios = JsonUtils.deserializeJsonIntoType(jsonResponse, type);
+        // BEGIN TEMPORARY LOGIC
+        Map<String, IRRatio> intensityRatios = new HashMap<String, IRRatio>();
+        Region region = new Region();
+        region.name = "Al_380-410";
+        region.wavelengthRange = new DoubleRange(380, 410);
+        LibzUnitManager.getInstance().getRegions().put(java.util.UUID.randomUUID().toString(), region);
 
-            System.out.println("# of Intensity Ratio Formulas pulled from LIBZ Unit: " + intensityRatios.size());
+        Region region2 = new Region();
+        region2.name = "Cu_640-670";
+        region2.wavelengthRange = new DoubleRange(640, 670);
+        LibzUnitManager.getInstance().getRegions().put(java.util.UUID.randomUUID().toString(), region2);
 
-            return intensityRatios;
-        }
+        IRRatio intensityRatio = new IRRatio();
+        intensityRatio.name = "Aluminum Finder 12/10/14";
+        intensityRatio.element = AtomicElement.Copper;
+        intensityRatio.numerator = new ArrayList<Region>();
+        intensityRatio.numerator.add(region);
+        intensityRatio.denominator = new ArrayList<Region>();
+        intensityRatio.denominator.add(region2);
+
+        intensityRatios.put(java.util.UUID.randomUUID().toString(), intensityRatio);
+        // END TEMPORARY LOGIC
+
+        return intensityRatios;
     }
 
     @Override

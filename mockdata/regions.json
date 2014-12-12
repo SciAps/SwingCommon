@@ -1,16 +1,16 @@
 {
-  "8413f0eb-5115-46c4-a306-b4034c543160": {
-    "wavelengthRange": {
-      "min": 380.0,
-      "max": 410.0
-    },
-    "name": "Al_380-410"
-  },
-  "a839ecb8-bf5c-4eaf-86dd-a39c5887ba52": {
+  "7af7ec16-b1ea-46a4-bf6b-1dfab8318d33": {
     "wavelengthRange": {
       "min": 640.0,
       "max": 670.0
     },
     "name": "Cu_640-670"
+  },
+  "24d7c7d1-3abc-48b9-b07a-292ea44f0738": {
+    "wavelengthRange": {
+      "min": 380.0,
+      "max": 410.0
+    },
+    "name": "Al_380-410"
   }
 }
