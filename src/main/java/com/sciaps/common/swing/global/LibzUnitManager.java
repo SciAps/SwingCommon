@@ -2,6 +2,7 @@ package com.sciaps.common.swing.global;
 
 import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.IRRatio;
+import com.sciaps.common.data.Model;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
@@ -26,6 +27,7 @@ public final class LibzUnitManager
     private List<LIBZPixelSpectrum> _libzPixelSpectra;
     private Map<String, Region> _regions;
     private Map<String, IRRatio> _intensityRatios;
+    private Map<String, Model> _calibrationModels;
 
     public static LibzUnitManager getInstance()
     {
@@ -42,7 +44,7 @@ public final class LibzUnitManager
 
     public boolean isValidAfterPull()
     {
-        return _standards != null && _calibrationShots != null && _libzPixelSpectra != null && _calibrationShots.size() == _libzPixelSpectra.size() && _regions != null && _intensityRatios != null;
+        return _standards != null && _calibrationShots != null && _libzPixelSpectra != null && _calibrationShots.size() == _libzPixelSpectra.size() && _regions != null && _intensityRatios != null && _calibrationModels != null;
     }
 
     public String getIpAddress()
@@ -113,6 +115,16 @@ public final class LibzUnitManager
     public void setIntensityRatios(Map<String, IRRatio> intensityRatios)
     {
         _intensityRatios = intensityRatios;
+    }
+
+    public Map<String, Model> getCalibrationModels()
+    {
+        return _calibrationModels;
+    }
+
+    public void setCalibrationModels(Map<String, Model> calibrationModels)
+    {
+        _calibrationModels = calibrationModels;
     }
 
     private LibzUnitManager()
