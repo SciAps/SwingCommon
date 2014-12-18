@@ -81,7 +81,7 @@ public final class LibzChartMouseListener implements ChartMouseListener
                 String regionName = element + "_" + (int)firstValue + "-" + (int)secondValue;
 
                 final Color c = new Color(255, 60, 24, 63);
-                final Marker bst = new IntervalMarker(firstValue, secondValue, c, new BasicStroke(2.0f), null, null, 1.0f);
+                final IntervalMarker bst = new IntervalMarker(firstValue, secondValue, c, new BasicStroke(2.0f), null, null, 1.0f);
 
                 bst.setLabel(regionName);
                 bst.setLabelAnchor(RectangleAnchor.CENTER);

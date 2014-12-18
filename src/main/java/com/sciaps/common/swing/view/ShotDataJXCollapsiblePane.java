@@ -70,8 +70,8 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
                 if (!e.getValueIsAdjusting() && _calibrationShotsTable.getModel().getRowCount() > 0 && _calibrationShotsTable.getSelectedRow() != -1)
                 {
                     int row = _calibrationShotsTable.convertRowIndexToModel(_calibrationShotsTable.getSelectedRow());
-                    String _calibrationShotId = (String) _calibrationShotsTable.getModel().getValueAt(row, 0);
-                    _callback.shotDataSelected(_calibrationShotId);
+                    String calibrationShotId = (String) _calibrationShotsTable.getModel().getValueAt(row, 0);
+                    _callback.shotDataSelected(calibrationShotId);
                 }
             }
         });
