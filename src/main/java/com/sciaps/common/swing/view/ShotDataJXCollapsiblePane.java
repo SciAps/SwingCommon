@@ -3,6 +3,7 @@ package com.sciaps.common.swing.view;
 import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.swing.global.LibzUnitManager;
+import com.sciaps.common.swing.utils.LibzTableUtils;
 import com.sciaps.common.swing.utils.SwingUtils;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -69,8 +70,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
             {
                 if (!e.getValueIsAdjusting() && _calibrationShotsTable.getModel().getRowCount() > 0 && _calibrationShotsTable.getSelectedRow() != -1)
                 {
-                    int row = _calibrationShotsTable.convertRowIndexToModel(_calibrationShotsTable.getSelectedRow());
-                    String calibrationShotId = (String) _calibrationShotsTable.getModel().getValueAt(row, 0);
+                    String calibrationShotId = LibzTableUtils.getSelectedObjectId(_calibrationShotsTable);
                     _callback.shotDataSelected(calibrationShotId);
                 }
             }
