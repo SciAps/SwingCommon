@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.sciaps.common.AtomicElement;
 import com.sciaps.common.data.CalibrationShot;
+import com.sciaps.common.data.IRCurve;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Model;
 import com.sciaps.common.data.Region;
@@ -282,8 +283,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         intensityRatio2.denominator = new ArrayList<Region>();
         intensityRatio2.denominator.add(LibzUnitManager.getInstance().getRegions().get("7af7ec16-b1ea-46a4-bf6b-1dfab8318d33"));
 
-        intensityRatios.put(java.util.UUID.randomUUID().toString(), intensityRatio);
-        intensityRatios.put(java.util.UUID.randomUUID().toString(), intensityRatio2);
+        intensityRatios.put("UNIQUE_ID_IR_1", intensityRatio);
+        intensityRatios.put("UNIQUE_ID_IR_2", intensityRatio2);
         // END TEMPORARY LOGIC
 
         return intensityRatios;
@@ -293,9 +294,17 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     public Map<String, Model> getCalibrationModels(final String getCalibrationModelsUrlString)
     {
         // BEGIN TEMPORARY LOGIC
-        Map<String, Model> calModels = new HashMap<String, Model>();
+        Map<String, Model> calModels = new HashMap();
         Model calModel = new Model();
         calModel.name = "Copper Cal Model";
+        calModel.standardList.add(LibzUnitManager.getInstance().getStandards().get("12345678891234567891234567890"));
+        IRRatio irRatio = LibzUnitManager.getInstance().getIntensityRatios().get("UNIQUE_ID_IR_1");
+        IRCurve irCurve = new IRCurve();
+        irCurve.name = irRatio.name;
+        irCurve.element = irRatio.element;
+        irCurve.numerator = irRatio.numerator;
+        irCurve.denominator = irRatio.denominator;
+        calModel.irs.put(AtomicElement.Copper, irCurve);
 
         calModels.put(java.util.UUID.randomUUID().toString(), calModel);
         // END TEMPORARY LOGIC
