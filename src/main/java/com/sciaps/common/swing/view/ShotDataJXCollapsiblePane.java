@@ -154,13 +154,13 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
         {
             _data.clear();
 
-            for (Map.Entry entry : LibzUnitManager.getInstance().getCalibrationShots().entrySet())
+            for (Map.Entry<String, CalibrationShot> entry : LibzUnitManager.getInstance().getCalibrationShots().entrySet())
             {
                 Vector row = new Vector();
 
                 row.add(entry.getKey());
 
-                CalibrationShot calibrationShot = (CalibrationShot) entry.getValue();
+                CalibrationShot calibrationShot = entry.getValue();
                 Standard standardRepresentedByShotData = calibrationShot.standard;
 
                 row.add(calibrationShot.displayName);
