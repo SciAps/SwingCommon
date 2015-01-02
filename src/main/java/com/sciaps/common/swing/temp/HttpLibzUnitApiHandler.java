@@ -218,14 +218,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             jsonReader = new JsonReader(new InputStreamReader(gzis));
 
             Gson gson = new GsonBuilder().create();
-            final LIBZPixelSpectrum.SerializationObj obj = gson.fromJson(jsonReader, LIBZPixelSpectrum.SerializationObj.class);
-            if (obj == null)
-            {
-                return null;
-            }
-
-            LIBZPixelSpectrum libzPixelSpectrum = new LIBZPixelSpectrum(obj);
-
+            final LIBZPixelSpectrum libzPixelSpectrum = gson.fromJson(jsonReader, LIBZPixelSpectrum.class);
+            
             return libzPixelSpectrum;
         }
         catch (IOException e)
