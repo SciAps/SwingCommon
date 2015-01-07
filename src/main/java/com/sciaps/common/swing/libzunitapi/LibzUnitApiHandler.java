@@ -1,4 +1,4 @@
-package com.sciaps.common.swing.temp;
+package com.sciaps.common.swing.libzunitapi;
 
 import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.IRRatio;
@@ -40,23 +40,23 @@ public interface LibzUnitApiHandler
      */
     boolean pushToLibzUnit();
 
-    Map<String, Standard> getStandards(final String getStandardsUrlString);
+    Map<String, Standard> getStandards();
 
-    Map<String, CalibrationShot> getCalibrationShots(final String getCalibrationShotsUrlString);
+    Map<String, CalibrationShot> getCalibrationShots();
 
-    LIBZPixelSpectrum getLIBZPixelSpectrum(final String getLIBZPixelSpectrumUrlString, final Object shotId);
+    LIBZPixelSpectrum getLIBZPixelSpectrum(final String shotId);
 
-    Map<String, Region> getRegions(final String getRegionsUrlString);
+    Map<String, Region> getRegions();
 
-    Map<String, IRRatio> getIntensityRatios(final String getIntensityRatiosUrlString);
+    Map<String, IRRatio> getIntensityRatios();
 
-    Map<String, Model> getCalibrationModels(final String getCalibrationModelsUrlString);
+    Map<String, Model> getCalibrationModels();
 
-    boolean postStandards(final String postStandardsUrlString, Map<String, Standard> standards);
+    boolean pushStandards();
 
-    boolean postRegions(final String postRegionsUrlString, Map<String, Region> regions);
+    boolean pushRegions();
 
-    boolean postIntensityRatios(final String postIntensityRatiosUrlString, Map<String, IRRatio> intensityRatios);
+    boolean pushIntensityRatios();
 
-    boolean postCalibrationModels(final String postCalibrationModelsUrlString, Map<String, Model> calibrationModels);
+    boolean pushCalibrationModels();
 }

@@ -1,5 +1,11 @@
 package com.sciaps.common.swing;
 
+import com.devsmart.miniweb.Server;
+import com.devsmart.miniweb.ServerBuilder;
+import com.devsmart.miniweb.handlers.controller.Body;
+import com.devsmart.miniweb.handlers.controller.Controller;
+import com.devsmart.miniweb.handlers.controller.RequestMapping;
+import com.devsmart.miniweb.utils.RequestMethod;
 import com.sciaps.common.swing.model.IsAlive;
 import com.sciaps.common.webserver.FSCalibrationController;
 import com.sciaps.common.webserver.FSIRatioController;
@@ -11,12 +17,6 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.devsmart.miniweb.Server;
-import org.devsmart.miniweb.ServerBuilder;
-import org.devsmart.miniweb.handlers.controller.Body;
-import org.devsmart.miniweb.handlers.controller.Controller;
-import org.devsmart.miniweb.handlers.controller.RequestMapping;
-import org.devsmart.miniweb.utils.RequestMethod;
 
 public final class MockWebserver
 {

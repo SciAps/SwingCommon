@@ -6,7 +6,6 @@ import com.sciaps.common.data.Model;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,18 +15,20 @@ import java.util.Map;
 public final class LibzUnitManager
 {
     public static final int NUM_ATOMIC_ELEMENTS = 118;
+
     private static final Object LOCK = new Object();
 
     private static LibzUnitManager instance;
 
+    private final MutableObjectsManager<Standard> _standardsManager;
+    private final MutableObjectsManager<Region> _regionsManager;
+    private final MutableObjectsManager<IRRatio> _irRatiosManager;
+    private final MutableObjectsManager<Model> _modelsManager;
+
     private String _ipAddress;
     private String _libzUnitUniqueIdentifier;
-    private Map<String, Standard> _standards;
     private Map<String, CalibrationShot> _calibrationShots;
-    private List<LIBZPixelSpectrum> _libzPixelSpectra;
-    private Map<String, Region> _regions;
-    private Map<String, IRRatio> _intensityRatios;
-    private Map<String, Model> _calibrationModels;
+    private Map<String, LIBZPixelSpectrum> _libzPixelSpectra;
 
     public static LibzUnitManager getInstance()
     {
@@ -44,7 +45,7 @@ public final class LibzUnitManager
 
     public boolean isValidAfterPull()
     {
-        return _standards != null && _calibrationShots != null && _libzPixelSpectra != null && _calibrationShots.size() == _libzPixelSpectra.size() && _regions != null && _intensityRatios != null && _calibrationModels != null;
+        return _standardsManager.isValid() && _calibrationShots != null && _libzPixelSpectra != null && _calibrationShots.size() == _libzPixelSpectra.size() && _regionsManager.isValid() && _irRatiosManager.isValid() && _modelsManager.isValid();
     }
 
     public String getIpAddress()
@@ -67,14 +68,9 @@ public final class LibzUnitManager
         _libzUnitUniqueIdentifier = libzUnitUniqueIdentifier;
     }
 
-    public Map<String, Standard> getStandards()
+    public MutableObjectsManager<Standard> getStandardsManager()
     {
-        return _standards;
-    }
-
-    public void setStandards(Map<String, Standard> standards)
-    {
-        _standards = standards;
+        return _standardsManager;
     }
 
     public Map<String, CalibrationShot> getCalibrationShots()
@@ -87,48 +83,37 @@ public final class LibzUnitManager
         _calibrationShots = spectraFiles;
     }
 
-    public List<LIBZPixelSpectrum> getLIBZPixelSpectra()
+    public Map<String, LIBZPixelSpectrum> getLIBZPixelSpectra()
     {
         return _libzPixelSpectra;
     }
 
-    public void setLIBZPixelSpectra(List<LIBZPixelSpectrum> libzPixelSpectra)
+    public void setLIBZPixelSpectra(Map<String, LIBZPixelSpectrum> libzPixelSpectra)
     {
         _libzPixelSpectra = libzPixelSpectra;
     }
 
-    public Map<String, Region> getRegions()
+    public MutableObjectsManager<Region> getRegionsManager()
     {
-        return _regions;
+        return _regionsManager;
     }
 
-    public void setRegions(Map<String, Region> regions)
+    public MutableObjectsManager<IRRatio> getIRRatiosManager()
     {
-        _regions = regions;
+        return _irRatiosManager;
     }
 
-    public Map<String, IRRatio> getIntensityRatios()
+    public MutableObjectsManager<Model> getModelsManager()
     {
-        return _intensityRatios;
-    }
-
-    public void setIntensityRatios(Map<String, IRRatio> intensityRatios)
-    {
-        _intensityRatios = intensityRatios;
-    }
-
-    public Map<String, Model> getCalibrationModels()
-    {
-        return _calibrationModels;
-    }
-
-    public void setCalibrationModels(Map<String, Model> calibrationModels)
-    {
-        _calibrationModels = calibrationModels;
+        return _modelsManager;
     }
 
     private LibzUnitManager()
     {
         // Hide Constructor for Singleton
+        _standardsManager = new MutableObjectsManager();
+        _regionsManager = new MutableObjectsManager();
+        _irRatiosManager = new MutableObjectsManager();
+        _modelsManager = new MutableObjectsManager();
     }
 }

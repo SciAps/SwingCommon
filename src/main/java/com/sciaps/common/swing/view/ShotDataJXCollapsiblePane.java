@@ -150,7 +150,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
     private void fillCalibrationShotsData()
     {
-        if (LibzUnitManager.getInstance().getRegions() != null)
+        if (LibzUnitManager.getInstance().getRegionsManager().getObjects() != null)
         {
             _data.clear();
 
@@ -163,6 +163,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
                 CalibrationShot calibrationShot = entry.getValue();
                 Standard standardRepresentedByShotData = calibrationShot.standard;
 
+                System.out.println(standardRepresentedByShotData.toString());
                 row.add(calibrationShot.displayName);
                 row.add(standardRepresentedByShotData.name);
                 row.add(calibrationShot.timeStamp.toString());
