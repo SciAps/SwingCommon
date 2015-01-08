@@ -1,10 +1,13 @@
 package com.sciaps.common.swing.libzunitapi;
 
+import com.sciaps.common.AtomicElement;
 import com.sciaps.common.data.CalibrationShot;
+import com.sciaps.common.data.IRCurve;
 import com.sciaps.common.data.IRRatio;
 import com.sciaps.common.data.Model;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
+import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObj.ObjLoader;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.global.LibzUnitManager;
@@ -52,13 +55,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         String baseUrl = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
 
         _libzHttpClient = new LIBZHttpClient(baseUrl);
-        
-        System.out.println("Getting standards");
+
         final Map<String, Standard> standards = getStandards();
         LibzUnitManager.getInstance().getStandardsManager().reset();
         LibzUnitManager.getInstance().getStandardsManager().getObjects().putAll(standards);
 
-        System.out.println("Getting calibration shots");
         Map<String, CalibrationShot> calibrationShots = getCalibrationShots();
         for (Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet())
         {
@@ -73,8 +74,6 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }
         LibzUnitManager.getInstance().setCalibrationShots(calibrationShots);
 
-        long startTime = System.currentTimeMillis();
-        System.out.println("Getting LIBZPixelSpectrum data");
         Map<String, LIBZPixelSpectrum> libzPixelSpectra = new HashMap();
         for (Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet())
         {
@@ -90,18 +89,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }
 
         LibzUnitManager.getInstance().setLIBZPixelSpectra(libzPixelSpectra);
-        long endTime = System.currentTimeMillis();
-        long delta = endTime - startTime;
-        long deltaSeconds = delta / 1000;
 
-        System.out.println("It took us " + delta + " milliseconds (" + deltaSeconds + " seconds) to download all of the shot data!");
-
-        System.out.println("Getting regions");
         final Map<String, Region> regions = getRegions();
         LibzUnitManager.getInstance().getRegionsManager().reset();
         LibzUnitManager.getInstance().getRegionsManager().getObjects().putAll(regions);
 
-        System.out.println("Getting intensity ratios");
         Map<String, IRRatio> intensityRatios = getIntensityRatios();
         for (Map.Entry<String, IRRatio> entry : intensityRatios.entrySet())
         {
@@ -117,7 +109,6 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         LibzUnitManager.getInstance().getIRRatiosManager().reset();
         LibzUnitManager.getInstance().getIRRatiosManager().getObjects().putAll(intensityRatios);
 
-        System.out.println("Getting calibration models");
         Map<String, Model> calModels = getCalibrationModels();
         for (Map.Entry<String, Model> entry : calModels.entrySet())
         {
@@ -129,6 +120,18 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                     return standards.get(id);
                 }
             });
+
+            for (Map.Entry<AtomicElement, IRCurve> irCurveEntry : entry.getValue().irs.entrySet())
+            {
+                irCurveEntry.getValue().loadFields(new ObjLoader()
+                {
+                    @Override
+                    public Object load(String id, Class<?> type)
+                    {
+                        return regions.get(id);
+                    }
+                });
+            }
         }
         LibzUnitManager.getInstance().getModelsManager().reset();
         LibzUnitManager.getInstance().getModelsManager().getObjects().putAll(calModels);
@@ -142,13 +145,56 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         String baseUrl = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
 
         _libzHttpClient = new LIBZHttpClient(baseUrl);
-        
+
         if (pushStandards())
         {
             if (pushRegions())
             {
+                for (final Map.Entry<String, IRRatio> entry : LibzUnitManager.getInstance().getIRRatiosManager().getObjects().entrySet())
+                {
+                    entry.getValue().saveIds(new DBObj.IdLookup()
+                    {
+                        @Override
+                        public String getId(Object obj)
+                        {
+                            for (Map.Entry<String, Region> regionEntry : LibzUnitManager.getInstance().getRegionsManager().getObjects().entrySet())
+                            {
+                                if (regionEntry.getValue() == obj)
+                                {
+                                    return regionEntry.getKey();
+                                }
+                            }
+
+                            return null;
+                        }
+                    });
+                }
+
                 if (pushIntensityRatios())
                 {
+                    for (final Map.Entry<String, Model> modelEntry : LibzUnitManager.getInstance().getModelsManager().getObjects().entrySet())
+                    {
+                        for (final Map.Entry<AtomicElement, IRCurve> entry : modelEntry.getValue().irs.entrySet())
+                        {
+                            entry.getValue().saveIds(new DBObj.IdLookup()
+                            {
+                                @Override
+                                public String getId(Object obj)
+                                {
+                                    for (Map.Entry<String, Region> regionEntry : LibzUnitManager.getInstance().getRegionsManager().getObjects().entrySet())
+                                    {
+                                        if (regionEntry.getValue() == obj)
+                                        {
+                                            return regionEntry.getKey();
+                                        }
+                                    }
+
+                                    return null;
+                                }
+                            });
+                        }
+                    }
+
                     if (pushCalibrationModels())
                     {
                         return true;
@@ -172,8 +218,6 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         try
         {
             Map<String, CalibrationShot> calibrationShots = _libzHttpClient.getCalibrationShots();
-
-            System.out.println("calibrationShots.size == " + calibrationShots.size());
 
             return calibrationShots;
         }
@@ -251,19 +295,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             List<String> objectIds = basicObjectClient.getIdList();
             if (objectIds != null && objectIds.size() > 0)
             {
-                System.out.println("objectIds.size == " + objectIds.size());
-
                 for (String objectId : objectIds)
                 {
-                    System.out.println("Fetching object");
                     T object = basicObjectClient.getSingleObject(objectId);
-                    System.out.println("object with id: " + objectId + " received!");
                     objects.put(objectId, object);
                 }
-            }
-            else
-            {
-                System.out.println("objectIds list is null");
             }
         }
         catch (IOException ex)
