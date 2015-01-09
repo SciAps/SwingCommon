@@ -58,8 +58,6 @@ public final class LibzChartMouseListener implements ChartMouseListener
         double chartX = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
         double chartY = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
 
-        System.out.println("Mouse click at Screen coordinates (" + event.getTrigger().getXOnScreen() + ", " + event.getTrigger().getYOnScreen() + ") are (" + chartX + ", " + chartY + ") in the chart");
-
         ValueMarker marker = new ValueMarker(chartX);
         marker.setPaint(Color.RED);
 
