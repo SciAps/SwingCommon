@@ -56,7 +56,7 @@ public final class JFreeChartWrapperPanel extends JPanel
         XYItemRenderer renderer2 = new XYLineAndShapeRenderer(false, true);
         renderer2.setBaseItemLabelGenerator(new LabelGenerator());
         renderer2.setBaseItemLabelPaint(new Color(255, 60, 24, 255));
-        renderer2.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER));
+        renderer2.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
         renderer2.setBaseItemLabelFont(renderer2.getBaseItemLabelFont().deriveFont(14f));
         renderer2.setBaseItemLabelsVisible(true);
         renderer2.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
