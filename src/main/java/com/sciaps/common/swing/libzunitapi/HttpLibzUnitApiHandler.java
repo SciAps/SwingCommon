@@ -193,6 +193,23 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                                 }
                             });
                         }
+
+                        modelEntry.getValue().saveIds(new DBObj.IdLookup()
+                        {
+                            @Override
+                            public String getId(Object obj)
+                            {
+                                for (Map.Entry<String, Standard> standardEntry : LibzUnitManager.getInstance().getStandardsManager().getObjects().entrySet())
+                                {
+                                    if (standardEntry.getValue() == obj)
+                                    {
+                                        return standardEntry.getKey();
+                                    }
+                                }
+
+                                return null;
+                            }
+                        });
                     }
 
                     if (pushCalibrationModels())
