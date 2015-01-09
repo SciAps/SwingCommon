@@ -42,18 +42,20 @@ public final class JFreeChartWrapperPanel extends JPanel
 
         XYDataset collection1 = pointsDataset;
         XYLineAndShapeRenderer renderer1 = createXYLineAndShapeRenderer();
-        ValueAxis domain = new NumberAxis(xAxisName);
-        ValueAxis range = new NumberAxis(yAxisName);
+        ValueAxis domain1 = new NumberAxis(xAxisName);
+        ValueAxis range1 = new NumberAxis(yAxisName);
 
         plot.setDataset(0, collection1);
-        plot.setDomainAxis(0, domain);
-        plot.setRangeAxis(0, range);
+        plot.setDomainAxis(0, domain1);
+        plot.setRangeAxis(0, range1);
         plot.mapDatasetToDomainAxis(0, 0);
         plot.mapDatasetToRangeAxis(0, 0);
         customizePlot(plot, renderer1);
 
         XYDataset collection2 = standardsDataset;
         XYItemRenderer renderer2 = new XYLineAndShapeRenderer(false, true);
+        ValueAxis domain2 = new NumberAxis(xAxisName);
+        ValueAxis range2 = new NumberAxis(yAxisName);
         renderer2.setBaseItemLabelGenerator(new LabelGenerator());
         renderer2.setBaseItemLabelPaint(new Color(255, 60, 24, 255));
         renderer2.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER));
@@ -62,8 +64,8 @@ public final class JFreeChartWrapperPanel extends JPanel
         renderer2.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
         plot.setDataset(1, collection2);
         plot.setRenderer(1, renderer2);
-        plot.setDomainAxis(1, domain);
-        plot.setRangeAxis(1, range);
+        plot.setDomainAxis(1, domain2);
+        plot.setRangeAxis(1, range2);
         plot.mapDatasetToDomainAxis(1, 1);
         plot.mapDatasetToRangeAxis(1, 1);
 
