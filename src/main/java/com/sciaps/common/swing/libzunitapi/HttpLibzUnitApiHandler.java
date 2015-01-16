@@ -12,6 +12,7 @@ import com.sciaps.common.objtracker.DBObj.ObjLoader;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.global.MutableObjectsManager;
+import com.sciaps.common.swing.utils.StandardFinderUtils;
 import com.sciaps.common.webserver.LIBZHttpClient;
 import java.io.IOException;
 import java.util.HashMap;
@@ -72,23 +73,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 }
             });
         }
-        LibzUnitManager.getInstance().setCalibrationShots(calibrationShots);
-
-        Map<String, LIBZPixelSpectrum> libzPixelSpectra = new HashMap();
-        for (Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet())
-        {
-            LIBZPixelSpectrum libzPixelSpectum = getLIBZPixelSpectrum(entry.getKey());
-            if (libzPixelSpectum == null)
-            {
-                Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.WARNING, "LIBZPixelSpectrum retrieved via id: {0} was NULL! Continuing to download the other LIBZPixelSpectrum objects...", entry.getKey());
-            }
-            else
-            {
-                libzPixelSpectra.put(entry.getKey(), libzPixelSpectum);
-            }
-        }
-
-        LibzUnitManager.getInstance().setLIBZPixelSpectra(libzPixelSpectra);
+        LibzUnitManager.getInstance().getCalibrationShots().clear();
+        LibzUnitManager.getInstance().getCalibrationShots().putAll(calibrationShots);
 
         final Map<String, Region> regions = getRegions();
         LibzUnitManager.getInstance().getRegionsManager().reset();
@@ -199,15 +185,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                             @Override
                             public String getId(Object obj)
                             {
-                                for (Map.Entry<String, Standard> standardEntry : LibzUnitManager.getInstance().getStandardsManager().getObjects().entrySet())
-                                {
-                                    if (standardEntry.getValue() == obj)
-                                    {
-                                        return standardEntry.getKey();
-                                    }
-                                }
-
-                                return null;
+                                return StandardFinderUtils.retreiveIdForStandard(obj);
                             }
                         });
                     }
@@ -224,13 +202,36 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public Map<String, Standard> getStandards()
+    public LIBZPixelSpectrum getLIBZPixelSpectrum(final String shotId)
+    {
+        if (LibzUnitManager.getInstance().getLIBZPixelSpectra().containsKey(shotId))
+        {
+            return LibzUnitManager.getInstance().getLIBZPixelSpectra().get(shotId);
+        }
+        else
+        {
+            try
+            {
+                LIBZPixelSpectrum libzPixelSpectrum = _libzHttpClient.getCalibrationShot(shotId);
+                LibzUnitManager.getInstance().getLIBZPixelSpectra().put(shotId, libzPixelSpectrum);
+
+                return libzPixelSpectrum;
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            return null;
+        }
+    }
+
+    private Map<String, Standard> getStandards()
     {
         return getObjects(_libzHttpClient.mStandardsObjClient);
     }
 
-    @Override
-    public Map<String, CalibrationShot> getCalibrationShots()
+    private Map<String, CalibrationShot> getCalibrationShots()
     {
         try
         {
@@ -246,59 +247,37 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         return null;
     }
 
-    @Override
-    public LIBZPixelSpectrum getLIBZPixelSpectrum(final String shotId)
-    {
-        try
-        {
-            return _libzHttpClient.getCalibrationShot(shotId);
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-    }
-
-    @Override
-    public Map<String, Region> getRegions()
+    private Map<String, Region> getRegions()
     {
         return getObjects(_libzHttpClient.mRegionObjClient);
     }
 
-    @Override
-    public Map<String, IRRatio> getIntensityRatios()
+    private Map<String, IRRatio> getIntensityRatios()
     {
         return getObjects(_libzHttpClient.mIRObjClient);
     }
 
-    @Override
-    public Map<String, Model> getCalibrationModels()
+    private Map<String, Model> getCalibrationModels()
     {
         return getObjects(_libzHttpClient.mModelObjClient);
     }
 
-    @Override
-    public boolean pushStandards()
+    private boolean pushStandards()
     {
         return push(_libzHttpClient.mStandardsObjClient, LibzUnitManager.getInstance().getStandardsManager());
     }
 
-    @Override
-    public boolean pushRegions()
+    private boolean pushRegions()
     {
         return push(_libzHttpClient.mRegionObjClient, LibzUnitManager.getInstance().getRegionsManager());
     }
 
-    @Override
-    public boolean pushIntensityRatios()
+    private boolean pushIntensityRatios()
     {
         return push(_libzHttpClient.mIRObjClient, LibzUnitManager.getInstance().getIRRatiosManager());
     }
 
-    @Override
-    public boolean pushCalibrationModels()
+    private boolean pushCalibrationModels()
     {
         return push(_libzHttpClient.mModelObjClient, LibzUnitManager.getInstance().getModelsManager());
     }

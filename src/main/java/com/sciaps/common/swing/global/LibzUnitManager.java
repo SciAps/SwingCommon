@@ -6,6 +6,7 @@ import com.sciaps.common.data.Model;
 import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,7 +46,12 @@ public final class LibzUnitManager
 
     public boolean isValidAfterPull()
     {
-        return _standardsManager.isValid() && _calibrationShots != null && _libzPixelSpectra != null && _calibrationShots.size() == _libzPixelSpectra.size() && _regionsManager.isValid() && _irRatiosManager.isValid() && _modelsManager.isValid();
+        return _standardsManager.isValid()
+                && _regionsManager.isValid()
+                && _irRatiosManager.isValid()
+                && _modelsManager.isValid()
+                && _calibrationShots != null
+                && _libzPixelSpectra != null;
     }
 
     public String getIpAddress()
@@ -115,5 +121,7 @@ public final class LibzUnitManager
         _regionsManager = new MutableObjectsManager();
         _irRatiosManager = new MutableObjectsManager();
         _modelsManager = new MutableObjectsManager();
+        _calibrationShots = new HashMap();
+        _libzPixelSpectra = new HashMap();
     }
 }

@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.geom.Line2D;
 import javax.swing.JPanel;
 
-import org.apache.commons.lang.math.DoubleRange;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -56,14 +55,11 @@ public final class JFreeChartWrapperPanel extends JPanel
         plot.mapDatasetToRangeAxis(0, 0);
         customizePlot(plot, renderer1);
 
-
         XYDataset collection2 = standardsDataset;
         XYItemRenderer renderer2 = new XYLineAndShapeRenderer(false, true);
         renderer2.setBaseItemLabelGenerator(new LabelGenerator());
-        //renderer2.setBaseItemLabelPaint( new Color(255, 60, 24, 255));
         renderer2.setBaseItemLabelPaint(Color.LIGHT_GRAY);
         renderer2.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
-        //renderer2.setBaseItemLabelFont(renderer2.getBaseItemLabelFont().deriveFont(14f));
         renderer2.setBaseItemLabelsVisible(true);
         renderer2.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
         plot.setDataset(1, collection2);

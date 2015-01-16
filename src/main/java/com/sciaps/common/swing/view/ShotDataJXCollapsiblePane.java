@@ -60,7 +60,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
         _calibrationShotsTable = new JTable();
         _calibrationShotsTable.setFont(new Font("Serif", Font.BOLD, 18));
-        _calibrationShotsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        _calibrationShotsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         _calibrationShotsTable.setFillsViewportHeight(true);
         _calibrationShotsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         _calibrationShotsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
@@ -142,7 +142,6 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
         _tableModel.setDataVector(_data, _columnNames);
         _calibrationShotsTable.setModel(_tableModel);
 
-        SwingUtils.refreshTable(_calibrationShotsTable);
         SwingUtils.fitTableToColumns(_calibrationShotsTable);
 
         _calibrationShotsTable.removeColumn(_calibrationShotsTable.getColumnModel().getColumn(0));
@@ -150,7 +149,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
     private void fillCalibrationShotsData()
     {
-        if (LibzUnitManager.getInstance().getRegionsManager().getObjects() != null)
+        if (LibzUnitManager.getInstance().getCalibrationShots() != null)
         {
             _data.clear();
 

@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
@@ -86,6 +87,23 @@ public final class SwingUtils
         pCons.setConstraint(SpringLayout.EAST, x);
     }
 
+    public static void enforceMinWidthForColumns(JTable table, int minWidth)
+    {
+        final TableColumnModel columnModel = table.getColumnModel();
+        for (int column = 0; column < table.getColumnCount(); column++)
+        {
+            int width = minWidth;
+            for (int row = 0; row < table.getRowCount(); row++)
+            {
+                TableCellRenderer renderer = table.getCellRenderer(row, column);
+                Component comp = table.prepareRenderer(renderer, row, column);
+                width = Math.max(comp.getPreferredSize().width, width);
+            }
+
+            columnModel.getColumn(column).setPreferredWidth(width);
+        }
+    }
+
     public static void refreshTable(final JTable table)
     {
         SwingUtilities.invokeLater(new Runnable()
@@ -150,6 +168,35 @@ public final class SwingUtils
                 table.invalidate();
             }
         });
+    }
+
+    public static void scrollTable(final JTable table, final int row, final int column)
+    {
+        new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Thread.sleep(250);
+                }
+                catch (InterruptedException e)
+                {
+                    Logger.getLogger(SwingUtils.class.getName()).log(Level.SEVERE, null, e);
+                };
+
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        Rectangle bottomRect = table.getCellRect(row, column, true);
+                        table.scrollRectToVisible(bottomRect);
+                    }
+                });
+            }
+        }.start();
     }
 
     public static void hideDialog(final Dialog dialog)
