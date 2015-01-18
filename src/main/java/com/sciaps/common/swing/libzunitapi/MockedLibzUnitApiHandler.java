@@ -114,6 +114,12 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
         }
     }
 
+    private <T extends DBObj> void updateIds(Map<String, T> idMap) {
+        for(Map.Entry<String, T> e : idMap.entrySet()) {
+            e.getValue().mId = e.getKey();
+        }
+    }
+
     private Map<String, Standard> getStandards()
     {
         try
@@ -124,6 +130,7 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
             {
             }.getType();
             Map<String, Standard> standards = JsonUtils.deserializeJsonIntoType(json, type);
+            updateIds(standards);
 
             System.out.println("# of Standards pulled from LIBZ Unit: " + standards.size());
 
@@ -210,20 +217,63 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
     private Map<String, Model> getCalibrationModels()
     {
         Map<String, Model> calModels = new HashMap();
-        Model calModel = new Model();
-        calModel.name = "Copper Cal Model";
-        calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456789"));
-        calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("12"));
-        calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123"));
-        IRRatio irRatio = LibzUnitManager.getInstance().getIRRatiosManager().getObjects().get("UNIQUE_ID_IR_1");
-        IRCurve irCurve = new IRCurve();
-        irCurve.name = irRatio.name;
-        irCurve.element = irRatio.element;
-        irCurve.numerator = irRatio.numerator;
-        irCurve.denominator = irRatio.denominator;
-        calModel.irs.put(AtomicElement.Copper, irCurve);
 
-        calModels.put(java.util.UUID.randomUUID().toString(), calModel);
+        {
+            Model calModel = new Model();
+            calModel.name = "Copper Cal Model";
+            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456789"));
+            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("12"));
+            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123"));
+
+            {
+                IRRatio irRatio = LibzUnitManager.getInstance().getIRRatiosManager().getObjects().get("UNIQUE_ID_IR_1");
+                IRCurve irCurve = new IRCurve();
+                irCurve.name = irRatio.name;
+                irCurve.element = irRatio.element;
+                irCurve.numerator = irRatio.numerator;
+                irCurve.denominator = irRatio.denominator;
+                calModel.irs.put(AtomicElement.Copper, irCurve);
+            }
+
+
+            {
+                IRCurve irCurve = new IRCurve();
+                irCurve.name = "other curve";
+                irCurve.element = AtomicElement.Carbon;
+
+                Region n1 = Region.parse("Al 396-397");
+                irCurve.numerator.add(n1);
+
+                Region d1 = Region.parse("Fe 384-385");
+                irCurve.denominator.add(d1);
+                calModel.irs.put(AtomicElement.Aluminum, irCurve);
+            }
+
+            final String modelId = java.util.UUID.randomUUID().toString();
+            calModel.mId = modelId;
+            calModels.put(modelId, calModel);
+        }
+
+        {
+            Model calModel = new Model();
+            calModel.name = "Stainless Model";
+            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456789"));
+            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("12"));
+            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123"));
+            IRRatio irRatio = LibzUnitManager.getInstance().getIRRatiosManager().getObjects().get("UNIQUE_ID_IR_1");
+            IRCurve irCurve = new IRCurve();
+            irCurve.name = irRatio.name;
+            irCurve.element = irRatio.element;
+            irCurve.numerator = irRatio.numerator;
+            irCurve.denominator = irRatio.denominator;
+            calModel.irs.put(AtomicElement.Copper, irCurve);
+
+            final String modelId = java.util.UUID.randomUUID().toString();
+            calModel.mId = modelId;
+            calModels.put(modelId, calModel);
+        }
+
+
 
         return calModels;
     }

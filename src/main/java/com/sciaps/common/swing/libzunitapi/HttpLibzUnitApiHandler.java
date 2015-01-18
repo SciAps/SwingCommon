@@ -58,6 +58,9 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         _libzHttpClient = new LIBZHttpClient(baseUrl);
 
         final Map<String, Standard> standards = getStandards();
+        for(Map.Entry<String, Standard> entry : standards.entrySet()) {
+            entry.getValue().mId = entry.getKey();
+        }
         LibzUnitManager.getInstance().getStandardsManager().reset();
         LibzUnitManager.getInstance().getStandardsManager().getObjects().putAll(standards);
 
@@ -98,6 +101,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         Map<String, Model> calModels = getCalibrationModels();
         for (Map.Entry<String, Model> entry : calModels.entrySet())
         {
+            entry.getValue().mId = entry.getKey();
             entry.getValue().loadFields(new ObjLoader()
             {
                 @Override
@@ -282,7 +286,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         return push(_libzHttpClient.mModelObjClient, LibzUnitManager.getInstance().getModelsManager());
     }
 
-    private <T> Map<String, T> getObjects(LIBZHttpClient.BasicObjectClient<T> basicObjectClient)
+    private <T extends DBObj> Map<String, T> getObjects(LIBZHttpClient.BasicObjectClient<T> basicObjectClient)
     {
         Map<String, T> objects = new HashMap();
 
@@ -294,6 +298,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 for (String objectId : objectIds)
                 {
                     T object = basicObjectClient.getSingleObject(objectId);
+                    object.mId = objectId;
                     objects.put(objectId, object);
                 }
             }
@@ -306,7 +311,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         return objects;
     }
 
-    private <T> boolean push(LIBZHttpClient.BasicObjectClient<T> basicObjectClient, MutableObjectsManager<T> mutableObjectsManager)
+    private <T extends DBObj> boolean push(LIBZHttpClient.BasicObjectClient<T> basicObjectClient, MutableObjectsManager<T> mutableObjectsManager)
     {
         try
         {
@@ -324,7 +329,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }
     }
 
-    private <T> void createObjects(LIBZHttpClient.BasicObjectClient<T> basicObjectClient, Set<String> objectsToCreate, Map<String, T> workingLocalObjects) throws IOException
+    private <T extends DBObj> void createObjects(LIBZHttpClient.BasicObjectClient<T> basicObjectClient, Set<String> objectsToCreate, Map<String, T> workingLocalObjects) throws IOException
     {
         if (objectsToCreate.size() > 0)
         {
@@ -336,6 +341,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 {
                     T object = workingLocalObjects.get(objectId);
                     String databaseObjectId = basicObjectClient.createObject(object);
+                    object.mId = databaseObjectId;
 
                     objectsCreated.add(objectId);
 
