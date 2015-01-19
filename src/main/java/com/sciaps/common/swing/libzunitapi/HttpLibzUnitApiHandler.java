@@ -122,7 +122,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                     @Override
                     public Object load(String id, Class<?> type)
                     {
-                        return regions.get(id);
+                        if(Region.class == type) {
+                            return regions.get(id);
+                        } else if(Standard.class == type) {
+                            return standards.get(id);
+                        } else {
+                            return null;
+                        }
                     }
                 });
             }
