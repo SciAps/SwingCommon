@@ -1,4 +1,4 @@
-package com.sciaps.global;
+package com.sciaps.common.swing.global;
 
 import java.util.HashMap;
 import java.util.Map;
