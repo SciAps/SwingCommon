@@ -10,9 +10,14 @@ import org.jfree.data.xy.AbstractXYDataset;
  */
 public final class LabeledXYDataset extends AbstractXYDataset
 {
+    private final Comparable _key;
     private List<Double> _x = new ArrayList();
     private List<Double> _y = new ArrayList();
     private List<String> _label = new ArrayList();
+
+    public LabeledXYDataset(Comparable key) {
+        _key = key;
+    }
 
     public void add(double x, double y, String label)
     {
@@ -35,7 +40,7 @@ public final class LabeledXYDataset extends AbstractXYDataset
     @Override
     public Comparable getSeriesKey(int series)
     {
-        return "Standard";
+        return _key;
     }
 
     @Override

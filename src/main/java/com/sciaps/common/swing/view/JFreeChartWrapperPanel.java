@@ -38,34 +38,56 @@ public final class JFreeChartWrapperPanel extends JPanel
         _isChartLoaded = false;
     }
 
-    public void populateCurveChart(String chartName, String xAxisName, String yAxisName, AbstractXYDataset pointsDataset, AbstractXYDataset standardsDataset)
+    public void populateCurveChart(String chartName, String xAxisName, String yAxisName, AbstractXYDataset pointsDataset, AbstractXYDataset enabledXYDataset, LabeledXYDataset disabledXYDataset)
     {
+
         XYPlot plot = new XYPlot();
 
-        XYDataset collection1 = pointsDataset;
-        XYSplineRenderer renderer1 = new XYSplineRenderer();
-        renderer1.setShapesVisible(false);
         ValueAxis domain1 = new NumberAxis(xAxisName);
         ValueAxis range1 = new NumberAxis(yAxisName);
 
-        plot.setDataset(0, collection1);
-        plot.setDomainAxis(0, domain1);
-        plot.setRangeAxis(0, range1);
-        plot.mapDatasetToDomainAxis(0, 0);
-        plot.mapDatasetToRangeAxis(0, 0);
-        customizePlot(plot, renderer1);
+        {
+            //curve line
+            XYSplineRenderer renderer1 = new XYSplineRenderer();
+            renderer1.setShapesVisible(false);
+            plot.setDataset(0, pointsDataset);
+            plot.setDomainAxis(0, domain1);
+            plot.setRangeAxis(0, range1);
+            //plot.mapDatasetToDomainAxis(0, 0);
+            //plot.mapDatasetToRangeAxis(0, 0);
+            customizePlot(plot, renderer1);
+        }
 
-        XYDataset collection2 = standardsDataset;
-        XYItemRenderer renderer2 = new XYLineAndShapeRenderer(false, true);
-        renderer2.setBaseItemLabelGenerator(new LabelGenerator());
-        renderer2.setBaseItemLabelPaint(Color.LIGHT_GRAY);
-        renderer2.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
-        renderer2.setBaseItemLabelsVisible(true);
-        renderer2.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
-        plot.setDataset(1, collection2);
-        plot.setRenderer(1, renderer2);
-        plot.mapDatasetToDomainAxis(1, 0);
-        plot.mapDatasetToRangeAxis(1, 0);
+        {
+            //enabled points
+            XYItemRenderer renderer = new XYLineAndShapeRenderer(false, true);
+            renderer.setBaseItemLabelGenerator(new LabelGenerator());
+            renderer.setBaseItemLabelPaint(Color.LIGHT_GRAY);
+            renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
+            renderer.setBaseItemLabelsVisible(true);
+            renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
+            renderer.setSeriesPaint(0, Color.GREEN);
+            plot.setDataset(1, enabledXYDataset);
+            plot.setRenderer(1, renderer);
+            //plot.mapDatasetToDomainAxis(1, 0);
+            //plot.mapDatasetToRangeAxis(1, 0);
+
+        }
+
+        {
+            //disabled points
+            XYItemRenderer renderer = new XYLineAndShapeRenderer(false, true);
+            renderer.setBaseItemLabelGenerator(new LabelGenerator());
+            renderer.setBaseItemLabelPaint(Color.LIGHT_GRAY);
+            renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
+            renderer.setBaseItemLabelsVisible(true);
+            renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
+            renderer.setSeriesPaint(0, Color.RED);
+            plot.setDataset(2, disabledXYDataset);
+            plot.setRenderer(2, renderer);
+            //plot.mapDatasetToDomainAxis(2, 0);
+            //plot.mapDatasetToRangeAxis(2, 0);
+        }
 
         JFreeChart jFreeChart = new JFreeChart(chartName, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
