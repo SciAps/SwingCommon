@@ -80,12 +80,16 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         LibzUnitManager.getInstance().getCalibrationShots().putAll(calibrationShots);
 
         final Map<String, Region> regions = getRegions();
+        for(Map.Entry<String, Region> entry : regions.entrySet()){
+            entry.getValue().mId = entry.getKey();
+        }
         LibzUnitManager.getInstance().getRegionsManager().reset();
         LibzUnitManager.getInstance().getRegionsManager().getObjects().putAll(regions);
 
         Map<String, IRRatio> intensityRatios = getIntensityRatios();
         for (Map.Entry<String, IRRatio> entry : intensityRatios.entrySet())
         {
+            entry.getValue().mId = entry.getKey();
             entry.getValue().loadFields(new ObjLoader()
             {
                 @Override

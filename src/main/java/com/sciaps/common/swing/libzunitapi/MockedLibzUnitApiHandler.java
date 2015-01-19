@@ -260,6 +260,12 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
             calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456789"));
             calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("12"));
             calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123"));
+
+            //unshot data
+            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456"));
+
+
+
             IRRatio irRatio = LibzUnitManager.getInstance().getIRRatiosManager().getObjects().get("UNIQUE_ID_IR_1");
             IRCurve irCurve = new IRCurve();
             irCurve.name = irRatio.name;

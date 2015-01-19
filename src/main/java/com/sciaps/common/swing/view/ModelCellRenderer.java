@@ -13,7 +13,11 @@ public class ModelCellRenderer extends JLabel implements ListCellRenderer<Model>
                                                   boolean isSelected,
                                                   boolean cellHasFocus) {
 
-        setText(model.name);
+        if(model != null) {
+            setText(model.name);
+        } else {
+            setText("null");
+        }
 
         return this;
     }
