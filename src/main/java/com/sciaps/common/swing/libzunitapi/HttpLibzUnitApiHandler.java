@@ -14,14 +14,15 @@ import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.global.MutableObjectsManager;
 import com.sciaps.common.swing.utils.StandardFinderUtils;
 import com.sciaps.common.webserver.LIBZHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +30,9 @@ import java.util.logging.Logger;
  */
 public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 {
+
+    static Logger logger = LoggerFactory.getLogger(HttpLibzUnitApiHandler.class);
+
     private static String getLibzUnitApiBaseUrl(String ipAddress)
     {
         final String urlBaseString = "http://" + ipAddress;
@@ -72,7 +76,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 @Override
                 public Object load(String id, Class<?> type)
                 {
-                    return standards.get(id);
+                    Object retval = standards.get(id);
+                    if(retval == null) {
+                        logger.warn("unable to load object type: {} with id: {}", type, id);
+                    }
+                    return retval;
                 }
             });
         }
@@ -95,7 +103,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 @Override
                 public Object load(String id, Class<?> type)
                 {
-                    return regions.get(id);
+                    Object retval = regions.get(id);
+                    if(retval == null) {
+                        logger.warn("unable to load object type: {} with id: {}", type, id);
+                    }
+                    return retval;
                 }
             });
         }
@@ -111,7 +123,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 @Override
                 public Object load(String id, Class<?> type)
                 {
-                    return standards.get(id);
+                    Object retval = standards.get(id);
+                    if(retval == null) {
+                        logger.warn("unable to load object type: {} with id: {}", type, id);
+                    }
+                    return retval;
                 }
             });
 
@@ -122,13 +138,17 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                     @Override
                     public Object load(String id, Class<?> type)
                     {
+                        Object retval = null;
                         if(Region.class == type) {
-                            return regions.get(id);
+                            retval = regions.get(id);
                         } else if(Standard.class == type) {
-                            return standards.get(id);
-                        } else {
-                            return null;
+                            retval = standards.get(id);
                         }
+
+                        if(retval == null){
+                            logger.warn("unable to load object type: {} with id: {}", type, id);
+                        }
+                        return retval;
                     }
                 });
             }
@@ -189,6 +209,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                                         }
                                     }
 
+                                    for(Map.Entry<String, Standard> standardEntry : LibzUnitManager.getInstance().getStandardsManager().getObjects().entrySet()) {
+                                        if(standardEntry.getValue() == obj) {
+                                            return standardEntry.getKey();
+                                        }
+                                    }
+
+                                    logger.warn("not key found for: {}", obj);
                                     return null;
                                 }
                             });
@@ -199,7 +226,16 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                             @Override
                             public String getId(Object obj)
                             {
-                                return StandardFinderUtils.retreiveIdForStandard(obj);
+                                String retval = StandardFinderUtils.retreiveIdForStandard(obj);
+
+                                for(Map.Entry<String, Standard> standardEntry : LibzUnitManager.getInstance().getStandardsManager().getObjects().entrySet()) {
+                                    if(standardEntry.getValue() == obj) {
+                                        return standardEntry.getKey();
+                                    }
+                                }
+
+                                logger.warn("not key found for: {}", obj);
+                                return null;
                             }
                         });
                     }
@@ -233,7 +269,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             }
             catch (IOException ex)
             {
-                Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error("", ex);
             }
 
             return null;
@@ -255,7 +291,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }
         catch (IOException ex)
         {
-            Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error("", ex);
         }
 
         return null;
@@ -315,7 +351,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }
         catch (IOException ex)
         {
-            Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error("", ex);
         }
 
         return objects;
@@ -333,8 +369,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }
         catch (IOException ex)
         {
-            Logger.getLogger(HttpLibzUnitApiHandler.class.getName()).log(Level.SEVERE, null, ex);
-
+            logger.error("", ex);
             return false;
         }
     }
