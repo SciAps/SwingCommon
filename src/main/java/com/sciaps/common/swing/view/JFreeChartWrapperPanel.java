@@ -1,16 +1,8 @@
 package com.sciaps.common.swing.view;
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.geom.Line2D;
-import javax.swing.JPanel;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
@@ -19,9 +11,12 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.AbstractXYDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.TextAnchor;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Line2D;
 
 /**
  *
@@ -38,60 +33,40 @@ public final class JFreeChartWrapperPanel extends JPanel
         _isChartLoaded = false;
     }
 
-    public void populateCurveChart(String chartName, String xAxisName, String yAxisName, AbstractXYDataset pointsDataset, AbstractXYDataset enabledXYDataset, LabeledXYDataset disabledXYDataset)
+    public void populateCurveChart(String chartName, String xAxisName, String yAxisName, AbstractXYDataset curveDataset, AbstractXYDataset pointsDataset)
     {
 
-        XYPlot plot = new XYPlot();
+        JFreeChart chart = ChartFactory.createXYLineChart(chartName, xAxisName, yAxisName, curveDataset);
+        XYPlot plot = chart.getXYPlot();
 
-        ValueAxis domain1 = new NumberAxis(xAxisName);
-        ValueAxis range1 = new NumberAxis(yAxisName);
 
         {
             //curve line
             XYSplineRenderer renderer1 = new XYSplineRenderer();
             renderer1.setShapesVisible(false);
-            plot.setDataset(0, pointsDataset);
-            plot.setDomainAxis(0, domain1);
-            plot.setRangeAxis(0, range1);
-            //plot.mapDatasetToDomainAxis(0, 0);
-            //plot.mapDatasetToRangeAxis(0, 0);
             customizePlot(plot, renderer1);
         }
 
+        XYItemRenderer pointRenderer;
         {
             //enabled points
-            XYItemRenderer renderer = new XYLineAndShapeRenderer(false, true);
-            renderer.setBaseItemLabelGenerator(new LabelGenerator());
-            renderer.setBaseItemLabelPaint(Color.LIGHT_GRAY);
-            renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
-            renderer.setBaseItemLabelsVisible(true);
-            renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
-            renderer.setSeriesPaint(0, Color.GREEN);
-            plot.setDataset(1, enabledXYDataset);
-            plot.setRenderer(1, renderer);
-            //plot.mapDatasetToDomainAxis(1, 0);
-            //plot.mapDatasetToRangeAxis(1, 0);
+            pointRenderer = new XYLineAndShapeRenderer(false, true);
+            pointRenderer.setBaseItemLabelGenerator(new LabelGenerator());
+            pointRenderer.setBaseItemLabelPaint(Color.LIGHT_GRAY);
+            pointRenderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
+            pointRenderer.setBaseItemLabelsVisible(true);
+            pointRenderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
+            pointRenderer.setSeriesPaint(0, Color.GREEN);
+            pointRenderer.setSeriesPaint(1, Color.RED);
 
         }
 
-        {
-            //disabled points
-            XYItemRenderer renderer = new XYLineAndShapeRenderer(false, true);
-            renderer.setBaseItemLabelGenerator(new LabelGenerator());
-            renderer.setBaseItemLabelPaint(Color.LIGHT_GRAY);
-            renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
-            renderer.setBaseItemLabelsVisible(true);
-            renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
-            renderer.setSeriesPaint(0, Color.RED);
-            plot.setDataset(2, disabledXYDataset);
-            plot.setRenderer(2, renderer);
-            //plot.mapDatasetToDomainAxis(2, 0);
-            //plot.mapDatasetToRangeAxis(2, 0);
-        }
 
-        JFreeChart jFreeChart = new JFreeChart(chartName, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+        plot.setDataset(1, pointsDataset);
+        plot.setRenderer(1, pointRenderer);
 
-        load(jFreeChart);
+
+        load(chart);
     }
 
     public void populateSpectrumChartWithAbstractXYDataset(XYSeriesCollection dataset, String chartName, String xAxisName, String yAxisName)
