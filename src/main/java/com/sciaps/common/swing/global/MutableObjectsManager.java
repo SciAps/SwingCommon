@@ -1,5 +1,7 @@
 package com.sciaps.common.swing.global;
 
+import com.sciaps.common.objtracker.DBObj;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,7 +12,7 @@ import java.util.Set;
  * @author sgowen
  * @param <T>
  */
-public final class MutableObjectsManager<T>
+public final class MutableObjectsManager<T extends DBObj>
 {
     private final Map<String, T> _objects;
     private final Set<String> _objectsToDelete;
@@ -35,7 +37,8 @@ public final class MutableObjectsManager<T>
 
     public String addObject(T object)
     {
-        String temporaryUniqueId = java.util.UUID.randomUUID().toString();
+        String temporaryUniqueId = String.format("new-%s", java.util.UUID.randomUUID().toString());
+        object.mId = temporaryUniqueId;
         _objects.put(temporaryUniqueId, object);
         _objectsToCreate.add(temporaryUniqueId);
 
