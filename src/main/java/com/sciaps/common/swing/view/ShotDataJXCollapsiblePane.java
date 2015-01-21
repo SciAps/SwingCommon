@@ -142,9 +142,12 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
         _tableModel.setDataVector(_data, _columnNames);
         _calibrationShotsTable.setModel(_tableModel);
 
-        SwingUtils.fitTableToColumns(_calibrationShotsTable);
-
         _calibrationShotsTable.removeColumn(_calibrationShotsTable.getColumnModel().getColumn(0));
+        
+        if (!isCollapsed())
+        {
+            SwingUtils.fitTableToColumns(_calibrationShotsTable);
+        }
     }
 
     private void fillCalibrationShotsData()
