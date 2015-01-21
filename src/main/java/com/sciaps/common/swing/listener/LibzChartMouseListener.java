@@ -56,7 +56,6 @@ public final class LibzChartMouseListener implements ChartMouseListener
         Rectangle2D plotArea = _chartPanel.getScreenDataArea();
         XYPlot plot = (XYPlot) _jFreeChart.getPlot();
         double chartX = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
-        double chartY = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
 
         ValueMarker marker = new ValueMarker(chartX);
         marker.setPaint(Color.RED);
