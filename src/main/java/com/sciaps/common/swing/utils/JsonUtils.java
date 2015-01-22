@@ -3,6 +3,9 @@ package com.sciaps.common.swing.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.lang.reflect.Type;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -22,5 +25,22 @@ public final class JsonUtils
         T deserializedObject = gson.fromJson(json, type);
 
         return deserializedObject;
+    }
+
+    public static String serializeJson(Object jsonObject)
+    {
+        if (jsonObject == null)
+        {
+            return null;
+        }
+
+        Gson gson = new GsonBuilder().create();
+
+        return gson.toJson(jsonObject);
+    }
+
+    private JsonUtils()
+    {
+        // Hide Constructor for Static Utility Class
     }
 }

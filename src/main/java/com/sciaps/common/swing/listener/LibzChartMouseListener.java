@@ -1,11 +1,8 @@
 package com.sciaps.common.swing.listener;
 
-import com.sciaps.common.AtomicElement;
-import com.sciaps.common.swing.global.LibzUnitManager;
-import java.awt.BasicStroke;
-import java.awt.Color;
+import com.sciaps.common.swing.utils.AtomicElementUtils;
+import com.sciaps.common.swing.utils.RegionMarkerUtils;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -20,8 +17,6 @@ import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.ui.Layer;
-import org.jfree.ui.RectangleAnchor;
-import org.jfree.ui.TextAnchor;
 
 /**
  *
@@ -57,8 +52,7 @@ public final class LibzChartMouseListener implements ChartMouseListener
         XYPlot plot = (XYPlot) _jFreeChart.getPlot();
         double chartX = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
 
-        ValueMarker marker = new ValueMarker(chartX);
-        marker.setPaint(Color.RED);
+        ValueMarker marker = RegionMarkerUtils.createValueMarkerForValue(chartX);
 
         if (_valueMarkersAddedToChart.size() % 2 == 0)
         {
@@ -67,31 +61,19 @@ public final class LibzChartMouseListener implements ChartMouseListener
         }
         else
         {
-            String[] elements = getArrayOfElements();
+            String[] elements = AtomicElementUtils.getArrayOfAtomicElementSymbols();
             String element = (String) JOptionPane.showInputDialog(_parentComponent, "Please specify an element for this region:", "Elements", JOptionPane.INFORMATION_MESSAGE, null, elements, null);
 
             if (element != null)
             {
-                double firstValue = Math.min(marker.getValue(), _valueMarkersAddedToChart.get(0).getValue());
-                double secondValue = Math.max(marker.getValue(), _valueMarkersAddedToChart.get(0).getValue());
-
-                String regionName = element + "_" + (int)firstValue + "-" + (int)secondValue;
-
-                final Color c = new Color(255, 60, 24, 63);
-                final IntervalMarker bst = new IntervalMarker(firstValue, secondValue, c, new BasicStroke(2.0f), null, null, 1.0f);
-
-                bst.setLabel(regionName);
-                bst.setLabelAnchor(RectangleAnchor.CENTER);
-                bst.setLabelFont(new Font("SansSerif", Font.ITALIC + Font.BOLD, 10));
-                bst.setLabelTextAnchor(TextAnchor.BASELINE_CENTER);
-                bst.setLabelPaint(new Color(255, 255, 255, 100));
+                final IntervalMarker bst = RegionMarkerUtils.createIntervalMarkerForElementValues(element, marker.getValue(), _valueMarkersAddedToChart.get(0).getValue());
 
                 plot.addDomainMarker(marker);
                 plot.addDomainMarker(bst, Layer.BACKGROUND);
 
                 if (_callback != null)
                 {
-                    _callback.addRegion(regionName, firstValue, secondValue, _valueMarkersAddedToChart.get(0), marker, bst);
+                    _callback.addRegion(bst.getLabel(), bst.getStartValue(), bst.getEndValue(), _valueMarkersAddedToChart.get(0), marker, bst);
                 }
 
                 _valueMarkersAddedToChart.clear();
@@ -103,20 +85,5 @@ public final class LibzChartMouseListener implements ChartMouseListener
     public void chartMouseMoved(ChartMouseEvent event)
     {
         // Empty
-    }
-
-    private static String[] getArrayOfElements()
-    {
-        List<String> elements = new ArrayList<String>();
-        for (int i = 1; i <= LibzUnitManager.NUM_ATOMIC_ELEMENTS; i++)
-        {
-            AtomicElement ae = AtomicElement.getElementByAtomicNum(i);
-            elements.add(ae.symbol);
-        }
-
-        String[] elementsArray = new String[elements.size()];
-        elementsArray = elements.toArray(elementsArray);
-
-        return elementsArray;
     }
 }

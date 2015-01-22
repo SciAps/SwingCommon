@@ -13,11 +13,6 @@ import java.util.ArrayList;
  */
 public final class CSVReader
 {
-    private CSVReader()
-    {
-        // Hide Constructor For Static Class
-    }
-
     /**
      * Read a CSV file from the provided InputStream. A BufferedReader is
      * created from the InputStream and is guaranteed to be closed Closing the
@@ -51,5 +46,10 @@ public final class CSVReader
         }
 
         return csv;
+    }
+
+    private CSVReader()
+    {
+        // Hide Constructor For Static Utility Class
     }
 }

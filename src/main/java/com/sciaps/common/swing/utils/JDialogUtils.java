@@ -23,4 +23,9 @@ public final class JDialogUtils
 
         return progressDialog;
     }
+    
+    private JDialogUtils()
+    {
+        // Hide Constructor for Static Utility Class
+    }
 }

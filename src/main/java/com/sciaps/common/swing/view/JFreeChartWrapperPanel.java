@@ -35,10 +35,8 @@ public final class JFreeChartWrapperPanel extends JPanel
 
     public void populateCurveChart(String chartName, String xAxisName, String yAxisName, AbstractXYDataset curveDataset, AbstractXYDataset pointsDataset)
     {
-
         JFreeChart chart = ChartFactory.createXYLineChart(chartName, xAxisName, yAxisName, curveDataset);
         XYPlot plot = chart.getXYPlot();
-
 
         {
             //curve line
@@ -58,13 +56,10 @@ public final class JFreeChartWrapperPanel extends JPanel
             pointRenderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
             pointRenderer.setSeriesPaint(0, Color.GREEN);
             pointRenderer.setSeriesPaint(1, Color.RED);
-
         }
-
 
         plot.setDataset(1, pointsDataset);
         plot.setRenderer(1, pointRenderer);
-
 
         load(chart);
     }

@@ -8,11 +8,6 @@ import com.sciaps.common.swing.model.CSV;
  */
 public final class CSVUtils
 {
-    private CSVUtils()
-    {
-        // Hide Constructor For Static Class
-    }
-
     public static int getNumRowsInCSV(CSV csv)
     {
         runCSVNullAssertions(csv);
@@ -79,5 +74,10 @@ public final class CSVUtils
         {
             throw new IllegalArgumentException("The csv object cannot have 0 rows!");
         }
+    }
+
+    private CSVUtils()
+    {
+        // Hide Constructor For Static Utility Class
     }
 }

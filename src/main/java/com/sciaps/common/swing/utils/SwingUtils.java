@@ -219,4 +219,9 @@ public final class SwingUtils
 
         return layout.getConstraints(c);
     }
+
+    private SwingUtils()
+    {
+        // Hide Constructor for Static Utility Class
+    }
 }

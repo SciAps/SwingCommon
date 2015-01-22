@@ -40,4 +40,9 @@ public final class NumberUtils
             return 0;
         }
     }
+    
+    private NumberUtils()
+    {
+        // Hide Constructor for Static Utility Class
+    }
 }

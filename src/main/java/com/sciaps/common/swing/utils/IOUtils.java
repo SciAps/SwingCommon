@@ -16,9 +16,9 @@ import java.io.OutputStream;
  */
 public final class IOUtils
 {
-    private IOUtils()
+    public interface DataProgressCallback
     {
-        // Hide Constructor For Static Class
+        void onDataProgress(int bytesWritten);
     }
 
     public static void safeFlush(Flushable flushable)
@@ -117,8 +117,8 @@ public final class IOUtils
         IOUtils.safeClose(in);
     }
 
-    public interface DataProgressCallback
+    private IOUtils()
     {
-        void onDataProgress(int bytesWritten);
+        // Hide Constructor For Static Utility Class
     }
 }

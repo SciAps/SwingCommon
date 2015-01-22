@@ -34,4 +34,9 @@ public final class RegexUtil
     {
         return findValue(text, Pattern.compile(regexPattern), groupIndex);
     }
+
+    private RegexUtil()
+    {
+        // Hide Constructor for Static Utility Class
+    }
 }
