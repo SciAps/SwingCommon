@@ -184,6 +184,13 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
         regions.put("7af7ec16-b1ea-46a4-bf6b-1dfab8318d33", region1);
         regions.put("24d7c7d1-3abc-48b9-b07a-292ea44f0738", region2);
 
+        {
+            Region r = new Region();
+            r.wavelengthRange = new DoubleRange(396.2, 396.5);
+            r.name = "Al_396";
+            regions.put("23j4209sdf8", r);
+        }
+
         System.out.println("# of Regions pulled from LIBZ Unit: " + regions.size());
 
         return regions;
@@ -197,6 +204,7 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
         intensityRatio.element = AtomicElement.Copper;
         intensityRatio.numerator = new ArrayList<Region>();
         intensityRatio.numerator.add(LibzUnitManager.getInstance().getRegionsManager().getObjects().get("7af7ec16-b1ea-46a4-bf6b-1dfab8318d33"));
+        intensityRatio.numerator.add(LibzUnitManager.getInstance().getRegionsManager().getObjects().get("23j4209sdf8"));
         intensityRatio.denominator = new ArrayList<Region>();
         intensityRatio.denominator.add(LibzUnitManager.getInstance().getRegionsManager().getObjects().get("24d7c7d1-3abc-48b9-b07a-292ea44f0738"));
 
