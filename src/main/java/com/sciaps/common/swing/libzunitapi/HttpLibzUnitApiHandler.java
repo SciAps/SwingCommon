@@ -1,5 +1,6 @@
 package com.sciaps.common.swing.libzunitapi;
 
+import com.google.inject.Inject;
 import com.sciaps.common.AtomicElement;
 import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.IRCurve;
@@ -9,6 +10,7 @@ import com.sciaps.common.data.Region;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObj.ObjLoader;
+import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.global.MutableObjectsManager;
@@ -18,11 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -33,6 +31,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 
     static Logger logger = LoggerFactory.getLogger(HttpLibzUnitApiHandler.class);
 
+
     private static String getLibzUnitApiBaseUrl(String ipAddress)
     {
         final String urlBaseString = "http://" + ipAddress;
@@ -40,16 +39,23 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         return urlBaseString;
     }
 
-    private LIBZHttpClient _libzHttpClient;
+
+    @Inject
+    LibzUnitManager mUnitManager;
+
+    @Inject
+    DBObjTracker mObjTracker;
+
+    private String mIPAddress;
+
+    public void setIpAddress(String ipAddress) {
+        mIPAddress = ipAddress;
+    }
 
     @Override
-    public boolean connectToLibzUnit()
-    {
-        String baseUrl = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
-
-        _libzHttpClient = new LIBZHttpClient(baseUrl);
-
-        LibzUnitManager.getInstance().setLibzUnitUniqueIdentifier("UNIQUE_LIBZ_UNIT_ID_HERE");
+    public boolean connectToLibzUnit() {
+        String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
+        //LIBZHttpClient = new LIBZHttpClient(baseUrl);
 
         return true;
     }
@@ -57,213 +63,182 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     @Override
     public boolean pullFromLibzUnit()
     {
-        String baseUrl = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
+        try {
+            String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
 
-        _libzHttpClient = new LIBZHttpClient(baseUrl);
+            LIBZHttpClient httpClient = new LIBZHttpClient(baseUrl);
 
-        final Map<String, Standard> standards = getStandards();
-        for(Map.Entry<String, Standard> entry : standards.entrySet()) {
-            entry.getValue().mId = entry.getKey();
-        }
-        LibzUnitManager.getInstance().getStandardsManager().reset();
-        LibzUnitManager.getInstance().getStandardsManager().getObjects().putAll(standards);
+            final Map<String, Standard> standards = getStandards();
+            for (Map.Entry<String, Standard> entry : standards.entrySet()) {
+                entry.getValue().mId = entry.getKey();
+                mObjTracker.trackObject(entry.getValue());
+            }
 
-        Map<String, CalibrationShot> calibrationShots = getCalibrationShots();
-        for (Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet())
-        {
-            entry.getValue().loadFields(new ObjLoader()
-            {
-                @Override
-                public Object load(String id, Class<?> type)
-                {
-                    Object retval = standards.get(id);
-                    if(retval == null) {
-                        logger.warn("unable to load object type: {} with id: {}", type, id);
-                    }
-                    return retval;
-                }
-            });
-        }
-        LibzUnitManager.getInstance().getCalibrationShots().clear();
-        LibzUnitManager.getInstance().getCalibrationShots().putAll(calibrationShots);
 
-        final Map<String, Region> regions = getRegions();
-        for(Map.Entry<String, Region> entry : regions.entrySet()){
-            entry.getValue().mId = entry.getKey();
-        }
-        LibzUnitManager.getInstance().getRegionsManager().reset();
-        LibzUnitManager.getInstance().getRegionsManager().getObjects().putAll(regions);
+            Map<String, CalibrationShot> calibrationShots = getCalibrationShots();
+            for (Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet()) {
+                entry.getValue().mId = entry.getKey();
+                mObjTracker.trackObject(entry.getValue());
 
-        Map<String, IRRatio> intensityRatios = getIntensityRatios();
-        for (Map.Entry<String, IRRatio> entry : intensityRatios.entrySet())
-        {
-            entry.getValue().mId = entry.getKey();
-            entry.getValue().loadFields(new ObjLoader()
-            {
-                @Override
-                public Object load(String id, Class<?> type)
-                {
-                    Object retval = regions.get(id);
-                    if(retval == null) {
-                        logger.warn("unable to load object type: {} with id: {}", type, id);
-                    }
-                    return retval;
-                }
-            });
-        }
-        LibzUnitManager.getInstance().getIRRatiosManager().reset();
-        LibzUnitManager.getInstance().getIRRatiosManager().getObjects().putAll(intensityRatios);
-
-        Map<String, Model> calModels = getCalibrationModels();
-        for (Map.Entry<String, Model> entry : calModels.entrySet())
-        {
-            entry.getValue().mId = entry.getKey();
-            entry.getValue().loadFields(new ObjLoader()
-            {
-                @Override
-                public Object load(String id, Class<?> type)
-                {
-                    Object retval = standards.get(id);
-                    if(retval == null) {
-                        logger.warn("unable to load object type: {} with id: {}", type, id);
-                    }
-                    return retval;
-                }
-            });
-
-            for (Map.Entry<AtomicElement, IRCurve> irCurveEntry : entry.getValue().irs.entrySet())
-            {
-                irCurveEntry.getValue().loadFields(new ObjLoader()
-                {
+                entry.getValue().loadFields(new ObjLoader() {
                     @Override
-                    public Object load(String id, Class<?> type)
-                    {
-                        Object retval = null;
-                        if(Region.class == type) {
-                            retval = regions.get(id);
-                        } else if(Standard.class == type) {
-                            retval = standards.get(id);
-                        }
-
-                        if(retval == null){
+                    public Object load(String id, Class<?> type) {
+                        Object retval = standards.get(id);
+                        if (retval == null) {
                             logger.warn("unable to load object type: {} with id: {}", type, id);
                         }
                         return retval;
                     }
                 });
             }
-        }
-        LibzUnitManager.getInstance().getModelsManager().reset();
-        LibzUnitManager.getInstance().getModelsManager().getObjects().putAll(calModels);
 
-        return LibzUnitManager.getInstance().isValidAfterPull();
+
+            final Map<String, Region> regions = getRegions();
+            for (Map.Entry<String, Region> entry : regions.entrySet()) {
+                entry.getValue().mId = entry.getKey();
+                mObjTracker.trackObject(entry.getValue());
+            }
+
+            Map<String, IRRatio> intensityRatios = getIntensityRatios();
+            for (Map.Entry<String, IRRatio> entry : intensityRatios.entrySet()) {
+                entry.getValue().mId = entry.getKey();
+                mObjTracker.trackObject(entry.getValue());
+                entry.getValue().loadFields(new ObjLoader() {
+                    @Override
+                    public Object load(String id, Class<?> type) {
+                        Object retval = regions.get(id);
+                        if (retval == null) {
+                            logger.warn("unable to load object type: {} with id: {}", type, id);
+                        }
+                        return retval;
+                    }
+                });
+            }
+
+            Map<String, Model> calModels = getCalibrationModels();
+            for (Map.Entry<String, Model> entry : calModels.entrySet()) {
+                entry.getValue().mId = entry.getKey();
+                mObjTracker.trackObject(entry.getValue());
+                entry.getValue().loadFields(new ObjLoader() {
+                    @Override
+                    public Object load(String id, Class<?> type) {
+                        Object retval = standards.get(id);
+                        if (retval == null) {
+                            logger.warn("unable to load object type: {} with id: {}", type, id);
+                        }
+                        return retval;
+                    }
+                });
+
+                for (Map.Entry<AtomicElement, IRCurve> irCurveEntry : entry.getValue().irs.entrySet()) {
+                    irCurveEntry.getValue().loadFields(new ObjLoader() {
+                        @Override
+                        public Object load(String id, Class<?> type) {
+                            Object retval = null;
+                            if (Region.class == type) {
+                                retval = regions.get(id);
+                            } else if (Standard.class == type) {
+                                retval = standards.get(id);
+                            }
+
+                            if (retval == null) {
+                                logger.warn("unable to load object type: {} with id: {}", type, id);
+                            }
+                            return retval;
+                        }
+                    });
+                }
+            }
+
+            return true;
+        } catch (Exception e) {
+            logger.error("", e);
+            return false;
+        }
+    }
+
+
+    private static <T extends DBObj> void createAll(Class<T> type,
+                                                    LIBZHttpClient.BasicObjectClient<T> client,
+                                                    DBObjTracker tracker) throws IOException {
+        Iterator<T> it = tracker.getNewObjectsOfType(type);
+        while(it.hasNext()) {
+            T obj = it.next();
+            obj.mId = client.createObject(obj);
+            tracker.removeCreated(obj);
+        }
+
+    }
+
+    private static <T extends DBObj> void updateAll(Class<T> type,
+                                                    LIBZHttpClient.BasicObjectClient<T> client,
+                                                    DBObjTracker tracker) throws IOException {
+        Iterator<T> it = tracker.getModifiedObjectsOfType(type);
+        while(it.hasNext()) {
+            T obj = it.next();
+            client.updateObject(obj.mId, obj);
+            tracker.removeModified(obj);
+        }
+    }
+
+    private static <T extends DBObj> void deleteAll(Class<T> type,
+                                                    LIBZHttpClient.BasicObjectClient<T> client,
+                                                    DBObjTracker tracker) throws IOException {
+        Iterator<T> it = tracker.getDeletedObjectsOfType(type);
+        while(it.hasNext()) {
+            T obj = it.next();
+            client.deleteObject(obj.mId);
+            tracker.removeDelete(obj);
+        }
     }
 
     @Override
     public boolean pushToLibzUnit()
     {
-        String baseUrl = getLibzUnitApiBaseUrl(LibzUnitManager.getInstance().getIpAddress());
+        String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
 
-        _libzHttpClient = new LIBZHttpClient(baseUrl);
+        LIBZHttpClient httpClient = new LIBZHttpClient(baseUrl);
 
-        if (pushStandards())
-        {
-            if (pushRegions())
-            {
-                for (final Map.Entry<String, IRRatio> entry : LibzUnitManager.getInstance().getIRRatiosManager().getObjects().entrySet())
-                {
-                    entry.getValue().saveIds(new DBObj.IdLookup()
-                    {
-                        @Override
-                        public String getId(Object obj)
-                        {
-                            for (Map.Entry<String, Region> regionEntry : LibzUnitManager.getInstance().getRegionsManager().getObjects().entrySet())
-                            {
-                                if (regionEntry.getValue() == obj)
-                                {
-                                    return regionEntry.getKey();
-                                }
-                            }
+        try {
 
-                            return null;
-                        }
-                    });
-                }
+            createAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
+            createAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
+            createAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
+            createAll(Model.class, httpClient.mModelObjClient, mObjTracker);
 
-                if (pushIntensityRatios())
-                {
-                    for (final Map.Entry<String, Model> modelEntry : LibzUnitManager.getInstance().getModelsManager().getObjects().entrySet())
-                    {
-                        for (final Map.Entry<AtomicElement, IRCurve> entry : modelEntry.getValue().irs.entrySet())
-                        {
-                            entry.getValue().saveIds(new DBObj.IdLookup()
-                            {
-                                @Override
-                                public String getId(Object obj)
-                                {
-                                    for (Map.Entry<String, Region> regionEntry : LibzUnitManager.getInstance().getRegionsManager().getObjects().entrySet())
-                                    {
-                                        if (regionEntry.getValue() == obj)
-                                        {
-                                            return regionEntry.getKey();
-                                        }
-                                    }
+            updateAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
+            updateAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
+            updateAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
+            updateAll(Model.class, httpClient.mModelObjClient, mObjTracker);
 
-                                    for(Map.Entry<String, Standard> standardEntry : LibzUnitManager.getInstance().getStandardsManager().getObjects().entrySet()) {
-                                        if(standardEntry.getValue() == obj) {
-                                            return standardEntry.getKey();
-                                        }
-                                    }
+            deleteAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
+            deleteAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
+            deleteAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
+            deleteAll(Model.class, httpClient.mModelObjClient, mObjTracker);
 
-                                    logger.warn("not key found for: {}", obj);
-                                    return null;
-                                }
-                            });
-                        }
+            return true;
 
-                        modelEntry.getValue().saveIds(new DBObj.IdLookup()
-                        {
-                            @Override
-                            public String getId(Object obj)
-                            {
-                                String retval = StandardFinderUtils.retreiveIdForStandard(obj);
-
-                                for(Map.Entry<String, Standard> standardEntry : LibzUnitManager.getInstance().getStandardsManager().getObjects().entrySet()) {
-                                    if(standardEntry.getValue() == obj) {
-                                        return standardEntry.getKey();
-                                    }
-                                }
-
-                                logger.warn("not key found for: {}", obj);
-                                return null;
-                            }
-                        });
-                    }
-
-                    if (pushCalibrationModels())
-                    {
-                        return true;
-                    }
-                }
-            }
+        }catch (IOException e) {
+            logger.error("", e);
+            return false;
         }
 
-        return false;
+
     }
 
     @Override
     public LIBZPixelSpectrum getLIBZPixelSpectrum(final String shotId)
     {
-        if (LibzUnitManager.getInstance().getLIBZPixelSpectra().containsKey(shotId))
+        if (mUnitManager.getLIBZPixelSpectra().containsKey(shotId))
         {
-            return LibzUnitManager.getInstance().getLIBZPixelSpectra().get(shotId);
+            return mUnitManager.getLIBZPixelSpectra().get(shotId);
         }
         else
         {
             try
             {
                 LIBZPixelSpectrum libzPixelSpectrum = _libzHttpClient.getCalibrationShot(shotId);
-                LibzUnitManager.getInstance().getLIBZPixelSpectra().put(shotId, libzPixelSpectrum);
+                mUnitManager.getLIBZPixelSpectra().put(shotId, libzPixelSpectrum);
 
                 return libzPixelSpectrum;
             }
@@ -314,22 +289,22 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 
     private boolean pushStandards()
     {
-        return push(_libzHttpClient.mStandardsObjClient, LibzUnitManager.getInstance().getStandardsManager());
+        return push(_libzHttpClient.mStandardsObjClient, mUnitManager.getStandardsManager());
     }
 
     private boolean pushRegions()
     {
-        return push(_libzHttpClient.mRegionObjClient, LibzUnitManager.getInstance().getRegionsManager());
+        return push(_libzHttpClient.mRegionObjClient, mUnitManager.getRegionsManager());
     }
 
     private boolean pushIntensityRatios()
     {
-        return push(_libzHttpClient.mIRObjClient, LibzUnitManager.getInstance().getIRRatiosManager());
+        return push(_libzHttpClient.mIRObjClient, mUnitManager.getIRRatiosManager());
     }
 
     private boolean pushCalibrationModels()
     {
-        return push(_libzHttpClient.mModelObjClient, LibzUnitManager.getInstance().getModelsManager());
+        return push(_libzHttpClient.mModelObjClient, mUnitManager.getModelsManager());
     }
 
     private <T extends DBObj> Map<String, T> getObjects(LIBZHttpClient.BasicObjectClient<T> basicObjectClient)

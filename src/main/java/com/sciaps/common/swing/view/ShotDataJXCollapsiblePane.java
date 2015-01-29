@@ -1,5 +1,6 @@
 package com.sciaps.common.swing.view;
 
+import com.google.inject.Inject;
 import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.swing.global.LibzUnitManager;
@@ -47,6 +48,9 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
     private DefaultTableModel _tableModel;
     private JTextField _filterTextField;
     private TableRowSorter<DefaultTableModel> _sorter;
+
+    @Inject
+    LibzUnitManager mUnitManager;
 
     public ShotDataJXCollapsiblePane(Direction direction, ShotDataJXCollapsiblePaneCallback callback)
     {
@@ -152,11 +156,11 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
     private void fillCalibrationShotsData()
     {
-        if (LibzUnitManager.getInstance().getCalibrationShots() != null)
+        if (mUnitManager.getCalibrationShots() != null)
         {
             _data.clear();
 
-            for (Map.Entry<String, CalibrationShot> entry : LibzUnitManager.getInstance().getCalibrationShots().entrySet())
+            for (Map.Entry<String, CalibrationShot> entry : mUnitManager.getCalibrationShots().entrySet())
             {
                 Vector row = new Vector();
 

@@ -11,9 +11,9 @@ import java.util.Map;
  */
 public final class StandardFinderUtils
 {
-    public static String retreiveIdForStandard(Object standard)
+    public static String retreiveIdForStandard(Object standard, LibzUnitManager unitManager)
     {
-        for (Map.Entry<String, Standard> entry : LibzUnitManager.getInstance().getStandardsManager().getObjects().entrySet())
+        for (Map.Entry<String, Standard> entry : unitManager.getStandardsManager().getObjects().entrySet())
         {
             if (entry.getValue() == standard)
             {

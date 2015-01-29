@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.inject.Inject;
 import com.sciaps.common.AtomicElement;
 import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.IRCurve;
@@ -36,10 +37,14 @@ import org.apache.commons.lang.math.DoubleRange;
  */
 public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
 {
+
+    @Inject
+    LibzUnitManager mUnitManager;
+
     @Override
     public boolean connectToLibzUnit()
     {
-        LibzUnitManager.getInstance().setLibzUnitUniqueIdentifier("UNIQUE_LIBZ_UNIT_ID_HERE");
+        mUnitManager.setLibzUnitUniqueIdentifier("UNIQUE_LIBZ_UNIT_ID_HERE");
 
         return true;
     }
@@ -48,26 +53,26 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
     public boolean pullFromLibzUnit()
     {
         final Map<String, Standard> standards = getStandards();
-        LibzUnitManager.getInstance().getStandardsManager().reset();
-        LibzUnitManager.getInstance().getStandardsManager().getObjects().putAll(standards);
+        mUnitManager.getStandardsManager().reset();
+        mUnitManager.getStandardsManager().getObjects().putAll(standards);
 
         Map<String, CalibrationShot> calibrationShots = getCalibrationShots();
-        LibzUnitManager.getInstance().getCalibrationShots().clear();
-        LibzUnitManager.getInstance().getCalibrationShots().putAll(calibrationShots);
+        mUnitManager.getCalibrationShots().clear();
+        mUnitManager.getCalibrationShots().putAll(calibrationShots);
         
         final Map<String, Region> regions = getRegions();
-        LibzUnitManager.getInstance().getRegionsManager().reset();
-        LibzUnitManager.getInstance().getRegionsManager().getObjects().putAll(regions);
+        mUnitManager.getRegionsManager().reset();
+        mUnitManager.getRegionsManager().getObjects().putAll(regions);
 
         Map<String, IRRatio> intensityRatios = getIntensityRatios();
-        LibzUnitManager.getInstance().getIRRatiosManager().reset();
-        LibzUnitManager.getInstance().getIRRatiosManager().getObjects().putAll(intensityRatios);
+        mUnitManager.getIRRatiosManager().reset();
+        mUnitManager.getIRRatiosManager().getObjects().putAll(intensityRatios);
 
         Map<String, Model> calModels = getCalibrationModels();
-        LibzUnitManager.getInstance().getModelsManager().reset();
-        LibzUnitManager.getInstance().getModelsManager().getObjects().putAll(calModels);
+        mUnitManager.getModelsManager().reset();
+        mUnitManager.getModelsManager().getObjects().putAll(calModels);
 
-        return LibzUnitManager.getInstance().isValidAfterPull();
+        return mUnitManager.isValidAfterPull();
     }
 
     @Override
@@ -79,9 +84,9 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
     @Override
     public LIBZPixelSpectrum getLIBZPixelSpectrum(final String shotId)
     {
-        if (LibzUnitManager.getInstance().getLIBZPixelSpectra().containsKey(shotId))
+        if (mUnitManager.getLIBZPixelSpectra().containsKey(shotId))
         {
-            return LibzUnitManager.getInstance().getLIBZPixelSpectra().get(shotId);
+            return mUnitManager.getLIBZPixelSpectra().get(shotId);
         }
         else
         {
@@ -97,7 +102,7 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
 
                 Gson gson = new GsonBuilder().create();
                 final LIBZPixelSpectrum libzPixelSpectrum = gson.fromJson(jsonReader, LIBZPixelSpectrum.class);
-                LibzUnitManager.getInstance().getLIBZPixelSpectra().put(shotId, libzPixelSpectrum);
+                mUnitManager.getLIBZPixelSpectra().put(shotId, libzPixelSpectrum);
 
                 return libzPixelSpectrum;
             }
@@ -148,19 +153,19 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
         CalibrationShot cal1 = new CalibrationShot();
         cal1.displayName = "Shot Data 1";
         cal1.timeStamp = new Date();
-        cal1.standard = LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456789");
+        cal1.standard = mUnitManager.getStandardsManager().getObjects().get("123456789");
         CalibrationShot cal2 = new CalibrationShot();
         cal2.displayName = "Shot Data 2";
         cal2.timeStamp = new Date();
-        cal2.standard = LibzUnitManager.getInstance().getStandardsManager().getObjects().get("1");
+        cal2.standard = mUnitManager.getStandardsManager().getObjects().get("1");
         CalibrationShot cal3 = new CalibrationShot();
         cal3.displayName = "Shot Data 3";
         cal3.timeStamp = new Date();
-        cal3.standard = LibzUnitManager.getInstance().getStandardsManager().getObjects().get("12");
+        cal3.standard = mUnitManager.getStandardsManager().getObjects().get("12");
         CalibrationShot cal4 = new CalibrationShot();
         cal4.displayName = "Shot Data 4";
         cal4.timeStamp = new Date();
-        cal4.standard = LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123");
+        cal4.standard = mUnitManager.getStandardsManager().getObjects().get("123");
 
         calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e16", cal1);
         calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e17", cal2);
@@ -203,18 +208,18 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
         intensityRatio.name = "Copper Finder 12/10/14";
         intensityRatio.element = AtomicElement.Copper;
         intensityRatio.numerator = new ArrayList<Region>();
-        intensityRatio.numerator.add(LibzUnitManager.getInstance().getRegionsManager().getObjects().get("7af7ec16-b1ea-46a4-bf6b-1dfab8318d33"));
-        intensityRatio.numerator.add(LibzUnitManager.getInstance().getRegionsManager().getObjects().get("23j4209sdf8"));
+        intensityRatio.numerator.add(mUnitManager.getRegionsManager().getObjects().get("7af7ec16-b1ea-46a4-bf6b-1dfab8318d33"));
+        intensityRatio.numerator.add(mUnitManager.getRegionsManager().getObjects().get("23j4209sdf8"));
         intensityRatio.denominator = new ArrayList<Region>();
-        intensityRatio.denominator.add(LibzUnitManager.getInstance().getRegionsManager().getObjects().get("24d7c7d1-3abc-48b9-b07a-292ea44f0738"));
+        intensityRatio.denominator.add(mUnitManager.getRegionsManager().getObjects().get("24d7c7d1-3abc-48b9-b07a-292ea44f0738"));
 
         IRRatio intensityRatio2 = new IRRatio();
         intensityRatio2.name = "Aluminum Finder 12/10/14";
         intensityRatio2.element = AtomicElement.Aluminum;
         intensityRatio2.numerator = new ArrayList<Region>();
-        intensityRatio2.numerator.add(LibzUnitManager.getInstance().getRegionsManager().getObjects().get("24d7c7d1-3abc-48b9-b07a-292ea44f0738"));
+        intensityRatio2.numerator.add(mUnitManager.getRegionsManager().getObjects().get("24d7c7d1-3abc-48b9-b07a-292ea44f0738"));
         intensityRatio2.denominator = new ArrayList<Region>();
-        intensityRatio2.denominator.add(LibzUnitManager.getInstance().getRegionsManager().getObjects().get("7af7ec16-b1ea-46a4-bf6b-1dfab8318d33"));
+        intensityRatio2.denominator.add(mUnitManager.getRegionsManager().getObjects().get("7af7ec16-b1ea-46a4-bf6b-1dfab8318d33"));
 
         intensityRatios.put("UNIQUE_ID_IR_1", intensityRatio);
         intensityRatios.put("UNIQUE_ID_IR_2", intensityRatio2);
@@ -229,12 +234,12 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
         {
             Model calModel = new Model();
             calModel.name = "Copper Cal Model";
-            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456789"));
-            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("12"));
-            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123"));
+            calModel.standardList.add(mUnitManager.getStandardsManager().getObjects().get("123456789"));
+            calModel.standardList.add(mUnitManager.getStandardsManager().getObjects().get("12"));
+            calModel.standardList.add(mUnitManager.getStandardsManager().getObjects().get("123"));
 
             {
-                IRRatio irRatio = LibzUnitManager.getInstance().getIRRatiosManager().getObjects().get("UNIQUE_ID_IR_1");
+                IRRatio irRatio = mUnitManager.getIRRatiosManager().getObjects().get("UNIQUE_ID_IR_1");
                 IRCurve irCurve = new IRCurve();
                 irCurve.name = irRatio.name;
                 irCurve.element = irRatio.element;
@@ -265,16 +270,16 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
         {
             Model calModel = new Model();
             calModel.name = "Stainless Model";
-            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456789"));
-            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("12"));
-            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123"));
+            calModel.standardList.add(mUnitManager.getStandardsManager().getObjects().get("123456789"));
+            calModel.standardList.add(mUnitManager.getStandardsManager().getObjects().get("12"));
+            calModel.standardList.add(mUnitManager.getStandardsManager().getObjects().get("123"));
 
             //unshot data
-            calModel.standardList.add(LibzUnitManager.getInstance().getStandardsManager().getObjects().get("123456"));
+            calModel.standardList.add(mUnitManager.getStandardsManager().getObjects().get("123456"));
 
 
 
-            IRRatio irRatio = LibzUnitManager.getInstance().getIRRatiosManager().getObjects().get("UNIQUE_ID_IR_1");
+            IRRatio irRatio = mUnitManager.getIRRatiosManager().getObjects().get("UNIQUE_ID_IR_1");
             IRCurve irCurve = new IRCurve();
             irCurve.name = irRatio.name;
             irCurve.element = irRatio.element;

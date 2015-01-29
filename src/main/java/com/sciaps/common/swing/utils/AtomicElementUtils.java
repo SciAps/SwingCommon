@@ -13,15 +13,12 @@ public final class AtomicElementUtils
 {
     public static String[] getArrayOfAtomicElementSymbols()
     {
-        List<String> elements = new ArrayList<String>();
-        for (int i = 1; i <= LibzUnitManager.NUM_ATOMIC_ELEMENTS; i++)
-        {
-            AtomicElement ae = AtomicElement.getElementByAtomicNum(i);
-            elements.add(ae.symbol);
-        }
 
-        String[] elementsArray = new String[elements.size()];
-        elementsArray = elements.toArray(elementsArray);
+        AtomicElement[] allElements = AtomicElement.values();
+        String[] elementsArray = new String[allElements.length];
+        for(int i=0;i<allElements.length;i++) {
+            elementsArray[i] = allElements[i].symbol;
+        }
 
         return elementsArray;
     }

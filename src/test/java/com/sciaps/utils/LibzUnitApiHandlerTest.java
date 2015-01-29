@@ -1,9 +1,10 @@
 package com.sciaps.utils;
 
 import com.devsmart.miniweb.Server;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.sciaps.common.swing.MockWebserver;
-import com.sciaps.common.swing.global.InstanceManager;
-import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.libzunitapi.HttpLibzUnitApiHandler;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 import org.junit.AfterClass;
@@ -19,14 +20,23 @@ import static org.junit.Assert.assertTrue;
 public final class LibzUnitApiHandlerTest
 {
     private static Server s_server;
+    private static Injector mInjector;
+
+    private static HttpLibzUnitApiHandler httpHandler;
 
     @BeforeClass
     public static void initMockWebserver() throws Exception
     {
         s_server = MockWebserver.init("mockdata", 9100);
+        mInjector = Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(LibzUnitApiHandler.class).to(HttpLibzUnitApiHandler.class);
+            }
+        });
 
-        InstanceManager.getInstance().storeInstance(LibzUnitApiHandler.class, new HttpLibzUnitApiHandler());
-        LibzUnitManager.getInstance().setIpAddress("localhost:9100");
+        httpHandler = mInjector.getInstance(HttpLibzUnitApiHandler.class);
+        httpHandler.setIpAddress("localhost:9100");
 
         // Give the server time to fully initialize
         Thread.sleep(3000);
@@ -41,16 +51,12 @@ public final class LibzUnitApiHandlerTest
     @Test
     public void testLibzUnitConnect()
     {
-        LibzUnitApiHandler libzUnitApiHandler = InstanceManager.getInstance().retrieveInstance(LibzUnitApiHandler.class);
-
-        assertTrue(libzUnitApiHandler.connectToLibzUnit());
+        assertTrue(httpHandler.connectToLibzUnit());
     }
 
     @Test
     public void testLibzUnitPull()
     {
-        LibzUnitApiHandler libzUnitApiHandler = InstanceManager.getInstance().retrieveInstance(LibzUnitApiHandler.class);
-
-        assertTrue(libzUnitApiHandler.pullFromLibzUnit());
+        assertTrue(httpHandler.pullFromLibzUnit());
     }
 }
