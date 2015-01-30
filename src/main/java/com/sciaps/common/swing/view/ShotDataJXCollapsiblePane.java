@@ -3,11 +3,15 @@ package com.sciaps.common.swing.view;
 import com.google.inject.Inject;
 import com.sciaps.common.data.CalibrationShot;
 import com.sciaps.common.data.Standard;
+import com.sciaps.common.objtracker.DBObjTracker;
+import com.sciaps.common.objtracker.ObjTracker;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.utils.LibzTableUtils;
 import com.sciaps.common.swing.utils.SwingUtils;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -26,7 +30,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.JXCollapsiblePane;
 
@@ -41,16 +47,49 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
         void shotDataSelected(String calibrationShotId);
     }
 
+    class CalibrationShotTableModel extends AbstractTableModel {
+
+        private ArrayList<CalibrationShot> mShots = new ArrayList<CalibrationShot>();
+
+        @Override
+        public int getRowCount() {
+            return mShots.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return 3;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            CalibrationShot shot = mShots.get(rowIndex);
+            switch(columnIndex) {
+                case 0:
+                    return shot.displayName;
+                case 1:
+                    return shot.standard.name;
+                case 2:
+                    return shot.timeStamp;
+
+                default:
+                    return null;
+            }
+        }
+    }
+
     private final ShotDataJXCollapsiblePaneCallback _callback;
     private JTable _calibrationShotsTable;
-    private Vector _columnNames;
-    private Vector _data;
-    private DefaultTableModel _tableModel;
+
+    private CalibrationShotTableModel _tableModel;
     private JTextField _filterTextField;
-    private TableRowSorter<DefaultTableModel> _sorter;
+    private TableRowSorter<CalibrationShotTableModel> _sorter;
 
     @Inject
     LibzUnitManager mUnitManager;
+
+    @Inject
+    DBObjTracker mObjTracker;
 
     public ShotDataJXCollapsiblePane(Direction direction, ShotDataJXCollapsiblePaneCallback callback)
     {
@@ -62,8 +101,8 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
         setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
 
-        _calibrationShotsTable = new JTable();
-        _calibrationShotsTable.setFont(new Font("Serif", Font.BOLD, 18));
+        _tableModel = new CalibrationShotTableModel();
+        _calibrationShotsTable = new JTable(_tableModel);
         _calibrationShotsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         _calibrationShotsTable.setFillsViewportHeight(true);
         _calibrationShotsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -80,15 +119,8 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
             }
         });
 
-        _columnNames = new Vector();
-        _columnNames.add("ID");
-        _columnNames.add("Name");
-        _columnNames.add("Standard");
-        _columnNames.add("Timestamp");
-        _data = new Vector();
-        _tableModel = new DefaultTableModel();
 
-        _sorter = new TableRowSorter<DefaultTableModel>(_tableModel);
+        _sorter = new TableRowSorter<CalibrationShotTableModel>(_tableModel);
         _calibrationShotsTable.setRowSorter(_sorter);
 
         refresh();
@@ -142,12 +174,6 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
     public void refresh()
     {
         fillCalibrationShotsData();
-
-        _tableModel.setDataVector(_data, _columnNames);
-        _calibrationShotsTable.setModel(_tableModel);
-
-        _calibrationShotsTable.removeColumn(_calibrationShotsTable.getColumnModel().getColumn(0));
-        
         if (!isCollapsed())
         {
             SwingUtils.fitTableToColumns(_calibrationShotsTable);
@@ -156,26 +182,12 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
     private void fillCalibrationShotsData()
     {
-        if (mUnitManager.getCalibrationShots() != null)
-        {
-            _data.clear();
-
-            for (Map.Entry<String, CalibrationShot> entry : mUnitManager.getCalibrationShots().entrySet())
-            {
-                Vector row = new Vector();
-
-                row.add(entry.getKey());
-
-                CalibrationShot calibrationShot = entry.getValue();
-                Standard standardRepresentedByShotData = calibrationShot.standard;
-
-                row.add(calibrationShot.displayName);
-                row.add(standardRepresentedByShotData.name);
-                row.add(calibrationShot.timeStamp.toString());
-
-                _data.add(row);
-            }
+        _tableModel.mShots.clear();
+        Iterator<CalibrationShot> it = mObjTracker.getAllObjectsOfType(CalibrationShot.class);
+        while(it.hasNext()) {
+            _tableModel.mShots.add(it.next());
         }
+        _tableModel.fireTableDataChanged();
     }
 
     private void filterTable()
@@ -183,7 +195,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
         try
         {
             final String regex = "(?i)" + _filterTextField.getText();
-            RowFilter<DefaultTableModel, Object> rowFilter = RowFilter.regexFilter(regex, 1, 2, 3);
+            RowFilter<CalibrationShotTableModel, Object> rowFilter = RowFilter.regexFilter(regex, 1, 2, 3);
             _sorter.setRowFilter(rowFilter);
         }
         catch (java.util.regex.PatternSyntaxException e)

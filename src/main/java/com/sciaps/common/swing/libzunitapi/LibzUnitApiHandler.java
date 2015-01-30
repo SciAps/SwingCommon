@@ -2,6 +2,9 @@ package com.sciaps.common.swing.libzunitapi;
 
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 
+import java.io.IOException;
+import java.util.List;
+
 /**
  *
  * @author sgowen
@@ -24,7 +27,7 @@ public interface LibzUnitApiHandler
      *
      * @return true if all the GET calls executed successfully
      */
-    boolean pullFromLibzUnit();
+    void pullFromLibzUnit() throws IOException;
 
     /**
      * Perform a mass push, which essentially means it is going to call all of
@@ -32,7 +35,7 @@ public interface LibzUnitApiHandler
      *
      * @return true if all the POST calls executed successfully
      */
-    boolean pushToLibzUnit();
+    void pushToLibzUnit() throws IOException;
 
     /**
      * Retrieve a LIBZPixelSpectrum object deserialized from binary shot data
@@ -43,5 +46,5 @@ public interface LibzUnitApiHandler
      * @param shotId
      * @return
      */
-    LIBZPixelSpectrum getLIBZPixelSpectrum(final String shotId);
+    List<LIBZPixelSpectrum> getLIBZPixelSpectrum(final List<String> shotIds, ProgressCallback progress) throws IOException;
 }

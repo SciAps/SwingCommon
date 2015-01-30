@@ -11,6 +11,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -55,8 +57,7 @@ public final class LibzUnitApiHandlerTest
     }
 
     @Test
-    public void testLibzUnitPull()
-    {
-        assertTrue(httpHandler.pullFromLibzUnit());
+    public void testLibzUnitPull() throws IOException {
+        httpHandler.pullFromLibzUnit();
     }
 }
