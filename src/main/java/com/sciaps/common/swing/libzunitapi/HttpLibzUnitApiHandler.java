@@ -1,6 +1,7 @@
 package com.sciaps.common.swing.libzunitapi;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.sciaps.common.data.*;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObj.ObjLoader;
@@ -40,6 +41,9 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     @Inject
     DBObjTracker mObjTracker;
 
+    public static final String IPADDRESS = "ipaddress";
+
+    @Inject @Named(IPADDRESS)
     private String mIPAddress;
 
     public void setIpAddress(String ipAddress) {
