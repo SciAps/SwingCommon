@@ -67,7 +67,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public void pullFromLibzUnit() throws IOException {
+    public synchronized void pullFromLibzUnit() throws IOException {
         String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
         LIBZHttpClient httpClient = new LIBZHttpClient(baseUrl);
 
@@ -159,7 +159,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public void pushToLibzUnit() throws IOException {
+    public synchronized void pushToLibzUnit() throws IOException {
         String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
         LIBZHttpClient httpClient = new LIBZHttpClient(baseUrl);
 
@@ -180,7 +180,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public List<LIBZPixelSpectrum> getLIBZPixelSpectrum(final List<String> shotIds, ProgressCallback callback) throws IOException {
+    public synchronized List<LIBZPixelSpectrum> getLIBZPixelSpectrum(final List<String> shotIds, ProgressCallback callback) throws IOException {
         LIBZHttpClient httpClient = null;
         ArrayList<LIBZPixelSpectrum> retval = new ArrayList<LIBZPixelSpectrum>(shotIds.size());
         for(String shotId : shotIds) {
