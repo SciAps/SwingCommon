@@ -255,12 +255,13 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
                 } finally {
                     IOUtils.safeClose(jsonReader);
                 }
-            }
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    //simulate download time
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             if(callback != null) {
