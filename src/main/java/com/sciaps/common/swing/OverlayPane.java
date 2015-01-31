@@ -13,6 +13,13 @@ public class OverlayPane extends JComponent implements MouseListener {
     public OverlayPane() {
         mContentPanel = new JPanel();
         add(mContentPanel);
+        addMouseListener(this);
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        Dimension dimension = getParent().getSize();
+        return new Dimension(dimension);
     }
 
     @Override

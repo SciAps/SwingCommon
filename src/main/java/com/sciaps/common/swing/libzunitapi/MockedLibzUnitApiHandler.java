@@ -51,6 +51,13 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
 
     @Override
     public void pullFromLibzUnit() throws IOException {
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         final Map<String, Standard> standards = getStandards();
         for(Map.Entry<String, Standard> entry : standards.entrySet()) {
             Standard standard = entry.getValue();
