@@ -37,14 +37,10 @@ public interface LibzUnitApiHandler
      */
     void pushToLibzUnit() throws IOException;
 
-    /**
-     * Retrieve a LIBZPixelSpectrum object deserialized from binary shot data
-     * associated with the provided shotId. Any data returned from this method
-     * should be cached so that additional invocations will return immediately
-     * without fetching.
-     *
-     * @param shotId
-     * @return
-     */
-    List<LIBZPixelSpectrum> getLIBZPixelSpectrum(final List<String> shotIds, ProgressCallback progress) throws IOException;
+
+    interface DownloadCallback {
+        void onData(String shotId, LIBZPixelSpectrum pixelSpectrum);
+    }
+
+    void getLIBZPixelSpectrum(final List<String> shotIds, DownloadCallback cb) throws IOException;
 }

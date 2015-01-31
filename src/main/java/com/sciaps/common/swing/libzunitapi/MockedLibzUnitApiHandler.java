@@ -238,39 +238,35 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public List<LIBZPixelSpectrum> getLIBZPixelSpectrum(final List<String> shotIds, ProgressCallback callback) throws IOException
+    public void getLIBZPixelSpectrum(final List<String> shotIds, DownloadCallback callback) throws IOException
     {
-        int count = 0;
-        ArrayList<LIBZPixelSpectrum> retval = new ArrayList<LIBZPixelSpectrum>(shotIds.size());
+        final File testDataDir = new File("testdata");
         for(String shotId : shotIds) {
-            if (mUnitManager.calShotIdCache.containsKey(shotId)) {
-                retval.add(mUnitManager.calShotIdCache.get(shotId));
-            } else {
-
-                File file = new File(shotId + ".json.gz");
-
+            LIBZPixelSpectrum data = mUnitManager.calShotIdCache.get(shotId);
+            if (data == null) {
+                File file = new File(testDataDir, shotId + ".json.gz");
                 InputStream in = new FileInputStream(file);
                 in = new GZIPInputStream(in);
                 JsonReader jsonReader = new JsonReader(new InputStreamReader(in));
-
                 try {
                     Gson gson = new GsonBuilder().create();
-                    final LIBZPixelSpectrum libzPixelSpectrum = gson.fromJson(jsonReader, LIBZPixelSpectrum.class);
-                    mUnitManager.calShotIdCache.put(shotId, libzPixelSpectrum);
-
-                    retval.add(libzPixelSpectrum);
-
+                    data = gson.fromJson(jsonReader, LIBZPixelSpectrum.class);
+                    mUnitManager.calShotIdCache.put(shotId, data);
                 } finally {
                     IOUtils.safeClose(jsonReader);
                 }
             }
 
-            count++;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             if(callback != null) {
-                callback.onProgress(count, shotIds.size());
+                callback.onData(shotId, data);
             }
         }
-        return retval;
     }
 
     private <T extends DBObj> void updateIds(Map<String, T> idMap) {

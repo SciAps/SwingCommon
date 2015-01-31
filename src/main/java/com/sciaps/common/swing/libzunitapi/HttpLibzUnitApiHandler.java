@@ -184,9 +184,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public synchronized List<LIBZPixelSpectrum> getLIBZPixelSpectrum(final List<String> shotIds, ProgressCallback callback) throws IOException {
+    public synchronized void getLIBZPixelSpectrum(final List<String> shotIds, DownloadCallback callback) throws IOException {
         LIBZHttpClient httpClient = null;
-        ArrayList<LIBZPixelSpectrum> retval = new ArrayList<LIBZPixelSpectrum>(shotIds.size());
         for(String shotId : shotIds) {
 
             LIBZPixelSpectrum data = mUnitManager.calShotIdCache.get(shotId);
@@ -200,9 +199,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                 mUnitManager.calShotIdCache.put(shotId, data);
             }
 
-            retval.add(data);
+            if(callback != null){
+                callback.onData(shotId, data);
+            }
         }
-        return retval;
     }
 
 }
