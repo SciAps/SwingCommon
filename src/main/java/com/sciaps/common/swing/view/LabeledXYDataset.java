@@ -41,6 +41,11 @@ public final class LabeledXYDataset extends AbstractXYDataset {
         fireDatasetChanged();
     }
 
+    public void removeAllSeriese() {
+        _series.clear();
+        fireDatasetChanged();
+    }
+
     @Override
     public int getSeriesCount() {
         return _series.size();
