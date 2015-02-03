@@ -133,7 +133,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             final String fieldName = field.getName();
             if(field.getAnnotation(IdReference.class) != null){
                 try {
-                    DBObj fieldValue = (DBObj) field.get(obj);
+                    Object fieldValue = field.get(obj);
                     String[] ids = null;
                     if (Iterable.class.isAssignableFrom(field.getType())) {
                         ArrayList<String> idlist = new ArrayList<String>();
@@ -145,7 +145,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                         }
                         ids = idlist.toArray(new String[idlist.size()]);
                     } else {
-                        ids = new String[]{fieldValue.mId};
+                        ids = new String[]{((DBObj)fieldValue).mId};
                     }
                     obj.mFieldIds.put(fieldName, ids);
                 } catch (IllegalAccessException e) {
