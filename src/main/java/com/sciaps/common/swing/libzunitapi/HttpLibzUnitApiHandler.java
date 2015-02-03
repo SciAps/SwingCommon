@@ -1,5 +1,7 @@
 package com.sciaps.common.swing.libzunitapi;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.sciaps.common.data.*;
@@ -8,6 +10,7 @@ import com.sciaps.common.objtracker.DBObj.ObjLoader;
 import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.objtracker.IdReference;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
+import com.sciaps.common.swing.events.SetIPAddressEvent;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.webserver.LIBZHttpClient;
 import org.slf4j.Logger;
@@ -26,10 +29,9 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 
     static Logger logger = LoggerFactory.getLogger(HttpLibzUnitApiHandler.class);
 
-
     private static String getLibzUnitApiBaseUrl(String ipAddress)
     {
-        final String urlBaseString = "http://" + ipAddress;
+        final String urlBaseString = "http://" + ipAddress + ":9000";
 
         return urlBaseString;
     }
@@ -41,11 +43,20 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     @Inject
     DBObjTracker mObjTracker;
 
-    public static final String IPADDRESS = "ipaddress";
+    private EventBus mEventBus;
 
-    @Inject @Named(IPADDRESS)
+    @Inject
+    public void setEventBus(EventBus eventBus) {
+        mEventBus = eventBus;
+        mEventBus.register(this);
+    }
+
+    @Subscribe
+    public void onSetIpEvent(SetIPAddressEvent event) {
+        setIpAddress(event.ipAddress);
+    }
+
     private String mIPAddress;
-
     public void setIpAddress(String ipAddress) {
         mIPAddress = ipAddress;
     }
@@ -62,11 +73,27 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     private static <T extends DBObj> void loadAllObjects(Class<T> type,
                                                          LIBZHttpClient.BasicObjectClient<T> client,
                                                          DBObjTracker tracker,
-                                                         ObjLoader objLoader) throws IOException {
+                                                         SimpleIdMapObjLoader objLoader) throws IOException {
         for(String id : client.getIdList()){
             T obj = client.getSingleObject(id);
-            obj.loadFields(objLoader);
+            obj.mId = id;
+            objLoader.idMap.put(id, obj);
             tracker.trackObject(obj);
+            obj.loadFields(objLoader);
+        }
+    }
+
+    private static class SimpleIdMapObjLoader implements ObjLoader {
+
+        public final HashMap<String, DBObj> idMap = new HashMap<String, DBObj>();
+
+        @Override
+        public Object load(String id, Class<?> type) {
+            Object retval = idMap.get(id);
+            if(retval == null){
+                logger.warn("could not find object for id: {}", id);
+            }
+            return retval;
         }
     }
 
@@ -75,18 +102,21 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
         LIBZHttpClient httpClient = new LIBZHttpClient(baseUrl);
 
-        final HashMap<String, DBObj> idMap = new HashMap<String, DBObj>();
-        ObjLoader objLoader = new ObjLoader() {
-            @Override
-            public Object load(String id, Class<?> type) {
-                return idMap.get(id);
-            }
-        };
+
+        SimpleIdMapObjLoader objLoader = new SimpleIdMapObjLoader();
 
         loadAllObjects(Standard.class, httpClient.mStandardsObjClient, mObjTracker, objLoader);
         loadAllObjects(Region.class, httpClient.mRegionObjClient, mObjTracker, objLoader);
         loadAllObjects(IRRatio.class, httpClient.mIRObjClient, mObjTracker, objLoader);
         loadAllObjects(Model.class, httpClient.mModelObjClient, mObjTracker, objLoader);
+
+        Iterator<Model> it = mObjTracker.getAllObjectsOfType(Model.class);
+        while(it.hasNext()) {
+            Model model = it.next();
+            for(IRCurve curve : model.irs.values()) {
+                curve.loadFields(objLoader);
+            }
+        }
 
 
         Map<String, CalibrationShot> calibrationShots = httpClient.getCalibrationShots();
