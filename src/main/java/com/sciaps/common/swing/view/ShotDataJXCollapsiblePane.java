@@ -58,9 +58,8 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
         setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
 
-        _calibrationShotsTable = new JTable();
-        _calibrationShotsTable.setFont(new Font("Serif", Font.BOLD, 18));
-        _calibrationShotsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        _calibrationShotsTable = new JTable();       
+        //_calibrationShotsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         _calibrationShotsTable.setFillsViewportHeight(true);
         _calibrationShotsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         _calibrationShotsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
@@ -92,7 +91,7 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
         JLabel title = new JLabel("Shot Data");
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        title.setFont(new Font("Serif", Font.BOLD, 24));
+        title.setFont(new Font("Serif", Font.BOLD, 16));
         title.setMaximumSize(new Dimension(Integer.MAX_VALUE, title.getPreferredSize().height));
 
         add(title);
@@ -141,6 +140,10 @@ public final class ShotDataJXCollapsiblePane extends JXCollapsiblePane
 
         _tableModel.setDataVector(_data, _columnNames);
         _calibrationShotsTable.setModel(_tableModel);
+        _calibrationShotsTable.getColumnModel().getColumn(1).setMinWidth(100);
+        _calibrationShotsTable.getColumnModel().getColumn(1).setMaxWidth(100);
+        _calibrationShotsTable.getColumnModel().getColumn(2).setMinWidth(100);
+        _calibrationShotsTable.getColumnModel().getColumn(2).setMaxWidth(100);
 
         _calibrationShotsTable.removeColumn(_calibrationShotsTable.getColumnModel().getColumn(0));
         

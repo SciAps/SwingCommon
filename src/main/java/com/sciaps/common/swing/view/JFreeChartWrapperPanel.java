@@ -76,6 +76,19 @@ public final class JFreeChartWrapperPanel extends JPanel
         load(jFreeChart);
     }
 
+    public void createSpectrumChart(XYSeriesCollection dataset, String chartName, String xAxisName, String yAxisName)
+    {
+        JFreeChart jFreeChart = ChartFactory.createXYLineChart(chartName, xAxisName, yAxisName, dataset);
+
+        XYPlot plot = jFreeChart.getXYPlot();
+        XYLineAndShapeRenderer renderer = createXYLineAndShapeRenderer();
+        renderer.setBaseShapesVisible(false);
+
+        customizePlot(plot, renderer);
+
+        load(jFreeChart);
+    }
+    
     public ChartPanel getChartPanel()
     {
         return _chartPanel;
