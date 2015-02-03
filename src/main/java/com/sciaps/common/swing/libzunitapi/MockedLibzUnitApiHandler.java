@@ -280,8 +280,9 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
     {
         try
         {
-            URL url = ClassLoader.getSystemResource("standards.json");
-            String json = IOUtils.extractStringFromInputStream(url.openStream());
+            final File testDataDir = new File("testdata");
+            FileInputStream in = new FileInputStream(new File(testDataDir, "standards.json"));
+            String json = IOUtils.extractStringFromInputStream(in);
             Type type = new TypeToken<Map<String, Standard>>()
             {
             }.getType();
