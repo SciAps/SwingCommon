@@ -192,6 +192,15 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }
     }
 
+    private void saveModelIds(Iterator<Model> models) {
+        while(models.hasNext()) {
+            Model model = models.next();
+            for(IRCurve curve : model.irs.values()){
+                saveIds(curve);
+            }
+        }
+    }
+
     @Override
     public synchronized void pushToLibzUnit() throws IOException {
         String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
@@ -200,11 +209,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         createAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
         createAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
         createAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
+        saveModelIds(mObjTracker.getNewObjectsOfType(Model.class));
         createAll(Model.class, httpClient.mModelObjClient, mObjTracker);
 
         updateAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
         updateAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
         updateAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
+        saveModelIds(mObjTracker.getModifiedObjectsOfType(Model.class));
         updateAll(Model.class, httpClient.mModelObjClient, mObjTracker);
 
         deleteAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
