@@ -34,11 +34,12 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
     DBObjTracker mObjTracker;
 
     @Override
-    public Instrument connectToLibzUnit()
-    {
-        //mUnitManager.setLibzUnitUniqueIdentifier("UNIQUE_LIBZ_UNIT_ID_HERE");
-
-        return true;
+    public Instrument connectToLibzUnit() {
+        Instrument retval = new Instrument();
+        retval.id = "mockinstrument";
+        retval.version = "mock 2.1";
+        retval.versionCode = 500;
+        return retval;
     }
 
     @Override
@@ -230,36 +231,29 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public void getLIBZPixelSpectrum(final List<String> shotIds, DownloadCallback callback) throws IOException
-    {
+    public LIBZPixelSpectrum downloadShot(String shotId) throws IOException {
         final File testDataDir = new File("testdata");
-        for(String shotId : shotIds) {
-            LIBZPixelSpectrum data = mUnitManager.calShotIdCache.get(shotId);
-            if (data == null) {
-                File file = new File(testDataDir, shotId + ".json.gz");
-                InputStream in = new FileInputStream(file);
-                in = new GZIPInputStream(in);
-                JsonReader jsonReader = new JsonReader(new InputStreamReader(in));
-                try {
-                    Gson gson = new GsonBuilder().create();
-                    data = gson.fromJson(jsonReader, LIBZPixelSpectrum.class);
-                    mUnitManager.calShotIdCache.put(shotId, data);
-                } finally {
-                    IOUtils.safeClose(jsonReader);
-                }
-
-                try {
-                    //simulate download time
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        LIBZPixelSpectrum data = null;
+        if (data == null) {
+            File file = new File(testDataDir, shotId + ".json.gz");
+            InputStream in = new FileInputStream(file);
+            in = new GZIPInputStream(in);
+            JsonReader jsonReader = new JsonReader(new InputStreamReader(in));
+            try {
+                Gson gson = new GsonBuilder().create();
+                data = gson.fromJson(jsonReader, LIBZPixelSpectrum.class);
+            } finally {
+                IOUtils.safeClose(jsonReader);
             }
 
-            if(callback != null) {
-                callback.onData(shotId, data);
+            try {
+                //simulate download time
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+        return data;
     }
 
     private <T extends DBObj> void updateIds(Map<String, T> idMap) {

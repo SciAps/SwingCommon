@@ -24,5 +24,5 @@ public interface LibzUnitApiHandler
         void onData(String shotId, LIBZPixelSpectrum pixelSpectrum);
     }
 
-    void getLIBZPixelSpectrum(final List<String> shotIds, DownloadCallback cb) throws IOException;
+    public LIBZPixelSpectrum downloadShot(String shotId) throws IOException;
 }

@@ -1,5 +1,6 @@
 package com.sciaps.common.swing.libzunitapi;
 
+import com.devsmart.ThreadUtils;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -18,6 +19,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -224,26 +229,35 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         deleteAll(Model.class, httpClient.mModelObjClient, mObjTracker);
     }
 
+
+    private LIBZHttpClient mHttpClient;
+    private Future<?> mDeleteHttpClientTask;
+    private ScheduledExecutorService mFutureRunner = Executors.newSingleThreadScheduledExecutor();
+
     @Override
-    public synchronized void getLIBZPixelSpectrum(final List<String> shotIds, DownloadCallback callback) throws IOException {
-        LIBZHttpClient httpClient = null;
-        for(String shotId : shotIds) {
-
-            LIBZPixelSpectrum data = mUnitManager.calShotIdCache.get(shotId);
-            if(data == null) {
-                if(httpClient == null) {
-                    String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
-                    httpClient = new LIBZHttpClient(baseUrl);
-                }
-
-                data = httpClient.getCalibrationShot(shotId);
-                mUnitManager.calShotIdCache.put(shotId, data);
-            }
-
-            if(callback != null){
-                callback.onData(shotId, data);
-            }
+    public synchronized LIBZPixelSpectrum downloadShot(String shotId) throws IOException {
+        if(mHttpClient == null) {
+            String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
+            mHttpClient = new LIBZHttpClient(baseUrl);
         }
+        LIBZPixelSpectrum data = mHttpClient.getCalibrationShot(shotId);
+
+        if(mDeleteHttpClientTask != null) {
+            mDeleteHttpClientTask.cancel(false);
+        }
+
+        mDeleteHttpClientTask = mFutureRunner.schedule(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    mHttpClient = null;
+                    mDeleteHttpClientTask = null;
+                }
+            }
+        }, 1, TimeUnit.SECONDS);
+
+        return data;
+
     }
 
 }

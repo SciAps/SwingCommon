@@ -1,20 +1,11 @@
 package com.sciaps.common.swing.global;
 
-import com.sciaps.common.spectrum.LIBZPixelSpectrum;
-
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- *
- * @author sgowen
- */
-public final class LibzUnitManager {
+import com.sciaps.common.data.Instrument;
 
 
-    private String _libzUnitUniqueIdentifier;
+public class LibzUnitManager {
 
-    public Map<String, LIBZPixelSpectrum> calShotIdCache = new HashMap<String, LIBZPixelSpectrum>();
-
+    public Instrument instrument;
+    public CalibrationShotManager shotManager;
 
 }
