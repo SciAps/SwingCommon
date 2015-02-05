@@ -3,7 +3,6 @@ package com.sciaps.common.swing.libzunitapi;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.sciaps.common.data.*;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObj.ObjLoader;
@@ -62,11 +61,12 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
     @Override
-    public boolean connectToLibzUnit() {
+    public Instrument connectToLibzUnit() throws IOException {
         String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
-        //LIBZHttpClient = new LIBZHttpClient(baseUrl);
+        LIBZHttpClient httpClient = new LIBZHttpClient(baseUrl);
 
-        return true;
+        Instrument instrument = httpClient.getInstrument();
+        return instrument;
     }
 
 

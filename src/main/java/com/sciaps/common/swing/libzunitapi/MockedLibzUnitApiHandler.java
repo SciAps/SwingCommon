@@ -6,12 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.inject.Inject;
 import com.sciaps.common.AtomicElement;
-import com.sciaps.common.data.CalibrationShot;
-import com.sciaps.common.data.IRCurve;
-import com.sciaps.common.data.IRRatio;
-import com.sciaps.common.data.Model;
-import com.sciaps.common.data.Region;
-import com.sciaps.common.data.Standard;
+import com.sciaps.common.data.*;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
@@ -21,10 +16,7 @@ import com.sciaps.common.swing.utils.JsonUtils;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import org.apache.commons.lang.math.DoubleRange;
 
@@ -42,7 +34,7 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
     DBObjTracker mObjTracker;
 
     @Override
-    public boolean connectToLibzUnit()
+    public Instrument connectToLibzUnit()
     {
         //mUnitManager.setLibzUnitUniqueIdentifier("UNIQUE_LIBZ_UNIT_ID_HERE");
 
