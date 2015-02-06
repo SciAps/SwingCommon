@@ -30,7 +30,7 @@ public class CalibrationShotManager {
         mCacheDir = cacheDir;
         mCache = CacheBuilder
                 .newBuilder()
-                .maximumWeight(60 * 3 * 30)
+                .maximumSize(60 * 3 * 30)
                 .build(mLoader);
     }
 
@@ -51,6 +51,7 @@ public class CalibrationShotManager {
         public LIBZPixelSpectrum load(String key) throws Exception {
 
             LIBZPixelSpectrum retval = null;
+            key = key.replace(File.pathSeparatorChar, '_');
             String filename = String.format("%s.data", key);
             File file = new File(mCacheDir, filename);
             if(file.exists()){
@@ -62,6 +63,7 @@ public class CalibrationShotManager {
             }
 
             if(retval == null) {
+                logger.info("downloading shot: {}", key);
                 retval = mApiHandler.downloadShot(key);
                 ShotDataHelper.saveCompressedFile(retval, file);
             }
