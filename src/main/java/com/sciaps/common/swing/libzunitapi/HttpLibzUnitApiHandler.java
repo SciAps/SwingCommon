@@ -125,11 +125,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 
 
         Map<String, CalibrationShot> calibrationShots = httpClient.getCalibrationShots();
-        for (Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet()) {
-            CalibrationShot shot = entry.getValue();
-            shot.mId = entry.getKey();
-            shot.loadFields(objLoader);
-            mObjTracker.trackObject(shot);
+        if (calibrationShots != null) {
+            for (Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet()) {
+                CalibrationShot shot = entry.getValue();
+                shot.mId = entry.getKey();
+                shot.loadFields(objLoader);
+                mObjTracker.trackObject(shot);
+            }
         }
     }
 
@@ -164,36 +166,49 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     private static <T extends DBObj> void createAll(Class<T> type,
                                                     LIBZHttpClient.BasicObjectClient<T> client,
                                                     DBObjTracker tracker) throws IOException {
-        Iterator<T> it = tracker.getNewObjectsOfType(type);
+        ArrayList<T> list = new ArrayList<T>();
+        
+        Iterator<T> it = tracker.getNewObjectsOfType(type);        
         while(it.hasNext()) {
-            T obj = it.next();
+            list.add(it.next());
+        }
+        
+        for(T obj : list){
             saveIds(obj);
             obj.mId = client.createObject(obj);
             tracker.removeCreated(obj);
         }
-
+        
     }
 
     private static <T extends DBObj> void updateAll(Class<T> type,
                                                     LIBZHttpClient.BasicObjectClient<T> client,
                                                     DBObjTracker tracker) throws IOException {
+        ArrayList<T> list = new ArrayList<T>();
+        
         Iterator<T> it = tracker.getModifiedObjectsOfType(type);
         while(it.hasNext()) {
-            T obj = it.next();
-            saveIds(obj);
-            client.updateObject(obj.mId, obj);
-            tracker.removeModified(obj);
+            list.add(it.next());
         }
+        
+        for(T obj : list){
+            saveIds(obj);
+            client.updateObject(obj.mId, obj);           
+        }       
     }
 
     private static <T extends DBObj> void deleteAll(Class<T> type,
                                                     LIBZHttpClient.BasicObjectClient<T> client,
                                                     DBObjTracker tracker) throws IOException {
+        ArrayList<T> list = new ArrayList<T>();
+        
         Iterator<T> it = tracker.getDeletedObjectsOfType(type);
         while(it.hasNext()) {
-            T obj = it.next();
+            list.add(it.next());
+        }
+        
+        for(T obj : list){
             client.deleteObject(obj.mId);
-            tracker.removeDelete(obj);
         }
     }
 
@@ -208,25 +223,50 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 
     @Override
     public synchronized void pushToLibzUnit() throws IOException {
-        String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
-        LIBZHttpClient httpClient = new LIBZHttpClient(baseUrl);
 
-        createAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
-        createAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
-        createAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
-        saveModelIds(mObjTracker.getNewObjectsOfType(Model.class));
-        createAll(Model.class, httpClient.mModelObjClient, mObjTracker);
+        LIBZHttpClient httpClient = getClient();
 
-        updateAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
-        updateAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
-        updateAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
-        saveModelIds(mObjTracker.getModifiedObjectsOfType(Model.class));
-        updateAll(Model.class, httpClient.mModelObjClient, mObjTracker);
+        try {
+            createAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
+            createAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
+            createAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
+            saveModelIds(mObjTracker.getNewObjectsOfType(Model.class));
+            createAll(Model.class, httpClient.mModelObjClient, mObjTracker);
 
-        deleteAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
-        deleteAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
-        deleteAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
-        deleteAll(Model.class, httpClient.mModelObjClient, mObjTracker);
+            updateAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
+            updateAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
+            updateAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
+            saveModelIds(mObjTracker.getModifiedObjectsOfType(Model.class));
+            updateAll(Model.class, httpClient.mModelObjClient, mObjTracker);
+
+            deleteAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
+            deleteAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
+            deleteAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
+            deleteAll(Model.class, httpClient.mModelObjClient, mObjTracker);
+                        
+        } finally {
+            returnClient();
+        }
+    }
+    
+    private LIBZHttpClient getClient() {
+        if(mHttpClient == null) {
+            String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
+            mHttpClient = new LIBZHttpClient(baseUrl);
+        }
+        return mHttpClient;
+    }
+    
+    private void returnClient() {
+        mDeleteHttpClientTask = mFutureRunner.schedule(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    mHttpClient = null;
+                    mDeleteHttpClientTask = null;
+                }
+            }
+        }, 500, TimeUnit.MILLISECONDS);
     }
 
 
@@ -236,28 +276,17 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
 
     @Override
     public synchronized LIBZPixelSpectrum downloadShot(String shotId) throws IOException {
-        if(mHttpClient == null) {
-            String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
-            mHttpClient = new LIBZHttpClient(baseUrl);
-        }
-        LIBZPixelSpectrum data = mHttpClient.getCalibrationShot(shotId);
+        LIBZHttpClient client = getClient();
+        try {
+            LIBZPixelSpectrum data = client.getCalibrationShot(shotId);
 
-        if(mDeleteHttpClientTask != null) {
-            mDeleteHttpClientTask.cancel(false);
-        }
-
-        mDeleteHttpClientTask = mFutureRunner.schedule(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (HttpLibzUnitApiHandler.this) {
-                    mHttpClient = null;
-                    mDeleteHttpClientTask = null;
-                }
+            if(mDeleteHttpClientTask != null) {
+                mDeleteHttpClientTask.cancel(false);
             }
-        }, 1, TimeUnit.SECONDS);
-
-        return data;
-
+            return data;
+        }finally {
+            returnClient();   
+        }        
     }
 
 }
