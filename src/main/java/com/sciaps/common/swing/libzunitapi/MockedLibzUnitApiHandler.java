@@ -58,41 +58,6 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
             mObjTracker.trackObject(standard);
         }
 
-
-        Map<String, CalibrationShot> calibrationShots = new HashMap<String, CalibrationShot>();
-        {
-            CalibrationShot cal1 = new CalibrationShot();
-            cal1.displayName = "Shot Data 1";
-            cal1.timeStamp = new Date();
-            cal1.standard = standards.get("123456789");
-
-            CalibrationShot cal2 = new CalibrationShot();
-            cal2.displayName = "Shot Data 2";
-            cal2.timeStamp = new Date();
-            cal2.standard = standards.get("1");
-
-            CalibrationShot cal3 = new CalibrationShot();
-            cal3.displayName = "Shot Data 3";
-            cal3.timeStamp = new Date();
-            cal3.standard = standards.get("12");
-
-            CalibrationShot cal4 = new CalibrationShot();
-            cal4.displayName = "Shot Data 4";
-            cal4.timeStamp = new Date();
-            cal4.standard = standards.get("123");
-
-            calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e16", cal1);
-            calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e17", cal2);
-            calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e18", cal3);
-            calibrationShots.put("a4653d0b-4c1f-429b-9cb2-0403817f8e19", cal4);
-
-            for(Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet()) {
-                CalibrationShot standard = entry.getValue();
-                standard.mId = entry.getKey();
-                mObjTracker.trackObject(standard);
-            }
-        }
-
         Map<String, Region> regions = new HashMap<String, Region>();
         {
 
@@ -283,6 +248,11 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler
         {
             throw new RuntimeException("ERROR");
         }
+    }
+
+    @Override
+    public Collection<LIBZTest> getTestsForStandard(String standardId) throws IOException {
+        return null;
     }
 
 

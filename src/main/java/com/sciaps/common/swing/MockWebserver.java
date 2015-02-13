@@ -7,7 +7,6 @@ import com.devsmart.miniweb.handlers.controller.Controller;
 import com.devsmart.miniweb.handlers.controller.RequestMapping;
 import com.devsmart.miniweb.utils.RequestMethod;
 import com.sciaps.common.swing.model.IsAlive;
-import com.sciaps.common.webserver.FSCalibrationController;
 import com.sciaps.common.webserver.FSIRatioController;
 import com.sciaps.common.webserver.FSModelController;
 import com.sciaps.common.webserver.FSRegionController;
@@ -42,12 +41,11 @@ public final class MockWebserver
         FSRegionController fsRegionController = new FSRegionController(new File(baseDir, "regions.json"));
         FSIRatioController fsiRatioController = new FSIRatioController(new File(baseDir, "iratios.json"));
         FSModelController fsModelController = new FSModelController(new File(baseDir, "models.json"));
-        FSCalibrationController fsCalibrationController = new FSCalibrationController(new File(baseDir, "calibrationShot.json"), new File(baseDir, "calibrationShots"));
 
         Server server = new ServerBuilder()
                 .port(portNumber)
                 .mapController("/api", new LIBZMockController())
-                .mapController("/data", fsStandardsController, fsRegionController, fsiRatioController, fsModelController, fsCalibrationController)
+                .mapController("/data", fsStandardsController, fsRegionController, fsiRatioController, fsModelController)
                 .create();
 
         server.start();

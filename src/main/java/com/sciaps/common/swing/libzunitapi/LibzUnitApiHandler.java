@@ -1,9 +1,13 @@
 package com.sciaps.common.swing.libzunitapi;
 
 import com.sciaps.common.data.Instrument;
+import com.sciaps.common.data.LIBZTest;
+import com.sciaps.common.data.LaserShot;
+import com.sciaps.common.data.Standard;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,9 +24,10 @@ public interface LibzUnitApiHandler
     void pushToLibzUnit() throws IOException;
 
 
-    interface DownloadCallback {
-        void onData(String shotId, LIBZPixelSpectrum pixelSpectrum);
-    }
+    LIBZPixelSpectrum downloadShot(String shotId) throws IOException;
 
-    public LIBZPixelSpectrum downloadShot(String shotId) throws IOException;
+    Collection<LIBZTest> getTestsForStandard(String standardid) throws IOException;
+
+
+
 }

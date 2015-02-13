@@ -81,10 +81,14 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
                                                          SimpleIdMapObjLoader objLoader) throws IOException {
         for(String id : client.getIdList()){
             T obj = client.getSingleObject(id);
-            obj.mId = id;
-            objLoader.idMap.put(id, obj);
-            tracker.trackObject(obj);
-            obj.loadFields(objLoader);
+            if(obj != null) {
+                obj.mId = id;
+                objLoader.idMap.put(id, obj);
+                tracker.trackObject(obj);
+                obj.loadFields(objLoader);
+            } else {
+                logger.warn("no {} with id: {}", type.getSimpleName(), id);
+            }
         }
     }
 
@@ -120,17 +124,6 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
             Model model = it.next();
             for(IRCurve curve : model.irs.values()) {
                 curve.loadFields(objLoader);
-            }
-        }
-
-
-        Map<String, CalibrationShot> calibrationShots = httpClient.getCalibrationShots();
-        if (calibrationShots != null) {
-            for (Map.Entry<String, CalibrationShot> entry : calibrationShots.entrySet()) {
-                CalibrationShot shot = entry.getValue();
-                shot.mId = entry.getKey();
-                shot.loadFields(objLoader);
-                mObjTracker.trackObject(shot);
             }
         }
     }
@@ -278,7 +271,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     public synchronized LIBZPixelSpectrum downloadShot(String shotId) throws IOException {
         LIBZHttpClient client = getClient();
         try {
-            LIBZPixelSpectrum data = client.getCalibrationShot(shotId);
+            LIBZPixelSpectrum data = client.getShotSpectrum(shotId);
 
             if(mDeleteHttpClientTask != null) {
                 mDeleteHttpClientTask.cancel(false);
@@ -287,6 +280,17 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
         }finally {
             returnClient();   
         }        
+    }
+
+    @Override
+    public Collection<LIBZTest> getTestsForStandard(String standardId) throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            return client.getTestsForStandard(standardId);
+        } finally {
+            returnClient();
+        }
+
     }
 
 }
