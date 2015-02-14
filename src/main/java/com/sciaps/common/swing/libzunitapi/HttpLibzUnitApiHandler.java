@@ -1,6 +1,5 @@
 package com.sciaps.common.swing.libzunitapi;
 
-import com.devsmart.ThreadUtils;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -10,9 +9,11 @@ import com.sciaps.common.objtracker.DBObj.ObjLoader;
 import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.objtracker.IdReference;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
+import com.sciaps.common.swing.events.PushEvent;
 import com.sciaps.common.swing.events.SetIPAddressEvent;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.webserver.LIBZHttpClient;
+import jdistlib.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,25 +25,131 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- *
- * @author sgowen
- */
-public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
-{
+
+public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     static Logger logger = LoggerFactory.getLogger(HttpLibzUnitApiHandler.class);
 
-    private static String getLibzUnitApiBaseUrl(String ipAddress)
-    {
+    private interface GetAllIds {
+        Collection<String> get() throws IOException;
+    }
+
+    private final Map<Class, GetAllIds> mGetAllIdsFunctions = new HashMap<Class, GetAllIds>();
+
+    private interface LoadObject<T extends DBObj> {
+        T get(String id) throws IOException;
+    }
+
+    private final Map<Class, LoadObject> mGetObjLoadFunctions = new HashMap<Class, LoadObject>();
+
+    public HttpLibzUnitApiHandler() {
+
+        mGetAllIdsFunctions.put(Standard.class, new GetAllIds() {
+            @Override
+            public Collection<String> get() throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.mStandardsObjClient.getIdList();
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+        mGetAllIdsFunctions.put(Region.class, new GetAllIds() {
+            @Override
+            public Collection<String> get() throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.mRegionObjClient.getIdList();
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+        mGetAllIdsFunctions.put(IRRatio.class, new GetAllIds() {
+            @Override
+            public Collection<String> get() throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.mIRObjClient.getIdList();
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+        mGetAllIdsFunctions.put(Model.class, new GetAllIds() {
+            @Override
+            public Collection<String> get() throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.mModelObjClient.getIdList();
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+        ///Loaders
+        mGetObjLoadFunctions.put(Standard.class, new LoadObject<Standard>() {
+            @Override
+            public Standard get(String id) throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.mStandardsObjClient.getSingleObject(id);
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+        mGetObjLoadFunctions.put(Region.class, new LoadObject<Region>() {
+            @Override
+            public Region get(String id) throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.mRegionObjClient.getSingleObject(id);
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+        mGetObjLoadFunctions.put(IRRatio.class, new LoadObject<IRRatio>() {
+            @Override
+            public IRRatio get(String id) throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.mIRObjClient.getSingleObject(id);
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+        mGetObjLoadFunctions.put(Model.class, new LoadObject() {
+            @Override
+            public DBObj get(String id) throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.mModelObjClient.getSingleObject(id);
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+
+    }
+
+    private static String getLibzUnitApiBaseUrl(String ipAddress) {
         final String urlBaseString = "http://" + ipAddress + ":9000";
 
         return urlBaseString;
     }
 
-
-    @Inject
-    LibzUnitManager mUnitManager;
 
     @Inject
     DBObjTracker mObjTracker;
@@ -75,57 +182,17 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler
     }
 
 
-    private static <T extends DBObj> void loadAllObjects(Class<T> type,
-                                                         LIBZHttpClient.BasicObjectClient<T> client,
-                                                         DBObjTracker tracker,
-                                                         SimpleIdMapObjLoader objLoader) throws IOException {
-        for(String id : client.getIdList()){
-            T obj = client.getSingleObject(id);
-            if(obj != null) {
-                obj.mId = id;
-                objLoader.idMap.put(id, obj);
-                tracker.trackObject(obj);
-                obj.loadFields(objLoader);
-            } else {
-                logger.warn("no {} with id: {}", type.getSimpleName(), id);
-            }
-        }
-    }
 
-    private static class SimpleIdMapObjLoader implements ObjLoader {
-
-        public final HashMap<String, DBObj> idMap = new HashMap<String, DBObj>();
-
-        @Override
-        public Object load(String id, Class<?> type) {
-            Object retval = idMap.get(id);
-            if(retval == null){
-                logger.warn("could not find object for id: {}", id);
-            }
-            return retval;
-        }
+    @Override
+    public synchronized Collection<String> getAllIds(Class<? extends DBObj> classType) throws IOException {
+        Collection<String> retval = mGetAllIdsFunctions.get(classType).get();
+        return retval;
     }
 
     @Override
-    public synchronized void pullFromLibzUnit() throws IOException {
-        String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
-        LIBZHttpClient httpClient = new LIBZHttpClient(baseUrl);
-
-
-        SimpleIdMapObjLoader objLoader = new SimpleIdMapObjLoader();
-
-        loadAllObjects(Standard.class, httpClient.mStandardsObjClient, mObjTracker, objLoader);
-        loadAllObjects(Region.class, httpClient.mRegionObjClient, mObjTracker, objLoader);
-        loadAllObjects(IRRatio.class, httpClient.mIRObjClient, mObjTracker, objLoader);
-        loadAllObjects(Model.class, httpClient.mModelObjClient, mObjTracker, objLoader);
-
-        Iterator<Model> it = mObjTracker.getAllObjectsOfType(Model.class);
-        while(it.hasNext()) {
-            Model model = it.next();
-            for(IRCurve curve : model.irs.values()) {
-                curve.loadFields(objLoader);
-            }
-        }
+    public <T extends DBObj> T loadObject(Class<T> classType, String id) throws IOException {
+        DBObj retval = mGetObjLoadFunctions.get(classType).get(id);
+        return (T) retval;
     }
 
     private static void saveIds(DBObj obj) {
