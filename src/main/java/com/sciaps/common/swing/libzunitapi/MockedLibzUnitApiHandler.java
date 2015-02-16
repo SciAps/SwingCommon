@@ -17,10 +17,7 @@ import org.apache.commons.lang.math.DoubleRange;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 
@@ -117,6 +114,10 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
         return null;
     }
 
+    @Override
+    public List<LIBZTest> getTestsSince(long unixTimestamp) throws IOException {
+        return null;
+    }
 
 
 }

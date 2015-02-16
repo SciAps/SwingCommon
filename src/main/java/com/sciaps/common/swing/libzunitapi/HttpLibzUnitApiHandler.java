@@ -374,7 +374,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public Collection<LIBZTest> getTestsForStandard(String standardId) throws IOException {
+    public synchronized Collection<LIBZTest> getTestsForStandard(String standardId) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             return client.getTestsForStandard(standardId);
@@ -382,6 +382,16 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             returnClient();
         }
 
+    }
+
+    @Override
+    public synchronized List<LIBZTest> getTestsSince(long unixTimestamp) throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            return client.getTestsSince(unixTimestamp);
+        } finally {
+            returnClient();
+        }
     }
 
 }

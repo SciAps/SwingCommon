@@ -7,6 +7,7 @@ import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 
 public interface LibzUnitApiHandler {
@@ -21,6 +22,7 @@ public interface LibzUnitApiHandler {
     LIBZPixelSpectrum downloadShot(String shotId) throws IOException;
 
     Collection<LIBZTest> getTestsForStandard(String standardid) throws IOException;
+    List<LIBZTest> getTestsSince(long unixTimestamp) throws IOException;
 
 
 
