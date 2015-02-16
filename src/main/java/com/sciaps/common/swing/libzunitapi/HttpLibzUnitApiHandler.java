@@ -141,6 +141,30 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
+        mGetObjLoadFunctions.put(LaserShot.class, new LoadObject() {
+            @Override
+            public DBObj get(String id) throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.getShot(id);
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
+        mGetObjLoadFunctions.put(LIBZTest.class, new LoadObject() {
+            @Override
+            public DBObj get(String id) throws IOException {
+                getClient();
+                try {
+                    return mHttpClient.getTest(id);
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
 
     }
 
