@@ -141,18 +141,6 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
-        mGetObjLoadFunctions.put(LaserShot.class, new LoadObject() {
-            @Override
-            public DBObj get(String id) throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.getShot(id);
-                } finally {
-                    returnClient();
-                }
-            }
-        });
-
         mGetObjLoadFunctions.put(LIBZTest.class, new LoadObject() {
             @Override
             public DBObj get(String id) throws IOException {
@@ -359,10 +347,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     private ScheduledExecutorService mFutureRunner = Executors.newSingleThreadScheduledExecutor();
 
     @Override
-    public synchronized LIBZPixelSpectrum downloadShot(String shotId) throws IOException {
+    public synchronized LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException {
         LIBZHttpClient client = getClient();
         try {
-            LIBZPixelSpectrum data = client.getShotSpectrum(shotId);
+            LIBZPixelSpectrum data = client.getShotSpectrum(testId, shotNum);
 
             if(mDeleteHttpClientTask != null) {
                 mDeleteHttpClientTask.cancel(false);

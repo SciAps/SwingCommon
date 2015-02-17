@@ -8,13 +8,11 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.sciaps.common.data.Instrument;
 import com.sciaps.common.data.LIBZTest;
-import com.sciaps.common.data.LaserShot;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.objtracker.DBObjLoader;
 import com.sciaps.common.swing.events.PullEvent;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -59,17 +57,6 @@ public class LibzUnitManager {
 
     public Collection<LIBZTest> getTestsForStandard(Standard standard) throws Exception {
         return mStandardTests.get(standard.mId);
-    }
-
-    public Collection<LaserShot> getShotsForStandard(Standard standard) throws Exception {
-        ArrayList<LaserShot> retval = new ArrayList<LaserShot>(100);
-
-        for(LIBZTest test : getTestsForStandard(standard)) {
-            mObjLoader.deepLoad(test);
-            retval.addAll(test.shots);
-        }
-
-        return retval;
     }
 
     public int getNumberShotsForStandard(Standard standard) throws Exception {

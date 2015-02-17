@@ -55,11 +55,11 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public LIBZPixelSpectrum downloadShot(String shotId) throws IOException {
+    public LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException {
         final File testDataDir = new File("testdata");
         LIBZPixelSpectrum data = null;
         if (data == null) {
-            File file = new File(testDataDir, shotId + ".json.gz");
+            File file = new File(testDataDir, testId + ".json.gz");
             InputStream in = new FileInputStream(file);
             in = new GZIPInputStream(in);
             JsonReader jsonReader = new JsonReader(new InputStreamReader(in));

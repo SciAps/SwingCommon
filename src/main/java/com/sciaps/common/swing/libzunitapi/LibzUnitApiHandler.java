@@ -19,7 +19,7 @@ public interface LibzUnitApiHandler {
 
     <T extends DBObj> T loadObject(Class<T> classType, String id) throws IOException;
 
-    LIBZPixelSpectrum downloadShot(String shotId) throws IOException;
+    LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException;
 
     Collection<LIBZTest> getTestsForStandard(String standardid) throws IOException;
     List<LIBZTest> getTestsSince(long unixTimestamp) throws IOException;

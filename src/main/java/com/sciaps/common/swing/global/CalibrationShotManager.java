@@ -1,6 +1,7 @@
 package com.sciaps.common.swing.global;
 
 
+import com.google.common.base.Objects;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -19,9 +20,49 @@ public class CalibrationShotManager {
 
     static Logger logger = LoggerFactory.getLogger(CalibrationShotManager.class);
 
+    private String encodeKey(String testId, int shotNum) {
+        return String.format("%s_%d", testId, shotNum);
+    }
+
+
+    private static class Key {
+        String testId;
+        int shotNum;
+
+        public Key(String testId, int shotNum) {
+            this.testId = testId;
+            this.shotNum = shotNum;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            boolean retval = false;
+            if(obj instanceof Key) {
+                Key other = (Key)obj;
+                retval = Objects.equal(testId, other.testId)
+                    && shotNum == other.shotNum;
+            }
+            return retval;
+        }
+
+        @Override
+        public int hashCode() {
+            int retval = Objects.hashCode(testId, shotNum);
+            return retval;
+        }
+
+        @Override
+        public String toString() {
+            return Objects.toStringHelper(this)
+                    .add("test", testId)
+                    .add("shot", shotNum)
+                    .toString();
+        }
+    }
+
 
     private final File mCacheDir;
-    private LoadingCache<String, LIBZPixelSpectrum> mCache;
+    private LoadingCache<Key, LIBZPixelSpectrum> mCache;
 
     @Inject
     LibzUnitApiHandler mApiHandler;
@@ -35,10 +76,10 @@ public class CalibrationShotManager {
     }
 
 
-    public LIBZPixelSpectrum getShot(String id) {
+    public LIBZPixelSpectrum getShot(String testId, int shotNum) {
         LIBZPixelSpectrum retval = null;
         try {
-            retval = mCache.get(id);
+            retval = mCache.get(new Key(testId, shotNum));
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
@@ -46,14 +87,15 @@ public class CalibrationShotManager {
     }
 
 
-    private CacheLoader<? super String, LIBZPixelSpectrum> mLoader = new CacheLoader<String, LIBZPixelSpectrum>() {
+    private CacheLoader<? super Key, LIBZPixelSpectrum> mLoader = new CacheLoader<Key, LIBZPixelSpectrum>() {
         @Override
-        public LIBZPixelSpectrum load(String key) throws Exception {
+        public LIBZPixelSpectrum load(Key key) throws Exception {
 
             LIBZPixelSpectrum retval = null;
-            key = key.replace(File.pathSeparatorChar, '_');
-            String filename = String.format("%s.data", key);
-            File file = new File(mCacheDir, filename);
+
+            final File testDir = new File(mCacheDir, key.testId);
+            testDir.mkdirs();
+            File file = new File(testDir, String.format("shot_%d.dat", key.shotNum));
             if(file.exists()){
                 try {
                     retval = ShotDataHelper.loadCompressedFile(file);
@@ -64,7 +106,7 @@ public class CalibrationShotManager {
 
             if(retval == null) {
                 logger.info("downloading shot: {}", key);
-                retval = mApiHandler.downloadShot(key);
+                retval = mApiHandler.downloadShot(key.testId, key.shotNum);
                 ShotDataHelper.saveCompressedFile(retval, file);
             }
 
