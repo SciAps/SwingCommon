@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.inject.Inject;
-import com.sciaps.common.AtomicElement;
 import com.sciaps.common.data.*;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjTracker;
@@ -13,7 +12,6 @@ import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.utils.IOUtils;
 import com.sciaps.common.swing.utils.JsonUtils;
-import org.apache.commons.lang.math.DoubleRange;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -110,7 +108,7 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public Collection<LIBZTest> getTestsForStandard(String standardId) throws IOException {
+    public Collection<String> getTestsForStandard(String standardId) throws IOException {
         return null;
     }
 

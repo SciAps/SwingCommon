@@ -21,7 +21,7 @@ public interface LibzUnitApiHandler {
 
     LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException;
 
-    Collection<LIBZTest> getTestsForStandard(String standardid) throws IOException;
+    Collection<String> getTestsForStandard(String standardid) throws IOException;
     List<LIBZTest> getTestsSince(long unixTimestamp) throws IOException;
 
 

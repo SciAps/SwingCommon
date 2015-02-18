@@ -49,7 +49,12 @@ public class LibzUnitManager {
                 .build(new CacheLoader<String, Collection<LIBZTest>>() {
                     @Override
                     public Collection<LIBZTest> load(String key) throws Exception {
-                        return mApiHandler.getTestsForStandard(key);
+                        Collection<String> retval = mApiHandler.getTestsForStandard(key);
+                        ArrayList<LIBZTest> tests = new ArrayList<LIBZTest>(retval.size());
+                        for(String testId : retval) {
+                            tests.add(mObjLoader.deepLoad(LIBZTest.class, testId));
+                        }
+                        return tests;
                     }
                 });
     }
@@ -62,7 +67,7 @@ public class LibzUnitManager {
     public int getNumberShotsForStandard(Standard standard) throws Exception {
         int retval = 0;
         for(LIBZTest test : getTestsForStandard(standard)) {
-            retval += test.mFieldIds.get("shots").length;
+            retval += test.getNumShots();
         }
         return retval;
     }

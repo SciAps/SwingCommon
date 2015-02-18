@@ -5,15 +5,11 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.sciaps.common.data.*;
 import com.sciaps.common.objtracker.DBObj;
-import com.sciaps.common.objtracker.DBObj.ObjLoader;
 import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.objtracker.IdReference;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
-import com.sciaps.common.swing.events.PushEvent;
 import com.sciaps.common.swing.events.SetIPAddressEvent;
-import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.webserver.LIBZHttpClient;
-import jdistlib.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -362,7 +358,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public synchronized Collection<LIBZTest> getTestsForStandard(String standardId) throws IOException {
+    public synchronized Collection<String> getTestsForStandard(String standardId) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             return client.getTestsForStandard(standardId);
