@@ -1,13 +1,11 @@
 package com.sciaps.common.swing;
 
-import com.sciaps.common.algorithms.BackgroundModel;
 import com.sciaps.common.spectrum.Spectrum;
 import org.apache.commons.lang.math.DoubleRange;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.jfree.data.xy.AbstractXYDataset;
 
 import java.util.ArrayList;
-import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 
 public class SpectrumXYDataset extends AbstractXYDataset {
 
@@ -15,8 +13,6 @@ public class SpectrumXYDataset extends AbstractXYDataset {
 
     private final ArrayList<Spectrum> mSpectrum = new ArrayList<Spectrum>();
     private final ArrayList<String> mSpectrumKey = new ArrayList<String>();
-
-    private final ArrayList<PolynomialSplineFunction> mPolynomialSplineFunc = new ArrayList<PolynomialSplineFunction>();
 
     public void addSpectrum(Spectrum spectrum, String name) {
         if (spectrum == null || name == null) {
@@ -33,7 +29,6 @@ public class SpectrumXYDataset extends AbstractXYDataset {
         if (i >= 0) {
             mSpectrum.remove(i);
             mSpectrumKey.remove(i);
-            mPolynomialSplineFunc.remove(i);
             fireDatasetChanged();
         }
     }
