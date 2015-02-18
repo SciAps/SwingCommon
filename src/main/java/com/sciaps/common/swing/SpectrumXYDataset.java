@@ -15,25 +15,22 @@ public class SpectrumXYDataset extends AbstractXYDataset {
 
     private final ArrayList<Spectrum> mSpectrum = new ArrayList<Spectrum>();
     private final ArrayList<String> mSpectrumKey = new ArrayList<String>();
-    
-    public boolean mBackgroundRemovalOn = false;
+
     private final ArrayList<PolynomialSplineFunction> mPolynomialSplineFunc = new ArrayList<PolynomialSplineFunction>();
 
     public void addSpectrum(Spectrum spectrum, String name) {
-        if(spectrum == null || name == null) {
+        if (spectrum == null || name == null) {
             return;
         }
         mSpectrum.add(spectrum);
         mSpectrumKey.add(name);
 
-        createPolynomialSpineFunc(spectrum);
-                
         fireDatasetChanged();
     }
 
     public void removeSpectrum(Spectrum spectrum) {
         int i = mSpectrum.indexOf(spectrum);
-        if(i >= 0) {
+        if (i >= 0) {
             mSpectrum.remove(i);
             mSpectrumKey.remove(i);
             mPolynomialSplineFunc.remove(i);
@@ -41,11 +38,6 @@ public class SpectrumXYDataset extends AbstractXYDataset {
         }
     }
 
-    private void createPolynomialSpineFunc(Spectrum spectrum) {
-        BackgroundModel bgModel = new BackgroundModel();
-        mPolynomialSplineFunc.add(bgModel.getModelBaseline(spectrum));
-    }
-    
     @Override
     public int getSeriesCount() {
         return mSpectrum.size();
@@ -80,30 +72,7 @@ public class SpectrumXYDataset extends AbstractXYDataset {
         double x = range.getMinimumDouble() + item / SampleRate;
 
         UnivariateFunction ivf = spectrum.getIntensityFunction();
-        
-        if (mBackgroundRemovalOn) {
-            
-            int i = mSpectrum.indexOf(spectrum);
-            PolynomialSplineFunction polynomialSplineFunc = mPolynomialSplineFunc.get(i);
-            
-            double yVal = 0;
-            double[] knots = polynomialSplineFunc.getKnots();
-            
-            // if the left end of original wavelength is smaller than the left end of baseline wavelenght
-            // subtraction using the first lowest point in the baseline
-            if (x < knots[0]) {
-                yVal = ivf.value(x) - polynomialSplineFunc.value(knots[0]);
-            } else if (x >= knots[0] && x <= knots[knots.length - 1]) {
-                yVal = ivf.value(x) - polynomialSplineFunc.value(x);
-            } else {
-                // if the right end of original wavelength is greater than the right end of baseline wavelenght
-                // subtraction using the last lowest point in the baseline
-                yVal = ivf.value(x) - polynomialSplineFunc.value(knots[knots.length - 1]);
-            }
 
-            return yVal;
-        } else {
-            return ivf.value(x);
-        }
+        return ivf.value(x);
     }
 }
