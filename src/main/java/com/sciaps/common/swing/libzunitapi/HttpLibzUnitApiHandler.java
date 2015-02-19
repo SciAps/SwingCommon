@@ -369,7 +369,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public synchronized List<LIBZTest> getTestsSince(long unixTimestamp) throws IOException {
+    public synchronized List<String> getTestsSince(long unixTimestamp) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             return client.getTestsSince(unixTimestamp);

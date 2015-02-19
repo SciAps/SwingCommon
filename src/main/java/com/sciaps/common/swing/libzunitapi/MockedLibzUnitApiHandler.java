@@ -113,7 +113,7 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public List<LIBZTest> getTestsSince(long unixTimestamp) throws IOException {
+    public List<String> getTestsSince(long unixTimestamp) throws IOException {
         return null;
     }
 

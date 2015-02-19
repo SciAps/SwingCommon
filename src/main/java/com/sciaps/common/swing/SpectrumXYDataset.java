@@ -11,26 +11,31 @@ public class SpectrumXYDataset extends AbstractXYDataset {
 
     private static final double SampleRate = 30;
 
-    private final ArrayList<Spectrum> mSpectrum = new ArrayList<Spectrum>();
-    private final ArrayList<String> mSpectrumKey = new ArrayList<String>();
+    private ArrayList<Spectrum> mSpectrum = new ArrayList<Spectrum>();
+    private ArrayList<String> mSpectrumKey = new ArrayList<String>();
 
     public void addSpectrum(Spectrum spectrum, String name) {
-        if (spectrum == null || name == null) {
+        if(spectrum == null || name == null) {
             return;
         }
         mSpectrum.add(spectrum);
         mSpectrumKey.add(name);
-
         fireDatasetChanged();
     }
 
     public void removeSpectrum(Spectrum spectrum) {
         int i = mSpectrum.indexOf(spectrum);
-        if (i >= 0) {
+        if(i >= 0) {
             mSpectrum.remove(i);
             mSpectrumKey.remove(i);
             fireDatasetChanged();
         }
+    }
+
+    public void removeAll() {
+        mSpectrum.clear();
+        mSpectrumKey.clear();
+        fireDatasetChanged();
     }
 
     @Override
@@ -67,7 +72,6 @@ public class SpectrumXYDataset extends AbstractXYDataset {
         double x = range.getMinimumDouble() + item / SampleRate;
 
         UnivariateFunction ivf = spectrum.getIntensityFunction();
-
         return ivf.value(x);
     }
 }
