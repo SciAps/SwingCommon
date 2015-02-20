@@ -1,9 +1,9 @@
 package com.sciaps.common.swing.libzunitapi;
 
 import com.sciaps.common.data.Instrument;
-import com.sciaps.common.data.LIBZTest;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
+import com.sciaps.common.webserver.ILaserController.RasterParams;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -23,7 +23,5 @@ public interface LibzUnitApiHandler {
 
     Collection<String> getTestsForStandard(String standardid) throws IOException;
     List<String> getTestsSince(long unixTimestamp) throws IOException;
-
-
-
+    List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException;
 }

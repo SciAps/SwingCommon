@@ -9,6 +9,7 @@ import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.objtracker.IdReference;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.events.SetIPAddressEvent;
+import com.sciaps.common.webserver.ILaserController.RasterParams;
 import com.sciaps.common.webserver.LIBZHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -377,5 +378,14 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             returnClient();
         }
     }
-
+    
+    @Override
+    public synchronized List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            return client.rasterTest(params);
+        } finally {
+            returnClient();
+        }
+    }
 }

@@ -12,6 +12,7 @@ import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.global.LibzUnitManager;
 import com.sciaps.common.swing.utils.IOUtils;
 import com.sciaps.common.swing.utils.JsonUtils;
+import com.sciaps.common.webserver.ILaserController;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -117,5 +118,9 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
         return null;
     }
 
+    @Override
+    public synchronized List<LIBZPixelSpectrum> rasterTest(ILaserController.RasterParams params) throws IOException {
+        return null;
+    }
 
 }
