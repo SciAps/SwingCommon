@@ -16,7 +16,7 @@ public class ModelCellRenderer extends JLabel implements ListCellRenderer<Model>
         if(model != null) {
             setText(model.name);
         } else {
-            setText("null");
+            setText("-- Select A Calibration --");
         }
 
         return this;
