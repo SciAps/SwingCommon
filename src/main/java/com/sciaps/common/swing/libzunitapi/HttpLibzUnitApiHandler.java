@@ -161,6 +161,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             public void create(LIBZTest obj) throws IOException {
                 getClient();
                 try {
+                    saveIds(obj);
                     String id = mHttpClient.mTestObjClient.createObject(obj);
                     obj.mId = id;
                 } finally {
