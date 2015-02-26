@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class CalibrationShotManager {
@@ -63,6 +64,7 @@ public class CalibrationShotManager {
 
     private final File mCacheDir;
     private LoadingCache<Key, LIBZPixelSpectrum> mCache;
+    private HashMap<Key, LIBZPixelSpectrum> mMemoryStore = new HashMap<Key, LIBZPixelSpectrum>();
 
     @Inject
     LibzUnitApiHandler mApiHandler;
@@ -77,13 +79,21 @@ public class CalibrationShotManager {
 
 
     public LIBZPixelSpectrum getShot(String testId, int shotNum) {
-        LIBZPixelSpectrum retval = null;
-        try {
-            retval = mCache.get(new Key(testId, shotNum));
-        } catch (ExecutionException e) {
-            logger.error("", e);
+        final Key key = new Key(testId, shotNum);
+        LIBZPixelSpectrum retval = mMemoryStore.get(key);
+        if(retval == null) {
+            try {
+                retval = mCache.get(key);
+            } catch (ExecutionException e) {
+                logger.error("", e);
+            }
         }
         return retval;
+    }
+
+    public void storeShot(String testId, int shotNum, LIBZPixelSpectrum data) {
+        Key key = new Key(testId, shotNum);
+        mMemoryStore.put(key, data);
     }
 
 

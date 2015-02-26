@@ -39,6 +39,12 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     private final Map<Class, LoadObject> mGetObjLoadFunctions = new HashMap<Class, LoadObject>();
 
+    private interface CreateObject<T extends DBObj> {
+        void create(T obj) throws IOException;
+    }
+
+    private final Map<Class, CreateObject> mCreateObjFunctions = new HashMap<Class, CreateObject>();
+
     public HttpLibzUnitApiHandler() {
 
         mGetAllIdsFunctions.put(Standard.class, new GetAllIds() {
@@ -150,6 +156,19 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
+        mCreateObjFunctions.put(LIBZTest.class, new CreateObject<LIBZTest>() {
+            @Override
+            public void create(LIBZTest obj) throws IOException {
+                getClient();
+                try {
+                    String id = mHttpClient.mTestObjClient.createObject(obj);
+                    obj.mId = id;
+                } finally {
+                    returnClient();
+                }
+            }
+        });
+
 
     }
 
@@ -202,6 +221,21 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     public <T extends DBObj> T loadObject(Class<T> classType, String id) throws IOException {
         DBObj retval = mGetObjLoadFunctions.get(classType).get(id);
         return (T) retval;
+    }
+
+    @Override
+    public <T extends DBObj> void createNewObject(T newObj) throws IOException {
+        mCreateObjFunctions.get(newObj.getClass()).create(newObj);
+    }
+
+    @Override
+    public void uploadShot(String testId, int shotNum, LIBZPixelSpectrum data) throws IOException {
+        getClient();
+        try {
+            mHttpClient.postShotSpectrum(testId, shotNum, data);
+        } finally {
+            returnClient();
+        }
     }
 
     private static void saveIds(DBObj obj) {

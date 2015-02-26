@@ -54,6 +54,16 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
+    public <T extends DBObj> void createNewObject(T newObj) throws IOException {
+
+    }
+
+    @Override
+    public void uploadShot(String testId, int shotNum, LIBZPixelSpectrum data) throws IOException {
+
+    }
+
+    @Override
     public LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException {
         final File testDataDir = new File("testdata");
         LIBZPixelSpectrum data = null;

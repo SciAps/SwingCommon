@@ -18,6 +18,9 @@ public interface LibzUnitApiHandler {
     Collection<String> getAllIds(Class<? extends DBObj> classType) throws IOException;
 
     <T extends DBObj> T loadObject(Class<T> classType, String id) throws IOException;
+    <T extends DBObj> void createNewObject(T newObj) throws IOException;
+
+    void uploadShot(String testId, int shotNum, LIBZPixelSpectrum data) throws IOException;
 
     LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException;
 
