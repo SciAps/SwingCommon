@@ -256,7 +256,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
                         }
                         ids = idlist.toArray(new String[idlist.size()]);
                     } else {
-                        ids = new String[]{((DBObj)fieldValue).mId};
+                        if(fieldValue != null) {
+                            ids = new String[]{((DBObj) fieldValue).mId};
+                        } else {
+                            ids = new String[]{null};
+                        }
                     }
                     obj.mFieldIds.put(fieldName, ids);
                 } catch (IllegalAccessException e) {
