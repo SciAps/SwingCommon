@@ -81,7 +81,7 @@ public class CalibrationShotManager {
         try {
             retval = mCache.get(new Key(testId, shotNum));
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            logger.error("", e);
         }
         return retval;
     }

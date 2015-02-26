@@ -143,7 +143,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             public DBObj get(String id) throws IOException {
                 getClient();
                 try {
-                    return mHttpClient.getTest(id);
+                    return mHttpClient.mTestObjClient.getSingleObject(id);
                 } finally {
                     returnClient();
                 }
@@ -301,23 +301,26 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             createAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
             saveModelIds(mObjTracker.getNewObjectsOfType(Model.class));
             createAll(Model.class, httpClient.mModelObjClient, mObjTracker);
+            createAll(LIBZTest.class, httpClient.mTestObjClient, mObjTracker);
 
             updateAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
             updateAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
             updateAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
             saveModelIds(mObjTracker.getModifiedObjectsOfType(Model.class));
             updateAll(Model.class, httpClient.mModelObjClient, mObjTracker);
+            updateAll(LIBZTest.class, httpClient.mTestObjClient, mObjTracker);
 
             deleteAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
             deleteAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
             deleteAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
             deleteAll(Model.class, httpClient.mModelObjClient, mObjTracker);
+            deleteAll(LIBZTest.class, httpClient.mTestObjClient, mObjTracker);
                         
         } finally {
             returnClient();
         }
     }
-    
+
     private LIBZHttpClient getClient() {
         if(mHttpClient == null) {
             String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
