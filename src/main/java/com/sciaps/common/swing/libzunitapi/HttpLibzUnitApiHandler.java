@@ -50,11 +50,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetAllIdsFunctions.put(Standard.class, new GetAllIds() {
             @Override
             public Collection<String> get() throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mStandardsObjClient.getIdList();
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mStandardsObjClient.getIdList();
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -62,11 +64,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetAllIdsFunctions.put(Region.class, new GetAllIds() {
             @Override
             public Collection<String> get() throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mRegionObjClient.getIdList();
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mRegionObjClient.getIdList();
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -74,11 +78,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetAllIdsFunctions.put(IRRatio.class, new GetAllIds() {
             @Override
             public Collection<String> get() throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mIRObjClient.getIdList();
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mIRObjClient.getIdList();
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -86,11 +92,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetAllIdsFunctions.put(Model.class, new GetAllIds() {
             @Override
             public Collection<String> get() throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mModelObjClient.getIdList();
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mModelObjClient.getIdList();
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -99,11 +107,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetObjLoadFunctions.put(Standard.class, new LoadObject<Standard>() {
             @Override
             public Standard get(String id) throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mStandardsObjClient.getSingleObject(id);
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mStandardsObjClient.getSingleObject(id);
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -111,11 +121,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetObjLoadFunctions.put(Region.class, new LoadObject<Region>() {
             @Override
             public Region get(String id) throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mRegionObjClient.getSingleObject(id);
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mRegionObjClient.getSingleObject(id);
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -123,11 +135,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetObjLoadFunctions.put(IRRatio.class, new LoadObject<IRRatio>() {
             @Override
             public IRRatio get(String id) throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mIRObjClient.getSingleObject(id);
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mIRObjClient.getSingleObject(id);
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -135,11 +149,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetObjLoadFunctions.put(Model.class, new LoadObject() {
             @Override
             public DBObj get(String id) throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mModelObjClient.getSingleObject(id);
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mModelObjClient.getSingleObject(id);
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -147,11 +163,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mGetObjLoadFunctions.put(LIBZTest.class, new LoadObject() {
             @Override
             public DBObj get(String id) throws IOException {
-                getClient();
-                try {
-                    return mHttpClient.mTestObjClient.getSingleObject(id);
-                } finally {
-                    returnClient();
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mTestObjClient.getSingleObject(id);
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -159,13 +177,16 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         mCreateObjFunctions.put(LIBZTest.class, new CreateObject<LIBZTest>() {
             @Override
             public void create(LIBZTest obj) throws IOException {
-                getClient();
-                try {
+
+                synchronized (HttpLibzUnitApiHandler.this) {
                     saveIds(obj);
-                    String id = mHttpClient.mTestObjClient.createObject(obj);
-                    obj.mId = id;
-                } finally {
-                    returnClient();
+                    getClient();
+                    try {
+                        String id = mHttpClient.mTestObjClient.createObject(obj);
+                        mObjTracker.setId(obj, id);
+                    } finally {
+                        returnClient();
+                    }
                 }
             }
         });
@@ -283,7 +304,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         
         for(T obj : list){
             saveIds(obj);
-            obj.mId = client.createObject(obj);
+            tracker.setId(obj, client.createObject(obj));
             tracker.removeCreated(obj);
         }
         
@@ -360,7 +381,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         }
     }
 
-    private LIBZHttpClient getClient() {
+    private synchronized LIBZHttpClient getClient() {
         if(mHttpClient == null) {
             String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
             mHttpClient = new LIBZHttpClient(baseUrl);
