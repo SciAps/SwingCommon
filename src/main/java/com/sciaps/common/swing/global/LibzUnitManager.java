@@ -9,8 +9,10 @@ import com.sciaps.common.data.Standard;
 import com.sciaps.common.objtracker.DBIndex;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjLoader;
+import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.swing.events.DBObjEvent;
 import com.sciaps.common.swing.events.PullEvent;
+import com.sciaps.common.swing.events.PushEvent;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 
 import java.util.*;
@@ -31,6 +33,16 @@ public class LibzUnitManager {
         }
     });
 
+    public DBIndex<Date> mTestsByTime = new DBIndex<Date>(new DBIndex.MapFunction() {
+        @Override
+        public void map(DBObj obj, DBIndex.Emitter emitter) {
+            if(obj instanceof LIBZTest) {
+                LIBZTest test = (LIBZTest)obj;
+                emitter.emit(new Date(test.unixTime * 1000));
+            }
+        }
+    });
+
 
     public LibzUnitManager() {
         recreateCache();
@@ -43,6 +55,9 @@ public class LibzUnitManager {
     private DBObjLoader mObjLoader;
 
     @Inject
+    private DBObjTracker mObjTracker;
+
+    @Inject
     public void setEventBus(EventBus eventBus) {
         eventBus.register(this);
     }
@@ -50,25 +65,32 @@ public class LibzUnitManager {
     @Subscribe
     public void onPullEvent(PullEvent pullEvent) {
         recreateCache();
+        mObjTracker.clear();
+    }
+
+    @Subscribe
+    public void onPushEvent(PushEvent pushEvent) {
+
     }
 
     @Subscribe
     public void onDBObjEvent(DBObjEvent modifiedEvent) {
-        if(modifiedEvent.obj instanceof LIBZTest) {
-            LIBZTest theTest = (LIBZTest)modifiedEvent.obj;
-            switch (modifiedEvent.type) {
-                case DBObjEvent.CREATED:
-                    mTestsOfStandard.insert(theTest);
-                    break;
 
-                case DBObjEvent.MODIFIED:
-                    mTestsOfStandard.update(theTest);
-                    break;
+        switch (modifiedEvent.type) {
+            case DBObjEvent.CREATED:
+                mTestsOfStandard.insert(modifiedEvent.obj);
+                mTestsByTime.insert(modifiedEvent.obj);
+                break;
 
-                case DBObjEvent.DELETED:
-                    mTestsOfStandard.delete(theTest);
-                    break;
-            }
+            case DBObjEvent.MODIFIED:
+                mTestsOfStandard.update(modifiedEvent.obj);
+                mTestsByTime.update(modifiedEvent.obj);
+                break;
+
+            case DBObjEvent.DELETED:
+                mTestsOfStandard.delete(modifiedEvent.obj);
+                mTestsByTime.delete(modifiedEvent.obj);
+                break;
         }
     }
 
