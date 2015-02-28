@@ -84,8 +84,8 @@ public class CalibrationShotManager {
         if(retval == null) {
             try {
                 retval = mCache.get(key);
-            } catch (ExecutionException e) {
-                logger.error("", e);
+            } catch (Exception e) {
+                //logger.error("", e);
             }
         }
         return retval;
@@ -104,7 +104,6 @@ public class CalibrationShotManager {
             LIBZPixelSpectrum retval = null;
 
             final File testDir = new File(mCacheDir, key.testId);
-            testDir.mkdirs();
             File file = new File(testDir, String.format("shot_%d.dat", key.shotNum));
             if(file.exists()){
                 try {
@@ -117,7 +116,10 @@ public class CalibrationShotManager {
             if(retval == null) {
                 logger.info("downloading shot: {}", key);
                 retval = mApiHandler.downloadShot(key.testId, key.shotNum);
-                ShotDataHelper.saveCompressedFile(retval, file);
+                if(retval != null) {
+                    testDir.mkdirs();
+                    ShotDataHelper.saveCompressedFile(retval, file);
+                }
             }
 
             return retval;
