@@ -411,10 +411,6 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         LIBZHttpClient client = getClient();
         try {
             LIBZPixelSpectrum data = client.getShotSpectrum(testId, shotNum);
-
-            if(mDeleteHttpClientTask != null) {
-                mDeleteHttpClientTask.cancel(false);
-            }
             return data;
         }finally {
             returnClient();   
