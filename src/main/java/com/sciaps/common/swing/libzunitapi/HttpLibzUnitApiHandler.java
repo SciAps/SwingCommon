@@ -337,7 +337,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         }
         
         for(T obj : list){
-            client.deleteObject(obj.mId);
+            try {
+                client.deleteObject(obj.mId);
+            } catch (Exception e) {
+                logger.error("delete {} id: {}", type.getSimpleName(), obj.mId, e);
+            }
         }
     }
 
