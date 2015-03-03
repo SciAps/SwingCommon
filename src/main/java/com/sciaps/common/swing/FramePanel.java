@@ -15,4 +15,15 @@ public class FramePanel extends JLayeredPane {
             c.setBounds(0, 0, width, height);
         }
     }
+
+    @Override
+    public Dimension getPreferredSize() {
+        Dimension dimension = new Dimension(0,0);
+        for(Component c : getComponents()) {
+            Dimension tmpDimension = c.getPreferredSize();
+            dimension.height = Math.max(tmpDimension.height, dimension.height);
+            dimension.width = Math.max(tmpDimension.width, dimension.width);
+        }
+       return dimension;
+    }
 }
