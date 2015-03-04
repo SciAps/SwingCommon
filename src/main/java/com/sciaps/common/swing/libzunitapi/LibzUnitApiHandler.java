@@ -3,6 +3,7 @@ package com.sciaps.common.swing.libzunitapi;
 import com.sciaps.common.data.Instrument;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
+import com.sciaps.common.webserver.ILaserController;
 import com.sciaps.common.webserver.ILaserController.RasterParams;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.List;
 public interface LibzUnitApiHandler {
 
     Instrument connectToLibzUnit() throws IOException;
+    ILaserController.RasterParams getDefaultParams() throws IOException;
     void pushToLibzUnit() throws IOException;
 
     Collection<String> getAllIds(Class<? extends DBObj> classType) throws IOException;

@@ -37,6 +37,11 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
         return retval;
     }
 
+    @Override
+    public ILaserController.RasterParams getDefaultParams() throws IOException {
+        return null;
+    }
+
 
     @Override
     public void pushToLibzUnit() throws IOException {
