@@ -1,5 +1,6 @@
 package com.sciaps.common.swing.global;
 
+import com.devsmart.ThreadUtils;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -10,18 +11,26 @@ import com.sciaps.common.objtracker.DBIndex;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjLoader;
 import com.sciaps.common.objtracker.DBObjTracker;
+import com.sciaps.common.swing.events.ConnectToInstrumentEvent;
 import com.sciaps.common.swing.events.DBObjEvent;
 import com.sciaps.common.swing.events.PullEvent;
 import com.sciaps.common.swing.events.PushEvent;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
+import com.sciaps.common.webserver.ILaserController.RasterParams;
+import java.io.IOException;
 
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class LibzUnitManager {
 
+    static Logger logger = LoggerFactory.getLogger(LibzUnitManager.class);
+    
     public Instrument instrument;
     public CalibrationShotManager shotManager;
+    public RasterParams mRasterParams = new RasterParams();
     private DBIndex<Standard> mTestsOfStandard = new DBIndex<Standard>(new DBIndex.MapFunction(){
 
         @Override
@@ -139,5 +148,21 @@ public class LibzUnitManager {
             retval += test.getNumShots();
         }
         return retval;
+    }
+    
+    @Subscribe
+    public void onConnectToInstrumentEvent(ConnectToInstrumentEvent event) {
+
+       ThreadUtils.IOThreads.execute(new Runnable() {
+            
+           @Override
+           public void run() {
+                try {
+                    mRasterParams = mApiHandler.getDefaultParams();
+                } catch (IOException e) {
+                    logger.error("", e);
+                }
+            }
+        }); 
     }
 }

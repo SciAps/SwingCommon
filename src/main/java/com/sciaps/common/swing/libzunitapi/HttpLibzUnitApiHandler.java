@@ -9,7 +9,6 @@ import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.objtracker.IdReference;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.events.SetIPAddressEvent;
-import com.sciaps.common.webserver.ILaserController;
 import com.sciaps.common.webserver.ILaserController.RasterParams;
 import com.sciaps.common.webserver.LIBZHttpClient;
 import org.slf4j.Logger;
@@ -224,7 +223,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public Instrument connectToLibzUnit() throws IOException {
+    public synchronized Instrument connectToLibzUnit() throws IOException {
         getClient();
         try {
             return mHttpClient.getInstrument();
@@ -234,7 +233,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public RasterParams getDefaultParams() throws IOException {
+    public synchronized RasterParams getDefaultParams() throws IOException {
         getClient();
         try {
             return mHttpClient.getDefaultParams();
