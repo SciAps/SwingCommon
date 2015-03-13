@@ -332,7 +332,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         
         for(T obj : list){
             saveIds(obj);
-            client.updateObject(obj.mId, obj);           
+            client.updateObject(obj.mId, obj);
+            tracker.removeModified(obj);
         }       
     }
 
@@ -349,6 +350,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         for(T obj : list){
             try {
                 client.deleteObject(obj.mId);
+                tracker.removeDelete(obj);
             } catch (Exception e) {
                 logger.error("delete {} id: {}", type.getSimpleName(), obj.mId, e);
             }
