@@ -116,7 +116,7 @@ public class LibzUnitManager {
             Collection<String> retval = mApiHandler.getTestsForStandard(standard.mId);
             for(String testId : retval) {
                 LIBZTest test = mObjLoader.deepLoad(LIBZTest.class, testId);
-                mTestsOfStandard.insert(test);
+                mTestsOfStandard.update(test);
             }
             mLoadedStandards.add(standard.mId);
         }
