@@ -27,6 +27,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     static Logger logger = LoggerFactory.getLogger(HttpLibzUnitApiHandler.class);
 
+    private boolean mFactoryLockDownMode = true;
+
     private interface GetAllIds {
         Collection<String> get() throws IOException;
     }
@@ -246,6 +248,46 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     @Override
     public synchronized Collection<String> getAllIds(Class<? extends DBObj> classType) throws IOException {
         Collection<String> retval = mGetAllIdsFunctions.get(classType).get();
+
+        if (mFactoryLockDownMode) {
+            Collection<String> nonFactoryList = new ArrayList<String>();
+
+            if (classType.equals(Model.class)) {
+                for (String str : retval) {
+                    if (mFactoryCalModelIDList.contains(str) == false) {
+                        nonFactoryList.add(str);
+                    }
+                }
+
+                return nonFactoryList;
+
+            } else if (classType.equals(Standard.class)) {
+                for (String str : retval) {
+                    if (mFactoryStandardIDList.contains(str) == false) {
+                        nonFactoryList.add(str);
+                    }
+                }
+
+                return nonFactoryList;
+
+            } else if (classType.equals(LIBZTest.class)) {
+                for (String str : retval) {
+                    if (mFactoryTestIDList.contains(str) == false) {
+                        nonFactoryList.add(str);
+                    }
+                }
+
+                return nonFactoryList;
+            } else if (classType.equals(Region.class)) {
+                for (String str : retval) {
+                    if (mFactoryRegionIDList.contains(str) == false) {
+                        nonFactoryList.add(str);
+                    }
+                }
+
+                return nonFactoryList;
+            }
+        }
         return retval;
     }
 
@@ -437,7 +479,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     public synchronized Collection<String> getTestsForStandard(String standardId) throws IOException {
         LIBZHttpClient client = getClient();
         try {
-            return client.getTestsForStandard(standardId);
+            Collection<String> ids = client.getTestsForStandard(standardId);
+            for(String id : mFactoryTestIDList) {
+                ids.remove(id);
+            }
+            return ids;
         } finally {
             returnClient();
         }
@@ -448,7 +494,11 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     public synchronized List<String> getTestsSince(long unixTimestamp) throws IOException {
         LIBZHttpClient client = getClient();
         try {
-            return client.getTestsSince(unixTimestamp);
+            List<String> ids = client.getTestsSince(unixTimestamp);
+            for(String id : mFactoryTestIDList) {
+                ids.remove(id);
+            }
+            return ids;
         } finally {
             returnClient();
         }
@@ -462,5 +512,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         } finally {
             returnClient();
         }
+    }
+
+    @Override
+    public void setFactoryLockDownMode(boolean val) {
+        mFactoryLockDownMode = val;
     }
 }

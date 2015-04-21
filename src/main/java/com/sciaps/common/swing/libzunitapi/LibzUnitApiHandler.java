@@ -7,11 +7,19 @@ import com.sciaps.common.webserver.ILaserController;
 import com.sciaps.common.webserver.ILaserController.RasterParams;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 
 public interface LibzUnitApiHandler {
+
+    public static ArrayList<String> mFactoryCalModelIDList = new ArrayList<String>();
+    public static ArrayList<String> mFactoryStandardIDList = new ArrayList<String>();
+    public static ArrayList<String> mFactoryTestIDList = new ArrayList<String>();
+    public static ArrayList<String> mFactoryRegionIDList = new ArrayList<String>();
+
+    void setFactoryLockDownMode(boolean val);
 
     Instrument connectToLibzUnit() throws IOException;
     ILaserController.RasterParams getDefaultParams() throws IOException;
