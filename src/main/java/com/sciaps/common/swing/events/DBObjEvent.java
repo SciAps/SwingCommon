@@ -11,9 +11,11 @@ public class DBObjEvent {
 
     public final int type;
     public final DBObj obj;
+    public final Object originator;
 
-    public DBObjEvent(DBObj obj, int type) {
+    public DBObjEvent(DBObj obj, int type, Object originator) {
         this.obj = obj;
         this.type = type;
+        this.originator = originator;
     }
 }
