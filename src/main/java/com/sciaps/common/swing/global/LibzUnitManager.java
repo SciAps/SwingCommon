@@ -31,6 +31,7 @@ public class LibzUnitManager {
     public Instrument instrument;
     public CalibrationShotManager shotManager;
     public RasterParams mRasterParams = new RasterParams();
+    private boolean mGotRasterParams = false;
     private DBIndex<Standard> mTestsOfStandard = new DBIndex<Standard>(new DBIndex.MapFunction(){
 
         @Override
@@ -153,16 +154,19 @@ public class LibzUnitManager {
     @Subscribe
     public void onConnectToInstrumentEvent(ConnectToInstrumentEvent event) {
 
-       ThreadUtils.IOThreads.execute(new Runnable() {
-            
-           @Override
-           public void run() {
-                try {
-                    mRasterParams = mApiHandler.getDefaultParams();
-                } catch (IOException e) {
-                    logger.error("", e);
+        if (mGotRasterParams == false) {
+            ThreadUtils.IOThreads.execute(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        mRasterParams = mApiHandler.getDefaultParams();
+                        mGotRasterParams = true;
+                    } catch (IOException e) {
+                        logger.error("", e);
+                    }
                 }
-            }
-        }); 
+            });
+        }
     }
 }
