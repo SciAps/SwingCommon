@@ -72,7 +72,8 @@ public class CalibrationShotManager {
         mCacheDir = cacheDir;
         mCache = CacheBuilder
                 .newBuilder()
-                .maximumSize(60 * 3 * 15)
+                //.maximumSize(60 * 3 * 13)
+                .maximumSize(2400)
                 .build(mLoader);
     }
 
