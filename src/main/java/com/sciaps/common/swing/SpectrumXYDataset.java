@@ -11,8 +11,8 @@ public class SpectrumXYDataset extends AbstractXYDataset {
 
     private static final double SampleRate = 30;
 
-    private ArrayList<Spectrum> mSpectrum = new ArrayList<Spectrum>();
-    private ArrayList<String> mSpectrumKey = new ArrayList<String>();
+    public ArrayList<Spectrum> mSpectrum = new ArrayList<Spectrum>();
+    public ArrayList<String> mSpectrumKey = new ArrayList<String>();
 
     public void addSpectrum(Spectrum spectrum, String name) {
         if(spectrum == null || name == null) {
@@ -28,6 +28,14 @@ public class SpectrumXYDataset extends AbstractXYDataset {
         if(i >= 0) {
             mSpectrum.remove(i);
             mSpectrumKey.remove(i);
+            fireDatasetChanged();
+        }
+    }
+
+    public void removeSpectrum(int index) {
+        if(index >= 0) {
+            mSpectrum.remove(index);
+            mSpectrumKey.remove(index);
             fireDatasetChanged();
         }
     }
