@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class CalibrationShotManager {
@@ -65,6 +67,9 @@ public class CalibrationShotManager {
     private final File mCacheDir;
     private LoadingCache<Key, LIBZPixelSpectrum> mCache;
 
+    // This list will get reset by the StatusBar when a connection is re-establish
+    public static HashMap<String, ArrayList<Integer>> mDroppedShots = new HashMap<String, ArrayList<Integer>>();
+
     @Inject
     LibzUnitApiHandler mApiHandler;
 
@@ -114,11 +119,25 @@ public class CalibrationShotManager {
             }
 
             if(retval == null) {
-                logger.info("downloading shot: {}", key);
-                retval = mApiHandler.downloadShot(key.testId, key.shotNum);
-                if(retval != null) {
-                    testDir.mkdirs();
-                    ShotDataHelper.saveCompressedFile(retval, file);
+
+                ArrayList<Integer> tmpDroppedShotNumForTest = mDroppedShots.get(key.testId);
+                if (tmpDroppedShotNumForTest == null || tmpDroppedShotNumForTest.contains(key.shotNum) == false) {
+
+                    logger.info("downloading shot: {}", key);
+                    retval = mApiHandler.downloadShot(key.testId, key.shotNum);
+                    if (retval != null) {
+                        testDir.mkdirs();
+                        ShotDataHelper.saveCompressedFile(retval, file);
+                    } else {
+
+                        if (mDroppedShots.get(key.testId) == null) {
+                            ArrayList<Integer> list = new ArrayList<Integer>();
+                            list.add(key.shotNum);
+                            mDroppedShots.put(key.testId, list);
+                        } else {
+                            mDroppedShots.get(key.testId).add(key.shotNum);
+                        }
+                    }
                 }
             }
 
