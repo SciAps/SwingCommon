@@ -3,6 +3,7 @@ package com.sciaps.common.swing.libzunitapi;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import com.sciaps.common.Exceptions.LaserNotArmedException;
 import com.sciaps.common.data.*;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjTracker;
@@ -505,7 +506,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
     
     @Override
-    public synchronized List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException {
+    public synchronized List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException {
         LIBZHttpClient client = getClient();
         try {
             return client.rasterTest(params);

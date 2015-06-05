@@ -1,5 +1,6 @@
 package com.sciaps.common.swing.libzunitapi;
 
+import com.sciaps.common.Exceptions.LaserNotArmedException;
 import com.sciaps.common.data.Instrument;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
@@ -36,5 +37,5 @@ public interface LibzUnitApiHandler {
 
     Collection<String> getTestsForStandard(String standardid) throws IOException;
     List<String> getTestsSince(long unixTimestamp) throws IOException;
-    List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException;
+    List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException;
 }
