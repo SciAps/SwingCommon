@@ -516,6 +516,16 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
+    public synchronized String takeRasterTest(RasterParams params) throws IOException, LaserNotArmedException {
+        LIBZHttpClient client = getClient();
+        try {
+            return client.takeTest(params);
+        } finally {
+            returnClient();
+        }
+    }
+
+    @Override
     public void setFactoryLockDownMode(boolean val) {
         mFactoryLockDownMode = val;
     }

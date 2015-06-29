@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.inject.Inject;
+import com.sciaps.common.Exceptions.LaserNotArmedException;
 import com.sciaps.common.data.*;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjTracker;
@@ -135,6 +136,11 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
 
     @Override
     public synchronized List<LIBZPixelSpectrum> rasterTest(ILaserController.RasterParams params) throws IOException {
+        return null;
+    }
+
+    @Override
+    public String takeRasterTest(ILaserController.RasterParams params) throws IOException, LaserNotArmedException {
         return null;
     }
 
