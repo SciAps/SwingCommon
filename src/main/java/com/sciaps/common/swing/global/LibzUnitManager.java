@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.sciaps.common.data.Instrument;
 import com.sciaps.common.data.LIBZTest;
+import com.sciaps.common.data.Model;
 import com.sciaps.common.data.Standard;
 import com.sciaps.common.objtracker.DBIndex;
 import com.sciaps.common.objtracker.DBObj;
@@ -53,6 +54,8 @@ public class LibzUnitManager {
         }
     });
 
+    private ArrayList<Model> mCalibrationModelList = new ArrayList<Model>();
+
 
     public LibzUnitManager() {
         recreateCache();
@@ -90,6 +93,10 @@ public class LibzUnitManager {
             case DBObjEvent.CREATED:
                 mTestsOfStandard.insert(modifiedEvent.obj);
                 mTestsByTime.insert(modifiedEvent.obj);
+
+                if (modifiedEvent.obj instanceof Model) {
+                    mCalibrationModelList.add((Model) modifiedEvent.obj);
+                }
                 break;
 
             case DBObjEvent.MODIFIED:
@@ -100,6 +107,10 @@ public class LibzUnitManager {
             case DBObjEvent.DELETED:
                 mTestsOfStandard.delete(modifiedEvent.obj);
                 mTestsByTime.delete(modifiedEvent.obj);
+
+                if (modifiedEvent.obj instanceof Model) {
+                    mCalibrationModelList.remove(modifiedEvent.obj);
+                }
                 break;
         }
     }
@@ -168,5 +179,34 @@ public class LibzUnitManager {
                 }
             });
         }
+    }
+
+    public ArrayList<Model> getModelsForStandard(Standard standard) {
+
+        ArrayList<Model> models = new ArrayList<Model>();
+
+        // save a list of existing models
+        if (mCalibrationModelList.isEmpty()) {
+            try {
+                Collection<String> modelIds = mApiHandler.getAllIds(Model.class);
+                for (String modelId : modelIds) {
+                    Model model = mObjLoader.deepLoad(Model.class, modelId);
+                    if (model != null) {
+                        mCalibrationModelList.add(model);
+                    }
+                }
+            } catch (Exception e) {
+                // if anything happen, clear and try reload in later time
+                mCalibrationModelList.clear();
+            }
+        }
+
+        for(Model model : mCalibrationModelList) {
+            if (model.standardList.contains(standard)) {
+                models.add(model);
+            }
+        }
+
+        return models;
     }
 }
