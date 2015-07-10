@@ -4,10 +4,7 @@ import com.devsmart.ThreadUtils;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.sciaps.common.data.Instrument;
-import com.sciaps.common.data.LIBZTest;
-import com.sciaps.common.data.Model;
-import com.sciaps.common.data.Standard;
+import com.sciaps.common.data.*;
 import com.sciaps.common.objtracker.DBIndex;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjLoader;
@@ -79,6 +76,8 @@ public class LibzUnitManager {
     public void onPullEvent(PullEvent pullEvent) {
         recreateCache();
         mObjTracker.clear();
+
+        loadCalibrationModels();
     }
 
     @Subscribe
@@ -187,18 +186,7 @@ public class LibzUnitManager {
 
         // save a list of existing models
         if (mCalibrationModelList.isEmpty()) {
-            try {
-                Collection<String> modelIds = mApiHandler.getAllIds(Model.class);
-                for (String modelId : modelIds) {
-                    Model model = mObjLoader.deepLoad(Model.class, modelId);
-                    if (model != null) {
-                        mCalibrationModelList.add(model);
-                    }
-                }
-            } catch (Exception e) {
-                // if anything happen, clear and try reload in later time
-                mCalibrationModelList.clear();
-            }
+            loadCalibrationModels();
         }
 
         for(Model model : mCalibrationModelList) {
@@ -208,5 +196,64 @@ public class LibzUnitManager {
         }
 
         return models;
+    }
+
+    public ArrayList<Model> getModelsForRegion(Region theRegion) throws Exception {
+
+        ArrayList<Model> models = new ArrayList<Model>();
+
+        // save a list of existing models
+        if (mCalibrationModelList.isEmpty()) {
+            loadCalibrationModels();
+        }
+
+        for (Model model : mCalibrationModelList) {
+
+            for (IRCurve curve : model.irs.values()) {
+                mObjLoader.deepLoad(curve);
+
+                for (Region region : curve.numerator) {
+                    if (region.equals(theRegion)) {
+
+                        // add it if not already added
+                        if (models.contains(model) == false) {
+                            models.add(model);
+                        }
+                    }
+                }
+
+                for (Region region : curve.denominator) {
+                    if (region.equals(theRegion)) {
+
+                        // add it if not already added
+                        if (models.contains(model) == false) {
+                            models.add(model);
+                        }
+                    }
+                }
+            }
+        }
+        return models;
+    }
+
+    private void loadCalibrationModels() {
+
+        try {
+            Collection<String> modelIds = mApiHandler.getAllIds(Model.class);
+            for (String modelId : modelIds) {
+                Model model = mObjLoader.deepLoad(Model.class, modelId);
+                if (model != null) {
+                    mCalibrationModelList.add(model);
+
+                    // deep load it now once, so it wont slow down the processing later on
+                    for (IRCurve curve : model.irs.values()) {
+                        mObjLoader.deepLoad(curve);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // if anything happen, clear and try reload in later time
+            mCalibrationModelList.clear();
+        }
     }
 }
