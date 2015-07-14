@@ -526,6 +526,16 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
+    public synchronized float getPSILevel() throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            return client.getArgonLevel();
+        } finally {
+            returnClient();
+        }
+    }
+
+    @Override
     public void setFactoryLockDownMode(boolean val) {
         mFactoryLockDownMode = val;
     }

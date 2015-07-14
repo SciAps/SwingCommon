@@ -145,6 +145,11 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
+    public float getPSILevel() throws IOException {
+        return 0;
+    }
+
+    @Override
     public void setFactoryLockDownMode(boolean val) {
 
     }
