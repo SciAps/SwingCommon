@@ -213,7 +213,7 @@ public class LibzUnitManager {
                 mObjLoader.deepLoad(curve);
 
                 for (Region region : curve.numerator) {
-                    if (region.equals(theRegion)) {
+                    if (region == theRegion) {
 
                         // add it if not already added
                         if (models.contains(model) == false) {
@@ -223,7 +223,7 @@ public class LibzUnitManager {
                 }
 
                 for (Region region : curve.denominator) {
-                    if (region.equals(theRegion)) {
+                    if (region == theRegion) {
 
                         // add it if not already added
                         if (models.contains(model) == false) {
