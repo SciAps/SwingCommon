@@ -145,8 +145,8 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public float getPSILevel() throws IOException {
-        return 0;
+    public float getArgonLevel() throws IOException {
+        return -1;
     }
 
     @Override

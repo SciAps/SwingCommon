@@ -40,5 +40,5 @@ public interface LibzUnitApiHandler {
     List<String> getTestsSince(long unixTimestamp) throws IOException;
     List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException;
     String takeRasterTest(RasterParams params) throws IOException, LaserNotArmedException;
-    float getPSILevel() throws IOException;
+    float getArgonLevel() throws IOException;
 }

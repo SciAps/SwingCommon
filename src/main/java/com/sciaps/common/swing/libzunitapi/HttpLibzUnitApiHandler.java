@@ -526,7 +526,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public synchronized float getPSILevel() throws IOException {
+    public synchronized float getArgonLevel() throws IOException {
         LIBZHttpClient client = getClient();
         try {
             return client.getArgonLevel();
