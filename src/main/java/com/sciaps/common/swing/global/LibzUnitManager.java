@@ -77,7 +77,7 @@ public class LibzUnitManager {
         recreateCache();
         mObjTracker.clear();
 
-        loadCalibrationModels();
+        preLoadCalibrationModels();
     }
 
     @Subscribe
@@ -237,23 +237,60 @@ public class LibzUnitManager {
     }
 
     private void loadCalibrationModels() {
-
         try {
+
+            // copy from a local list to ensure we fully loaded all existing calibration
+            ArrayList<Model> localList = new ArrayList<Model>();
+
             Collection<String> modelIds = mApiHandler.getAllIds(Model.class);
             for (String modelId : modelIds) {
                 Model model = mObjLoader.deepLoad(Model.class, modelId);
                 if (model != null) {
-                    mCalibrationModelList.add(model);
-
-                    // deep load it now once, so it wont slow down the processing later on
-                    for (IRCurve curve : model.irs.values()) {
-                        mObjLoader.deepLoad(curve);
-                    }
+                    localList.add(model);
                 }
             }
+
+            mCalibrationModelList.clear();
+            // copy from a local list to ensure we fully loaded all existing calibration
+            mCalibrationModelList.addAll(localList);
+
         } catch (Exception e) {
+            logger.error("Exception loading calibration: " + e.getMessage());
             // if anything happen, clear and try reload in later time
             mCalibrationModelList.clear();
         }
+    }
+
+    private void preLoadCalibrationModels() {
+
+        // Load the calibration in the background
+        Runnable deepLoadRunnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    loadCalibrationModels();
+
+                    for (Model model : mCalibrationModelList) {
+                        for (IRCurve curve : model.irs.values()) {
+                            try {
+                                mObjLoader.deepLoad(curve);
+                            } catch (Exception e) {
+                                // its ok if exception here, just reload in later time
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+
+                    logger.error("Exception in pre-loading calibration: " + e.getMessage());
+                    // if anything happen, clear and try reload in later time
+                    mCalibrationModelList.clear();
+                }
+            }
+        };
+
+        Thread deeploadThread = new Thread(deepLoadRunnable);
+        deeploadThread.start();
     }
 }
