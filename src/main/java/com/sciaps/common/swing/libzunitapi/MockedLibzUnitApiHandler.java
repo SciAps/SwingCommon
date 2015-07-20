@@ -145,11 +145,6 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public float getArgonLevel() throws IOException {
-        return -1;
-    }
-
-    @Override
     public void setFactoryLockDownMode(boolean val) {
 
     }
