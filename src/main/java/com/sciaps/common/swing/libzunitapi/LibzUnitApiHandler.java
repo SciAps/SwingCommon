@@ -39,4 +39,6 @@ public interface LibzUnitApiHandler {
     List<String> getTestsSince(long unixTimestamp) throws IOException;
     List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException;
     String takeRasterTest(RasterParams params) throws IOException, LaserNotArmedException;
+
+    public void doAbort();
 }

@@ -236,7 +236,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public synchronized RasterParams getDefaultParams() throws IOException {
+    public RasterParams getDefaultParams() throws IOException {
         getClient();
         try {
             return mHttpClient.getDefaultParams();
@@ -247,7 +247,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
 
     @Override
-    public synchronized Collection<String> getAllIds(Class<? extends DBObj> classType) throws IOException {
+    public Collection<String> getAllIds(Class<? extends DBObj> classType) throws IOException {
         Collection<String> retval = mGetAllIdsFunctions.get(classType).get();
 
         if (mFactoryLockDownMode) {
@@ -449,15 +449,15 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
     
     private void returnClient() {
-        mDeleteHttpClientTask = mFutureRunner.schedule(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (HttpLibzUnitApiHandler.this) {
-                    mHttpClient = null;
-                    mDeleteHttpClientTask = null;
-                }
-            }
-        }, 500, TimeUnit.MILLISECONDS);
+        //mDeleteHttpClientTask = mFutureRunner.schedule(new Runnable() {
+        //    @Override
+        //    public void run() {
+        //        synchronized (HttpLibzUnitApiHandler.this) {
+        //            mHttpClient = null;
+        //            mDeleteHttpClientTask = null;
+        //        }
+        //    }
+        //}, 500, TimeUnit.MILLISECONDS);
     }
 
 
@@ -466,7 +466,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     private ScheduledExecutorService mFutureRunner = Executors.newSingleThreadScheduledExecutor();
 
     @Override
-    public synchronized LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException {
+    public LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             LIBZPixelSpectrum data = client.getShotSpectrum(testId, shotNum);
@@ -477,7 +477,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public synchronized Collection<String> getTestsForStandard(String standardId) throws IOException {
+    public Collection<String> getTestsForStandard(String standardId) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             Collection<String> ids = client.getTestsForStandard(standardId);
@@ -492,7 +492,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public synchronized List<String> getTestsSince(long unixTimestamp) throws IOException {
+    public List<String> getTestsSince(long unixTimestamp) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             List<String> ids = client.getTestsSince(unixTimestamp);
@@ -506,7 +506,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
     
     @Override
-    public synchronized List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException {
+    public List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException {
         LIBZHttpClient client = getClient();
         try {
             return client.rasterTest(params);
@@ -516,13 +516,19 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public synchronized String takeRasterTest(RasterParams params) throws IOException, LaserNotArmedException {
+    public String takeRasterTest(RasterParams params) throws IOException, LaserNotArmedException {
         LIBZHttpClient client = getClient();
         try {
             return client.takeTest(params);
         } finally {
             returnClient();
         }
+    }
+
+    @Override
+    public void doAbort() {
+        logger.info("User Aborted Test");
+        mHttpClient.doAbort();
     }
 
     @Override

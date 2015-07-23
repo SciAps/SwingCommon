@@ -145,6 +145,11 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
+    public void doAbort() {
+
+    }
+
+    @Override
     public void setFactoryLockDownMode(boolean val) {
 
     }

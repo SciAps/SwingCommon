@@ -9,10 +9,7 @@ import com.sciaps.common.objtracker.DBIndex;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjLoader;
 import com.sciaps.common.objtracker.DBObjTracker;
-import com.sciaps.common.swing.events.ConnectToInstrumentEvent;
-import com.sciaps.common.swing.events.DBObjEvent;
-import com.sciaps.common.swing.events.PullEvent;
-import com.sciaps.common.swing.events.PushEvent;
+import com.sciaps.common.swing.events.*;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 import com.sciaps.common.webserver.ILaserController.RasterParams;
 import java.io.IOException;
@@ -67,9 +64,12 @@ public class LibzUnitManager {
     @Inject
     private DBObjTracker mObjTracker;
 
+    private EventBus mGlobalEventBus;
+
     @Inject
-    public void setEventBus(EventBus eventBus) {
-        eventBus.register(this);
+    void setGlobalEventBus(EventBus eventBus) {
+        mGlobalEventBus = eventBus;
+        mGlobalEventBus.register(this);
     }
 
     @Subscribe
@@ -267,6 +267,8 @@ public class LibzUnitManager {
         Runnable deepLoadRunnable = new Runnable() {
             @Override
             public void run() {
+                String workingInProgressMsg = "Loading Regions ...";
+                mGlobalEventBus.post(new WorkInProgressEvent(workingInProgressMsg, false));
                 try {
 
                     loadCalibrationModels();
@@ -287,6 +289,8 @@ public class LibzUnitManager {
                     // if anything happen, clear and try reload in later time
                     mCalibrationModelList.clear();
                 }
+
+                mGlobalEventBus.post(new WorkInProgressEvent(workingInProgressMsg, true));
             }
         };
 
