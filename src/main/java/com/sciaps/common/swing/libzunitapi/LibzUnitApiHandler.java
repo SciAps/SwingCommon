@@ -41,4 +41,6 @@ public interface LibzUnitApiHandler {
     String takeRasterTest(RasterParams params) throws IOException, LaserNotArmedException;
 
     public void doAbort();
+    public void shutDown();
+    public void setConnected(boolean val);
 }

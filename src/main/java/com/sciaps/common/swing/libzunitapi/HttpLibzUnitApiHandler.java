@@ -48,6 +48,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     private final Map<Class, CreateObject> mCreateObjFunctions = new HashMap<Class, CreateObject>();
 
+    private boolean mConnected = false;
+
     public HttpLibzUnitApiHandler() {
 
         mGetAllIdsFunctions.put(Standard.class, new GetAllIds() {
@@ -228,6 +230,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     @Override
     public synchronized Instrument connectToLibzUnit() throws IOException {
         getClient();
+
         try {
             return mHttpClient.getInstrument();
         } finally {
@@ -237,6 +240,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     @Override
     public RasterParams getDefaultParams() throws IOException {
+        if (mConnected == false) {
+            throw new IOException("Not connected");
+        }
+
         getClient();
         try {
             return mHttpClient.getDefaultParams();
@@ -305,6 +312,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     @Override
     public void uploadShot(String testId, int shotNum, LIBZPixelSpectrum data) throws IOException {
+        if (mConnected == false) {
+            throw new IOException("Not connected");
+        }
+
         getClient();
         try {
             mHttpClient.postShotSpectrum(testId, shotNum, data);
@@ -412,6 +423,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     @Override
     public synchronized void pushToLibzUnit() throws IOException {
 
+        if (mConnected == false) {
+            throw new IOException("Not connected");
+        }
+
         LIBZHttpClient httpClient = getClient();
 
         try {
@@ -440,11 +455,14 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         }
     }
 
-    private synchronized LIBZHttpClient getClient() {
+    private synchronized LIBZHttpClient getClient() throws IOException {
+
         if(mHttpClient == null) {
             String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
             mHttpClient = new LIBZHttpClient(baseUrl);
+            mHttpClient.mConnectionTimeoutTimer.start();
         }
+
         return mHttpClient;
     }
     
@@ -467,6 +485,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     @Override
     public LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException {
+        if (mConnected == false) {
+            throw new IOException("Not connected");
+        }
+
         LIBZHttpClient client = getClient();
         try {
             LIBZPixelSpectrum data = client.getShotSpectrum(testId, shotNum);
@@ -478,6 +500,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     @Override
     public Collection<String> getTestsForStandard(String standardId) throws IOException {
+        if (mConnected == false) {
+            throw new IOException("Not connected");
+        }
+
         LIBZHttpClient client = getClient();
         try {
             Collection<String> ids = client.getTestsForStandard(standardId);
@@ -493,6 +519,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     @Override
     public List<String> getTestsSince(long unixTimestamp) throws IOException {
+        if (mConnected == false) {
+            throw new IOException("Not connected");
+        }
+
         LIBZHttpClient client = getClient();
         try {
             List<String> ids = client.getTestsSince(unixTimestamp);
@@ -507,6 +537,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     
     @Override
     public List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException {
+        if (mConnected == false) {
+            throw new IOException("Not connected");
+        }
+
         LIBZHttpClient client = getClient();
         try {
             return client.rasterTest(params);
@@ -517,6 +551,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     @Override
     public String takeRasterTest(RasterParams params) throws IOException, LaserNotArmedException {
+        if (mConnected == false) {
+            throw new IOException("Not connected");
+        }
+
         LIBZHttpClient client = getClient();
         try {
             return client.takeTest(params);
@@ -534,5 +572,17 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     @Override
     public void setFactoryLockDownMode(boolean val) {
         mFactoryLockDownMode = val;
+    }
+
+    @Override
+    public void shutDown() {
+        if (mHttpClient != null) {
+            mHttpClient.mConnectionTimeoutTimer.shutDown();
+        }
+    }
+
+    @Override
+    public void setConnected(boolean val) {
+        mConnected = val;
     }
 }

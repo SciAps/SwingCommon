@@ -150,6 +150,16 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
+    public void shutDown() {
+
+    }
+
+    @Override
+    public void setConnected(boolean val) {
+
+    }
+
+    @Override
     public void setFactoryLockDownMode(boolean val) {
 
     }
