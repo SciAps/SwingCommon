@@ -15,13 +15,6 @@ import java.util.List;
 
 public interface LibzUnitApiHandler {
 
-    public static ArrayList<String> mFactoryCalModelIDList = new ArrayList<String>();
-    public static ArrayList<String> mFactoryStandardIDList = new ArrayList<String>();
-    public static ArrayList<String> mFactoryTestIDList = new ArrayList<String>();
-    public static ArrayList<String> mFactoryRegionIDList = new ArrayList<String>();
-
-    void setFactoryLockDownMode(boolean val);
-
     Instrument connectToLibzUnit() throws IOException;
     ILaserController.RasterParams getDefaultParams() throws IOException;
     void pushToLibzUnit() throws IOException;
