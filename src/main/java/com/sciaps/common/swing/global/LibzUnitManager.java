@@ -9,22 +9,20 @@ import com.sciaps.common.objtracker.DBIndex;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjLoader;
 import com.sciaps.common.objtracker.DBObjTracker;
-import com.sciaps.common.swing.events.ConnectToInstrumentEvent;
-import com.sciaps.common.swing.events.DBObjEvent;
-import com.sciaps.common.swing.events.PullEvent;
-import com.sciaps.common.swing.events.PushEvent;
+import com.sciaps.common.swing.events.*;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 import com.sciaps.common.webserver.ILaserController.RasterParams;
-import java.io.IOException;
-
-import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.*;
 
 
 public class LibzUnitManager {
 
     static Logger logger = LoggerFactory.getLogger(LibzUnitManager.class);
+    private final String WIP_LOADING_MSG = "Loading Data ...";
     
     public Instrument instrument;
     public CalibrationShotManager shotManager;
@@ -67,9 +65,12 @@ public class LibzUnitManager {
     @Inject
     private DBObjTracker mObjTracker;
 
+    private EventBus mGlobalEventBus;
+
     @Inject
-    public void setEventBus(EventBus eventBus) {
-        eventBus.register(this);
+    void setGlobalEventBus(EventBus eventBus) {
+        mGlobalEventBus = eventBus;
+        mGlobalEventBus.register(this);
     }
 
     @Subscribe
@@ -268,6 +269,7 @@ public class LibzUnitManager {
             @Override
             public void run() {
                 try {
+                    mGlobalEventBus.post(new WorkInProgressEvent(WIP_LOADING_MSG, false));
 
                     loadCalibrationModels();
 
@@ -281,6 +283,7 @@ public class LibzUnitManager {
                         }
                     }
 
+                    mGlobalEventBus.post(new WorkInProgressEvent(WIP_LOADING_MSG, true));
                 } catch (Exception e) {
 
                     logger.error("Exception in pre-loading calibration: " + e.getMessage());
