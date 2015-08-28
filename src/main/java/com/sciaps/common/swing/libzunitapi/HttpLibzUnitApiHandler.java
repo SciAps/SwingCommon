@@ -4,8 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.sciaps.common.Exceptions.LaserNotArmedException;
-import com.sciaps.common.constant.ModelType;
 import com.sciaps.common.data.*;
+import com.sciaps.common.data.fingerprint.FingerprintLibrary;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.objtracker.IdReference;
@@ -105,6 +105,20 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
+        mGetAllIdsFunctions.put(FingerprintLibraryTemplate.class, new GetAllIds() {
+            @Override
+            public Collection<String> get() throws IOException {
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mFPLibTemplate.getIdList();
+                    } finally {
+                        returnClient();
+                    }
+                }
+            }
+        });
+
         ///Loaders
         mGetObjLoadFunctions.put(Standard.class, new LoadObject<Standard>() {
             @Override
@@ -155,6 +169,20 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
                     getClient();
                     try {
                         return mHttpClient.mModelObjClient.getSingleObject(id);
+                    } finally {
+                        returnClient();
+                    }
+                }
+            }
+        });
+
+        mGetObjLoadFunctions.put(FingerprintLibraryTemplate.class, new LoadObject() {
+            @Override
+            public DBObj get(String id) throws IOException {
+                synchronized (HttpLibzUnitApiHandler.this) {
+                    getClient();
+                    try {
+                        return mHttpClient.mFPLibTemplate.getSingleObject(id);
                     } finally {
                         returnClient();
                     }
@@ -381,6 +409,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             saveModelIds(mObjTracker.getNewObjectsOfType(Model.class));
             createAll(Model.class, httpClient.mModelObjClient, mObjTracker);
             createAll(LIBZTest.class, httpClient.mTestObjClient, mObjTracker);
+            createAll(FingerprintLibraryTemplate.class, httpClient.mFPLibTemplate, mObjTracker);
 
             updateAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
             updateAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
@@ -388,12 +417,14 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             saveModelIds(mObjTracker.getModifiedObjectsOfType(Model.class));
             updateAll(Model.class, httpClient.mModelObjClient, mObjTracker);
             updateAll(LIBZTest.class, httpClient.mTestObjClient, mObjTracker);
+            updateAll(FingerprintLibraryTemplate.class, httpClient.mFPLibTemplate, mObjTracker);
 
             deleteAll(Standard.class, httpClient.mStandardsObjClient, mObjTracker);
             deleteAll(Region.class, httpClient.mRegionObjClient, mObjTracker);
             deleteAll(IRRatio.class, httpClient.mIRObjClient, mObjTracker);
             deleteAll(Model.class, httpClient.mModelObjClient, mObjTracker);
             deleteAll(LIBZTest.class, httpClient.mTestObjClient, mObjTracker);
+            deleteAll(FingerprintLibraryTemplate.class, httpClient.mFPLibTemplate, mObjTracker);
                         
         } finally {
             returnClient();
@@ -474,6 +505,16 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         LIBZHttpClient client = getClient();
         try {
             return client.takeTest(params);
+        } finally {
+            returnClient();
+        }
+    }
+
+    @Override
+    public synchronized void postFPLibrary(FingerprintLibraryTemplate libTemplate, FingerprintLibrary fplib) throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            client.postFingerprintLibrary(libTemplate, fplib);
         } finally {
             returnClient();
         }

@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.inject.Inject;
 import com.sciaps.common.Exceptions.LaserNotArmedException;
 import com.sciaps.common.data.*;
+import com.sciaps.common.data.fingerprint.FingerprintLibrary;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjTracker;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
@@ -144,4 +145,8 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
         return null;
     }
 
+    @Override
+    public void postFPLibrary(FingerprintLibraryTemplate fplibTemp, FingerprintLibrary fplib) throws IOException {
+
+    }
 }

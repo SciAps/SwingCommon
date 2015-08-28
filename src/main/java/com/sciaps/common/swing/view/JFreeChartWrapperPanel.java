@@ -49,7 +49,7 @@ public final class JFreeChartWrapperPanel extends JPanel
         {
             //enabled points
             pointRenderer = new XYLineAndShapeRenderer(false, true);
-            pointRenderer.setBaseItemLabelGenerator(new LabelGenerator());
+            pointRenderer.setBaseItemLabelGenerator(new LabeledXYDatasetLabelGenerator());
             pointRenderer.setBaseItemLabelPaint(Color.LIGHT_GRAY);
             pointRenderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BOTTOM_CENTER));
             pointRenderer.setBaseItemLabelsVisible(true);

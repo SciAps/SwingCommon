@@ -41,6 +41,16 @@ public final class LabeledXYDataset extends AbstractIntervalXYDataset {
             _label.add(label);
         }
 
+        public boolean isEmpty() {
+            return _x.isEmpty();
+        }
+
+        public void addAll(LabeledXYSeries series) {
+            _x.addAll(series._x);
+            _xStdDiv.addAll(series._xStdDiv);
+            _y.addAll(series._y);
+            _label.addAll(series._label);
+        }
     }
 
     private ArrayList<LabeledXYSeries> _series = new ArrayList<LabeledXYSeries>();

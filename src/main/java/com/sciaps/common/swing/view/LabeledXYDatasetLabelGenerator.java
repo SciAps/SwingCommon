@@ -7,11 +7,9 @@ import org.jfree.data.xy.XYDataset;
  *
  * @author sgowen
  */
-public final class LabelGenerator implements XYItemLabelGenerator
-{
+public final class LabeledXYDatasetLabelGenerator implements XYItemLabelGenerator {
     @Override
-    public String generateLabel(XYDataset dataset, int series, int item)
-    {
+    public String generateLabel(XYDataset dataset, int series, int item) {
         LabeledXYDataset labelSource = (LabeledXYDataset) dataset;
         return labelSource.getLabel(series, item);
     }
