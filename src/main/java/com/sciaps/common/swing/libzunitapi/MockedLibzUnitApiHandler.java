@@ -149,4 +149,29 @@ public final class MockedLibzUnitApiHandler implements LibzUnitApiHandler {
     public void postFPLibrary(FingerprintLibraryTemplate fplibTemp, FingerprintLibrary fplib) throws IOException {
 
     }
+
+    @Override
+    public Collection<String> getGradeLibraries() throws IOException {
+        return null;
+    }
+
+    @Override
+    public Grade[] getGradeLib(String gradelibName) throws IOException {
+        return new Grade[0];
+    }
+
+    @Override
+    public void createGradeLib(String gradelibName, Grade[] grades) throws IOException {
+
+    }
+
+    @Override
+    public void updateGradeLib(String gradelibName, Grade[] grades) throws IOException {
+
+    }
+
+    @Override
+    public void deleteGradeLib(String gradelibName) throws IOException {
+
+    }
 }

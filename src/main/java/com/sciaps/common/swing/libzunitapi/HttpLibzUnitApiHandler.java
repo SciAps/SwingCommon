@@ -248,6 +248,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     private String mIPAddress;
+
     public void setIpAddress(String ipAddress) {
         mIPAddress = ipAddress;
     }
@@ -302,23 +303,23 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     private static void saveIds(DBObj obj) {
-        for(Field field : obj.getClass().getFields()){
+        for (Field field : obj.getClass().getFields()) {
             final String fieldName = field.getName();
-            if(field.getAnnotation(IdReference.class) != null){
+            if (field.getAnnotation(IdReference.class) != null) {
                 try {
                     Object fieldValue = field.get(obj);
                     String[] ids = null;
                     if (Iterable.class.isAssignableFrom(field.getType())) {
                         ArrayList<String> idlist = new ArrayList<String>();
                         for (Iterator it = ((Iterable) fieldValue).iterator(); it.hasNext(); ) {
-                            DBObj listValue = (DBObj)it.next();
+                            DBObj listValue = (DBObj) it.next();
                             saveIds(listValue);
                             String id = listValue.mId;
                             idlist.add(id);
                         }
                         ids = idlist.toArray(new String[idlist.size()]);
                     } else {
-                        if(fieldValue != null) {
+                        if (fieldValue != null) {
                             ids = new String[]{((DBObj) fieldValue).mId};
                         } else {
                             ids = new String[]{null};
@@ -337,48 +338,48 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
                                                     LIBZHttpClient.BasicObjectClient<T> client,
                                                     DBObjTracker tracker) throws IOException {
         ArrayList<T> list = new ArrayList<T>();
-        
-        Iterator<T> it = tracker.getNewObjectsOfType(type);        
-        while(it.hasNext()) {
+
+        Iterator<T> it = tracker.getNewObjectsOfType(type);
+        while (it.hasNext()) {
             list.add(it.next());
         }
-        
-        for(T obj : list){
+
+        for (T obj : list) {
             saveIds(obj);
             tracker.setId(obj, client.createObject(obj));
             tracker.removeCreated(obj);
         }
-        
+
     }
 
     private static <T extends DBObj> void updateAll(Class<T> type,
                                                     LIBZHttpClient.BasicObjectClient<T> client,
                                                     DBObjTracker tracker) throws IOException {
         ArrayList<T> list = new ArrayList<T>();
-        
+
         Iterator<T> it = tracker.getModifiedObjectsOfType(type);
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             list.add(it.next());
         }
-        
-        for(T obj : list){
+
+        for (T obj : list) {
             saveIds(obj);
             client.updateObject(obj.mId, obj);
             tracker.removeModified(obj);
-        }       
+        }
     }
 
     private static <T extends DBObj> void deleteAll(Class<T> type,
                                                     LIBZHttpClient.BasicObjectClient<T> client,
                                                     DBObjTracker tracker) throws IOException {
         ArrayList<T> list = new ArrayList<T>();
-        
+
         Iterator<T> it = tracker.getDeletedObjectsOfType(type);
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             list.add(it.next());
         }
-        
-        for(T obj : list){
+
+        for (T obj : list) {
             try {
                 client.deleteObject(obj.mId);
                 tracker.removeDelete(obj);
@@ -389,9 +390,9 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     private void saveModelIds(Iterator<Model> models) {
-        while(models.hasNext()) {
+        while (models.hasNext()) {
             Model model = models.next();
-            for(IRCurve curve : model.irs.values()){
+            for (IRCurve curve : model.irs.values()) {
                 saveIds(curve);
             }
         }
@@ -425,20 +426,20 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             deleteAll(Model.class, httpClient.mModelObjClient, mObjTracker);
             deleteAll(LIBZTest.class, httpClient.mTestObjClient, mObjTracker);
             deleteAll(FingerprintLibraryTemplate.class, httpClient.mFPLibTemplate, mObjTracker);
-                        
+
         } finally {
             returnClient();
         }
     }
 
     private synchronized LIBZHttpClient getClient() {
-        if(mHttpClient == null) {
+        if (mHttpClient == null) {
             String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
             mHttpClient = new LIBZHttpClient(baseUrl);
         }
         return mHttpClient;
     }
-    
+
     private void returnClient() {
         mDeleteHttpClientTask = mFutureRunner.schedule(new Runnable() {
             @Override
@@ -462,9 +463,9 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         try {
             LIBZPixelSpectrum data = client.getShotSpectrum(testId, shotNum);
             return data;
-        }finally {
-            returnClient();   
-        }        
+        } finally {
+            returnClient();
+        }
     }
 
     @Override
@@ -489,7 +490,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             returnClient();
         }
     }
-    
+
     @Override
     public synchronized List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException {
         LIBZHttpClient client = getClient();
@@ -515,6 +516,56 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         LIBZHttpClient client = getClient();
         try {
             client.postFingerprintLibrary(libTemplate, fplib);
+        } finally {
+            returnClient();
+        }
+    }
+
+    @Override
+    public Collection<String> getGradeLibraries() throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            return client.getGradeLibraries();
+        } finally {
+            returnClient();
+        }
+    }
+
+    @Override
+    public Grade[] getGradeLib(String gradelibName) throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            return client.getGradeLib(gradelibName);
+        } finally {
+            returnClient();
+        }
+    }
+
+    @Override
+    public void createGradeLib(String gradelibName, Grade[] grades) throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            client.createGradeLib(gradelibName, grades);
+        } finally {
+            returnClient();
+        }
+    }
+
+    @Override
+    public void updateGradeLib(String gradelibName, Grade[] grades) throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            client.updateGradeLib(gradelibName, grades);
+        } finally {
+            returnClient();
+        }
+    }
+
+    @Override
+    public void deleteGradeLib(String gradelibName) throws IOException {
+        LIBZHttpClient client = getClient();
+        try {
+            client.deleteGradeLib(gradelibName);
         } finally {
             returnClient();
         }
