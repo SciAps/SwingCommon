@@ -522,7 +522,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public Collection<String> getGradeLibraries() throws IOException {
+    public synchronized Collection<String> getGradeLibraries() throws IOException {
         LIBZHttpClient client = getClient();
         try {
             return client.getGradeLibraries();
@@ -532,7 +532,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public Grade[] getGradeLib(String gradelibName) throws IOException {
+    public synchronized Grade[] getGradeLib(String gradelibName) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             return client.getGradeLib(gradelibName);
@@ -542,7 +542,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public void createGradeLib(String gradelibName, Grade[] grades) throws IOException {
+    public synchronized void createGradeLib(String gradelibName, Grade[] grades) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             client.createGradeLib(gradelibName, grades);
@@ -552,7 +552,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public void updateGradeLib(String gradelibName, Grade[] grades) throws IOException {
+    public synchronized void updateGradeLib(String gradelibName, Grade[] grades) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             client.updateGradeLib(gradelibName, grades);
@@ -562,7 +562,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
     @Override
-    public void deleteGradeLib(String gradelibName) throws IOException {
+    public synchronized void deleteGradeLib(String gradelibName) throws IOException {
         LIBZHttpClient client = getClient();
         try {
             client.deleteGradeLib(gradelibName);
