@@ -16,8 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class CalibrationShotManager {
 
@@ -40,10 +38,10 @@ public class CalibrationShotManager {
         @Override
         public boolean equals(Object obj) {
             boolean retval = false;
-            if(obj instanceof Key) {
-                Key other = (Key)obj;
+            if (obj instanceof Key) {
+                Key other = (Key) obj;
                 retval = Objects.equal(testId, other.testId)
-                    && shotNum == other.shotNum;
+                        && shotNum == other.shotNum;
             }
             return retval;
         }
@@ -77,18 +75,19 @@ public class CalibrationShotManager {
         mCacheDir = cacheDir;
         mCache = CacheBuilder
                 .newBuilder()
-                //.maximumSize(60 * 3 * 13)
+                        //.maximumSize(60 * 3 * 13)
                 .maximumSize(2400)
                 .build(mLoader);
     }
 
 
-    public LIBZPixelSpectrum getShot(String testId, int shotNum) {
+    public LIBZPixelSpectrum getShot(String testId, int shotNum) throws Exception {
         final Key key = new Key(testId, shotNum);
         LIBZPixelSpectrum retval = null;
         try {
             retval = mCache.get(key);
-        } catch (Exception e) {
+        } catch (CacheLoader.InvalidCacheLoadException e) {
+            // This exception is not a connection exception, just that nothing in the cache due to dropped shot issue.
             logger.error("", e);
         }
         return retval;
@@ -110,7 +109,7 @@ public class CalibrationShotManager {
 
             final File testDir = new File(mCacheDir, key.testId);
             File file = new File(testDir, String.format("shot_%d.dat", key.shotNum));
-            if(file.exists()){
+            if (file.exists()) {
                 try {
                     retval = ShotDataHelper.loadCompressedFile(file);
                 } catch (IOException e) {
@@ -118,7 +117,7 @@ public class CalibrationShotManager {
                 }
             }
 
-            if(retval == null) {
+            if (retval == null) {
 
                 ArrayList<Integer> tmpDroppedShotNumForTest = mDroppedShots.get(key.testId);
                 if (tmpDroppedShotNumForTest == null || tmpDroppedShotNumForTest.contains(key.shotNum) == false) {
