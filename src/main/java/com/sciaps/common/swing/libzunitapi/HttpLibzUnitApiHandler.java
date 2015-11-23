@@ -400,6 +400,51 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         }
     }
 
+    private void createAllGradeLibraries(LIBZHttpClient client) throws IOException {
+        ArrayList<GradeLibrary> list = new ArrayList<GradeLibrary>();
+
+        Iterator<GradeLibrary> it = mObjTracker.getNewObjectsOfType(GradeLibrary.class);
+        while (it.hasNext()) {
+            list.add(it.next());
+        }
+
+        for (GradeLibrary gradeLibrary : list) {
+            Grade[] grades = gradeLibrary.mGrades.toArray(new Grade[gradeLibrary.mGrades.size()]);
+            client.createGradeLib(gradeLibrary.mName, grades);
+            gradeLibrary.mId = "cannedID";
+            mObjTracker.removeCreated(gradeLibrary);
+        }
+    }
+
+    private void updateAllGradeLibraries(LIBZHttpClient client) throws IOException {
+        ArrayList<GradeLibrary> list = new ArrayList<GradeLibrary>();
+
+        Iterator<GradeLibrary> it = mObjTracker.getModifiedObjectsOfType(GradeLibrary.class);
+        while (it.hasNext()) {
+            list.add(it.next());
+        }
+
+        for (GradeLibrary gradeLibrary : list) {
+            Grade[] grades = gradeLibrary.mGrades.toArray(new Grade[gradeLibrary.mGrades.size()]);
+            client.updateGradeLib(gradeLibrary.mName, grades);
+            mObjTracker.removeModified(gradeLibrary);
+        }
+    }
+
+    private void deleteAllGradeLibraries(LIBZHttpClient client) throws IOException {
+        ArrayList<GradeLibrary> list = new ArrayList<GradeLibrary>();
+
+        Iterator<GradeLibrary> it = mObjTracker.getDeletedObjectsOfType(GradeLibrary.class);
+        while (it.hasNext()) {
+            list.add(it.next());
+        }
+
+        for (GradeLibrary gradeLibrary : list) {
+            client.deleteGradeLib(gradeLibrary.mName);
+            mObjTracker.removeDelete(gradeLibrary);
+        }
+    }
+
     @Override
     public synchronized void pushToLibzUnit() throws IOException {
 
@@ -428,6 +473,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             deleteAll(Model.class, httpClient.mModelObjClient, mObjTracker);
             deleteAll(LIBZTest.class, httpClient.mTestObjClient, mObjTracker);
             deleteAll(FingerprintLibraryTemplate.class, httpClient.mFPLibTemplate, mObjTracker);
+
+            createAllGradeLibraries(httpClient);
+            updateAllGradeLibraries(httpClient);
+            deleteAllGradeLibraries(httpClient);
 
         } finally {
             returnClient();
