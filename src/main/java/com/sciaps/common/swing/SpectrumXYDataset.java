@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public class SpectrumXYDataset extends AbstractXYDataset {
 
-    private static final double SampleRate = 30;
+    public double mSampleRate = 30;
 
     public ArrayList<Spectrum> mSpectrum = new ArrayList<Spectrum>();
     public ArrayList<String> mSpectrumKey = new ArrayList<String>();
 
     public void addSpectrum(Spectrum spectrum, String name) {
-        if(spectrum == null || name == null) {
+        if (spectrum == null || name == null) {
             return;
         }
         mSpectrum.add(spectrum);
@@ -25,7 +25,7 @@ public class SpectrumXYDataset extends AbstractXYDataset {
 
     public void removeSpectrum(Spectrum spectrum) {
         int i = mSpectrum.indexOf(spectrum);
-        if(i >= 0) {
+        if (i >= 0) {
             mSpectrum.remove(i);
             mSpectrumKey.remove(i);
             fireDatasetChanged();
@@ -33,7 +33,7 @@ public class SpectrumXYDataset extends AbstractXYDataset {
     }
 
     public void removeSpectrum(int index) {
-        if(index >= 0) {
+        if (index >= 0) {
             mSpectrum.remove(index);
             mSpectrumKey.remove(index);
             fireDatasetChanged();
@@ -61,7 +61,7 @@ public class SpectrumXYDataset extends AbstractXYDataset {
         Spectrum spectrum = mSpectrum.get(series);
         DoubleRange range = spectrum.getValidRange();
         double width = (range.getMaximumDouble() - range.getMinimumDouble());
-        int numSamples = (int) (width * SampleRate);
+        int numSamples = (int) (width * mSampleRate);
         return numSamples;
     }
 
@@ -69,7 +69,7 @@ public class SpectrumXYDataset extends AbstractXYDataset {
     public Number getX(int series, int item) {
         Spectrum spectrum = mSpectrum.get(series);
         DoubleRange range = spectrum.getValidRange();
-        double retval = range.getMinimumDouble() + item / SampleRate;
+        double retval = range.getMinimumDouble() + item / mSampleRate;
         return retval;
     }
 
@@ -77,7 +77,7 @@ public class SpectrumXYDataset extends AbstractXYDataset {
     public Number getY(int series, int item) {
         Spectrum spectrum = mSpectrum.get(series);
         DoubleRange range = spectrum.getValidRange();
-        double x = range.getMinimumDouble() + item / SampleRate;
+        double x = range.getMinimumDouble() + item / mSampleRate;
 
         UnivariateFunction ivf = spectrum.getIntensityFunction();
         return ivf.value(x);
