@@ -14,6 +14,8 @@ import com.sciaps.common.swing.events.SetIPAddressEvent;
 import com.sciaps.common.webserver.ILIBZClientInterface;
 import com.sciaps.common.webserver.ILaserController.RasterParams;
 import com.sciaps.common.webserver.LIBZHttpClient;
+import com.sciaps.common.webserver.LIBZLocalDBClient;
+import com.sciaps.common.webserver.LIBZUSBClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +31,12 @@ import java.util.concurrent.TimeUnit;
 public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     static Logger logger = LoggerFactory.getLogger(HttpLibzUnitApiHandler.class);
+
+    public static enum ConnectionType {
+        UNKNOWN, LOCAL_DB, USB, WIFI
+    }
+
+    private ConnectionType mConnType = ConnectionType.UNKNOWN;
 
     private interface GetAllIds {
         Collection<String> get() throws IOException;
@@ -485,7 +493,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     private synchronized ILIBZClientInterface getClient() {
         if (mHttpClient == null) {
             String baseUrl = getLibzUnitApiBaseUrl(mIPAddress);
-            mHttpClient = new LIBZHttpClient(baseUrl);
+            if (mConnType == ConnectionType.LOCAL_DB) {
+                mHttpClient = new LIBZLocalDBClient();
+            } else if (mConnType == ConnectionType.USB) {
+                mHttpClient = new LIBZUSBClient();
+            } else if (mConnType == ConnectionType.WIFI) {
+                mHttpClient = new LIBZHttpClient(baseUrl);
+            }
         }
         return mHttpClient;
     }
