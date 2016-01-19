@@ -401,8 +401,10 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     private void saveModelIds(Iterator<Model> models) {
         while (models.hasNext()) {
             Model model = models.next();
-            for (IRCurve curve : model.irs.values()) {
-                saveIds(curve);
+            for (List<IRCurve> curves : model.irs.values()) {
+                for (IRCurve curve : curves) {
+                    saveIds(curve);
+                }
             }
         }
     }
