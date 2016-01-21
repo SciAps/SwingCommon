@@ -1,14 +1,12 @@
 package com.sciaps.common.swing.libzunitapi;
 
+import com.devsmart.microdb.DBObject;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.sciaps.common.Exceptions.LaserNotArmedException;
 import com.sciaps.common.data.*;
-import com.sciaps.common.data.fingerprint.FingerprintLibrary;
-import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjTracker;
-import com.sciaps.common.objtracker.IdReference;
 import com.sciaps.common.spectrum.LIBZPixelSpectrum;
 import com.sciaps.common.swing.events.SetIPAddressEvent;
 import com.sciaps.common.webserver.ILIBZClientInterface;
@@ -16,12 +14,15 @@ import com.sciaps.common.webserver.ILaserController.RasterParams;
 import com.sciaps.common.webserver.LIBZHttpClient;
 import com.sciaps.common.webserver.LIBZLocalDBClient;
 import com.sciaps.common.webserver.LIBZUSBClient;
+import com.sciaps.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -44,13 +45,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     private final Map<Class, GetAllIds> mGetAllIdsFunctions = new HashMap<Class, GetAllIds>();
 
-    private interface LoadObject<T extends DBObj> {
+    private interface LoadObject<T extends DBObject> {
         T get(String id) throws IOException;
     }
 
     private final Map<Class, LoadObject> mGetObjLoadFunctions = new HashMap<Class, LoadObject>();
 
-    private interface CreateObject<T extends DBObj> {
+    private interface CreateObject<T extends DBObject> {
         void create(T obj) throws IOException;
     }
 
@@ -58,13 +59,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
 
     public HttpLibzUnitApiHandler() {
 
-        mGetAllIdsFunctions.put(Standard.class, new GetAllIds() {
+        mGetAllIdsFunctions.put(DBStandard.class, new GetAllIds() {
             @Override
             public Collection<String> get() throws IOException {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getIdList(Standard.class);
+                        return mHttpClient.getIdList(DBStandard.class);
                     } finally {
                         returnClient();
                     }
@@ -78,7 +79,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getIdList(Region.class);
+                        return mHttpClient.getIdList(DBRegion.class);
                     } finally {
                         returnClient();
                     }
@@ -92,7 +93,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getIdList(IRRatio.class);
+                        return mHttpClient.getIdList(DBIRRatio.class);
                     } finally {
                         returnClient();
                     }
@@ -106,7 +107,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getIdList(Model.class);
+                        return mHttpClient.getIdList(EmpiricalModel.class);
                     } finally {
                         returnClient();
                     }
@@ -120,7 +121,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getIdList(FingerprintLibraryTemplate.class);
+                        return mHttpClient.getIdList(DBFingerprintLibTemplate.class);
                     } finally {
                         returnClient();
                     }
@@ -129,13 +130,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         });
 
         ///Loaders
-        mGetObjLoadFunctions.put(Standard.class, new LoadObject<Standard>() {
+        mGetObjLoadFunctions.put(DBStandard.class, new LoadObject<DBStandard>() {
             @Override
-            public Standard get(String id) throws IOException {
+            public DBStandard get(String id) throws IOException {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getSingleObject(Standard.class, id);
+                        return mHttpClient.getSingleObject(DBStandard.class, id);
                     } finally {
                         returnClient();
                     }
@@ -143,13 +144,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
-        mGetObjLoadFunctions.put(Region.class, new LoadObject<Region>() {
+        mGetObjLoadFunctions.put(DBRegion.class, new LoadObject<DBRegion>() {
             @Override
-            public Region get(String id) throws IOException {
+            public DBRegion get(String id) throws IOException {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getSingleObject(Region.class, id);
+                        return mHttpClient.getSingleObject(DBRegion.class, id);
                     } finally {
                         returnClient();
                     }
@@ -157,13 +158,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
-        mGetObjLoadFunctions.put(IRRatio.class, new LoadObject<IRRatio>() {
+        mGetObjLoadFunctions.put(DBIRRatio.class, new LoadObject<DBIRRatio>() {
             @Override
-            public IRRatio get(String id) throws IOException {
+            public DBIRRatio get(String id) throws IOException {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getSingleObject(IRRatio.class, id);
+                        return mHttpClient.getSingleObject(DBIRRatio.class, id);
                     } finally {
                         returnClient();
                     }
@@ -171,13 +172,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
-        mGetObjLoadFunctions.put(Model.class, new LoadObject() {
+        mGetObjLoadFunctions.put(EmpiricalModel.class, new LoadObject() {
             @Override
-            public DBObj get(String id) throws IOException {
+            public DBObject get(String id) throws IOException {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getSingleObject(Model.class, id);
+                        return mHttpClient.getSingleObject(EmpiricalModel.class, id);
                     } finally {
                         returnClient();
                     }
@@ -185,13 +186,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
-        mGetObjLoadFunctions.put(FingerprintLibraryTemplate.class, new LoadObject() {
+        mGetObjLoadFunctions.put(DBFingerprintLibTemplate.class, new LoadObject() {
             @Override
-            public DBObj get(String id) throws IOException {
+            public DBObject get(String id) throws IOException {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getSingleObject(FingerprintLibraryTemplate.class, id);
+                        return mHttpClient.getSingleObject(DBFingerprintLibTemplate.class, id);
                     } finally {
                         returnClient();
                     }
@@ -199,13 +200,13 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
-        mGetObjLoadFunctions.put(LIBZTest.class, new LoadObject() {
+        mGetObjLoadFunctions.put(Acquisition.class, new LoadObject() {
             @Override
-            public DBObj get(String id) throws IOException {
+            public DBObject get(String id) throws IOException {
                 synchronized (HttpLibzUnitApiHandler.this) {
                     getClient();
                     try {
-                        return mHttpClient.getSingleObject(LIBZTest.class, id);
+                        return mHttpClient.getSingleObject(Acquisition.class, id);
                     } finally {
                         returnClient();
                     }
@@ -213,19 +214,21 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             }
         });
 
-        mCreateObjFunctions.put(LIBZTest.class, new CreateObject<LIBZTest>() {
+        mCreateObjFunctions.put(Acquisition.class, new CreateObject<Acquisition>() {
             @Override
-            public void create(LIBZTest obj) throws IOException {
+            public void create(Acquisition obj) throws IOException {
 
                 synchronized (HttpLibzUnitApiHandler.this) {
-                    saveIds(obj);
+                    /*saveIds(obj);
                     getClient();
                     try {
-                        String id = mHttpClient.createObject(obj);
+                        Acquisition acquisition = mHttpClient.createObject(obj);
+                        String id = acquisition.getId();
                         mObjTracker.setId(obj, id);
                     } finally {
                         returnClient();
-                    }
+                    }*/
+                    returnClient();
                 }
             }
         });
@@ -283,35 +286,35 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     }
 
 
-    @Override
+    /*@Override
     public synchronized Collection<String> getAllIds(Class<? extends DBObj> classType) throws IOException {
         Collection<String> retval = mGetAllIdsFunctions.get(classType).get();
 
         return retval;
-    }
+    }*/
 
-    @Override
-    public <T extends DBObj> T loadObject(Class<T> classType, String id) throws IOException {
-        DBObj retval = mGetObjLoadFunctions.get(classType).get(id);
-        return (T) retval;
-    }
+    //@Override
+    //public <T extends DBObject> T loadObject(Class<T> classType, String id) throws IOException {
+    //    DBObject retval = mGetObjLoadFunctions.get(classType).get(id);
+    //    return (T) retval;
+    //}
 
-    @Override
-    public <T extends DBObj> void createNewObject(T newObj) throws IOException {
-        mCreateObjFunctions.get(newObj.getClass()).create(newObj);
-    }
+    //@Override
+    //public <T extends DBObject> void createNewObject(T newObj) throws IOException {
+    //    mCreateObjFunctions.get(newObj.getClass()).create(newObj);
+    //}
 
-    @Override
-    public void uploadShot(String testId, int shotNum, LIBZPixelSpectrum data) throws IOException {
-        getClient();
-        try {
-            mHttpClient.postShotSpectrum(testId, shotNum, data);
-        } finally {
-            returnClient();
-        }
-    }
+    //@Override
+    //public void uploadShot(String testId, int shotNum, LIBZPixelSpectrum data) throws IOException {
+    //    getClient();
+    //    try {
+    //        mHttpClient.postShotSpectrum(testId, shotNum, data);
+    //    } finally {
+    //        returnClient();
+    //    }
+    //}
 
-    private static void saveIds(DBObj obj) {
+    /*private static void saveIds(DBObj obj) {
         for (Field field : obj.getClass().getFields()) {
             final String fieldName = field.getName();
             if (field.getAnnotation(IdReference.class) != null) {
@@ -407,9 +410,9 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
                 }
             }
         }
-    }
+    }*/
 
-    private void createAllGradeLibraries(ILIBZClientInterface client) throws IOException {
+    /*private void createAllGradeLibraries(ILIBZClientInterface client) throws IOException {
         ArrayList<GradeLibrary> list = new ArrayList<GradeLibrary>();
 
         Iterator<GradeLibrary> it = mObjTracker.getNewObjectsOfType(GradeLibrary.class);
@@ -453,8 +456,8 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
             mObjTracker.removeDelete(gradeLibrary);
         }
     }
-
-    @Override
+    */
+    /*@Override
     public synchronized void pushToLibzUnit() throws IOException {
 
         ILIBZClientInterface client = getClient();
@@ -490,7 +493,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         } finally {
             returnClient();
         }
-    }
+    }*/
 
     private synchronized ILIBZClientInterface getClient() {
         if (mHttpClient == null) {
@@ -523,7 +526,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
     private Future<?> mDeleteHttpClientTask;
     private ScheduledExecutorService mFutureRunner = Executors.newSingleThreadScheduledExecutor();
 
-    @Override
+    /*@Override
     public synchronized LIBZPixelSpectrum downloadShot(String testId, int shotNum) throws IOException {
         ILIBZClientInterface client = getClient();
         try {
@@ -555,7 +558,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         } finally {
             returnClient();
         }
-    }
+    }*/
 
     @Override
     public synchronized List<LIBZPixelSpectrum> rasterTest(RasterParams params) throws IOException, LaserNotArmedException {
@@ -577,7 +580,7 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         }
     }
 
-    @Override
+    /*@Override
     public synchronized void postFPLibrary(FingerprintLibraryTemplate libTemplate, FingerprintLibrary fplib) throws IOException {
         ILIBZClientInterface client = getClient();
         try {
@@ -635,6 +638,6 @@ public final class HttpLibzUnitApiHandler implements LibzUnitApiHandler {
         } finally {
             returnClient();
         }
-    }
+    }*/
 
 }

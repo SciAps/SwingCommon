@@ -1,6 +1,6 @@
 package com.sciaps.common.swing.events;
 
-import com.sciaps.common.objtracker.DBObj;
+import com.devsmart.microdb.DBObject;
 
 public class DBObjEvent {
 
@@ -10,10 +10,10 @@ public class DBObjEvent {
 
 
     public final int type;
-    public final DBObj obj;
+    public final DBObject obj;
     public final Object originator;
 
-    public DBObjEvent(DBObj obj, int type, Object originator) {
+    public DBObjEvent(DBObject obj, int type, Object originator) {
         this.obj = obj;
         this.type = type;
         this.originator = originator;
