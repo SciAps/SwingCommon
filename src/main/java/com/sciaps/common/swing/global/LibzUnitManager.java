@@ -4,19 +4,27 @@ import com.devsmart.ThreadUtils;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.sciaps.common.data.*;
+import com.sciaps.common.data.Instrument;
+import com.sciaps.common.data.LIBZTest;
+import com.sciaps.common.data.Standard;
 import com.sciaps.common.objtracker.DBIndex;
 import com.sciaps.common.objtracker.DBObj;
 import com.sciaps.common.objtracker.DBObjLoader;
 import com.sciaps.common.objtracker.DBObjTracker;
-import com.sciaps.common.swing.events.*;
+import com.sciaps.common.swing.events.ConnectToInstrumentEvent;
+import com.sciaps.common.swing.events.PullEvent;
 import com.sciaps.common.swing.libzunitapi.LibzUnitApiHandler;
 import com.sciaps.common.webserver.ILaserController.RasterParams;
+import com.sciaps.data.Acquisition;
+import com.sciaps.data.DBStandard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 
 public class LibzUnitManager {
@@ -75,6 +83,8 @@ public class LibzUnitManager {
         mObjTracker.clear();
     }
 
+    //TODO
+    /*
     @Subscribe
     public void onPushEvent(PushEvent pushEvent) {
 
@@ -99,7 +109,7 @@ public class LibzUnitManager {
                 mTestsByTime.delete(modifiedEvent.obj);
                 break;
         }
-    }
+    }*/
 
 
 
@@ -110,22 +120,28 @@ public class LibzUnitManager {
     private HashSet<String> mLoadedStandards = new HashSet<String>();
 
     private void load(Standard standard) throws Exception {
-        if(standard.mId != null && !mLoadedStandards.contains(standard.mId)) {
+        //TODO
+        System.out.println("***********TODO");
+        /*if(standard.mId != null && !mLoadedStandards.contains(standard.mId)) {
             Collection<String> retval = mApiHandler.getTestsForStandard(standard.mId);
             for(String testId : retval) {
                 LIBZTest test = mObjLoader.deepLoad(LIBZTest.class, testId);
                 mTestsOfStandard.update(test);
             }
             mLoadedStandards.add(standard.mId);
-        }
+        }*/
     }
 
 
-    public synchronized Collection<LIBZTest> getTestsForStandard(Standard standard) throws Exception {
+    public synchronized Collection<Acquisition> getTestsForStandard(DBStandard standard) throws Exception {
 
-        load(standard);
+        LinkedList<Acquisition> retval = new LinkedList<Acquisition>();
+
+        //TODO
+        System.out.println("***********TODO");
+        /*load(standard);
         Iterator<DBIndex<Standard>.Row> it = mTestsOfStandard.query(standard);
-        LinkedList<LIBZTest> retval = new LinkedList<LIBZTest>();
+        LinkedList<Acquisition> retval = new LinkedList<Acquisition>();
 
         while(it.hasNext()) {
             DBIndex<Standard>.Row row = it.next();
@@ -135,15 +151,15 @@ public class LibzUnitManager {
             if(row.obj instanceof LIBZTest) {
                 retval.add((LIBZTest) row.obj);
             }
-        }
+        }*/
 
         return retval;
     }
 
-    public int getNumberShotsForStandard(Standard standard) throws Exception {
+    public int getNumberShotsForStandard(DBStandard standard) throws Exception {
         int retval = 0;
-        for(LIBZTest test : getTestsForStandard(standard)) {
-            retval += test.getNumShots();
+        for(Acquisition test : getTestsForStandard(standard)) {
+            retval += test.getShotsSpectraData().size();
         }
         return retval;
     }
