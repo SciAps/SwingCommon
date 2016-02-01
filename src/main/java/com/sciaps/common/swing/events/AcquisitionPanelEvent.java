@@ -3,7 +3,7 @@ package com.sciaps.common.swing.events;
 /**
  * Created by jchen on 4/8/15.
  */
-public class AcquisitionDisplayEvent {
+public class AcquisitionPanelEvent {
     public static final int RESET = 0;
     public static final int IMPORT = 1;
     public static final int EXPORT = 2;
@@ -14,11 +14,12 @@ public class AcquisitionDisplayEvent {
     public static final int SHOW_REJECTED_ELEMENTS = 7;
     public static final int SHOW_EMISSION_LINES = 8;
     public static final int HIDE_EMISSION_LINES = 9;
+    public static final int TEST_SELECTED = 10;
 
     public Object mOriginator;
     public int mAction;
 
-    public AcquisitionDisplayEvent(int action, Object originator) {
+    public AcquisitionPanelEvent(int action, Object originator) {
         mAction = action;
         mOriginator = originator;
     }
